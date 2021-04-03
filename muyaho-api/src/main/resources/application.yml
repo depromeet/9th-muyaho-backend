@@ -1,0 +1,7 @@
+server:
+  port: 9090
+spring:
+  profiles:
+    active: local
+    include:
+      - domain
