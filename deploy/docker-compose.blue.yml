@@ -1,0 +1,8 @@
+version: "3"
+services:
+  dev:
+    image: ${API_IMAGE}:${TAG}
+    ports:
+      - 9091:9090
+    environment:
+      - "SPRING_PROFILES_ACTIVE=local"

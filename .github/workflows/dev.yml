@@ -1,0 +1,64 @@
+on:
+  push:
+    branches:
+      - develop
+      - feature/cicd
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout@v2
+        uses: actions/checkout@v2
+
+      - name: Versioning
+        id: docker-image-version
+        run: |
+          VERSION=`cat ./version.txt`-${{ github.run_id }}
+          echo "::set-output name=version::$VERSION"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login to Amazon ECR
+          id: login-ecr
+          uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push muyaho-api
+        env:
+          DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          DOCKER_REPOSITORY: muyaho-api
+          IMAGE_TAG: ${{ steps.docker-image-version.outputs.version }}
+        run: |
+          docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG .
+          docker tag $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
+          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
+          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
+          echo -e "API_IMAGE=$DOCKER_REGISTRY/$DOCKER_REPOSITORY\nTAG=$IMAGE_TAG" > deploy/.env
+
+      - name: Zip deploy
+        run: zip -r deploy.zip deploy
+
+      - name: Upload deploy
+        uses: actions/upload-artifact@v2
+        with:
+          name: deploy.zip
+          path: deploy.zip
+
+  deploy:
+    needs:
+      - build
+    runs-on: muyaho-api
+    steps:
+      - name: Download deploy.zip
+        uses: actions/download-artifact@v2
+        with:
+          name: deploy.zip
+
+      - name: run server
+        run: |
+          unzip -o ./deploy.zip
+          cd deploy/ && sh ./run.sh
