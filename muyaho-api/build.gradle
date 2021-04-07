@@ -2,4 +2,5 @@ dependencies {
     implementation project(':muyaho-domain')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.4'
 }
