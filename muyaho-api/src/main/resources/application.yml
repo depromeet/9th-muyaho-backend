@@ -5,3 +5,4 @@ spring:
     active: local
     include:
       - domain
+      - swagger
