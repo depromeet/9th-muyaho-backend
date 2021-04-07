@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - develop
-      - feature/cicd
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -47,7 +46,6 @@ jobs:
         with:
           name: deploy.zip
           path: deploy.zip
-
   deploy:
     needs:
       - build
