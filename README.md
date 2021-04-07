@@ -2,16 +2,14 @@
 
 ## Installation
 
-with
-.gradlew
+with gradlew
 
 ```bash
 ./gradlew clean build
 java -jar muyaho-api/build/libs/muyaho-api-0.0.1-SNAPSHOT.jar 
 ```
 
-with
-docker-compose
+with docker-compose
 
 ```bash
 docker-compose up --build
