@@ -6,3 +6,4 @@ spring:
     include:
       - domain
       - swagger
+      - market
