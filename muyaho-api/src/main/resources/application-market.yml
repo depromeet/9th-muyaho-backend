@@ -1,0 +1,6 @@
+bitcoin:
+  upbit:
+    markets:
+      url: https://api.upbit.com/v1/market/all
+    trade:
+      url: https://api.upbit.com/v1/ticker
