@@ -1,0 +1,11 @@
+POST {{api}}/api/v1/signup
+Content-Type: application/json
+
+{
+    "email": "will.seungho@gmail.com",
+    "name": "강승호",
+    "profileUrl": "http://profile.com"
+}
+> {%
+client.global.set("AUTHORIZATION", response.body["data"])
+ %}
