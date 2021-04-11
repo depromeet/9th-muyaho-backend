@@ -14,6 +14,7 @@ public class MemberService {
 
     @Transactional
     public Long signUpMember(SignUpMemberRequest request) {
+        MemberServiceUtils.validateNotExistEmail(memberRepository, request.getEmail());
         return memberRepository.save(request.toEntity()).getId();
     }
 

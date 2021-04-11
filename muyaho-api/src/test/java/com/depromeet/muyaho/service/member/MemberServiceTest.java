@@ -1,6 +1,7 @@
 package com.depromeet.muyaho.service.member;
 
 import com.depromeet.muyaho.domain.member.Member;
+import com.depromeet.muyaho.domain.member.MemberCreator;
 import com.depromeet.muyaho.domain.member.MemberRepository;
 import com.depromeet.muyaho.service.member.dto.request.SignUpMemberRequest;
 import org.junit.jupiter.api.AfterEach;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class MemberServiceTest {
@@ -46,6 +48,21 @@ class MemberServiceTest {
         List<Member> memberList = memberRepository.findAll();
         assertThat(memberList).hasSize(1);
         assertMember(memberList.get(0), email, name, profileUrl);
+    }
+
+    @Test
+    void 회원가입시_이미_존재하는_이메일일_경우_에러발생() {
+        // given
+        String email = "will.seungho@gmail.com";
+        memberRepository.save(MemberCreator.create(email));
+
+        SignUpMemberRequest request = SignUpMemberRequest.testBuilder()
+            .email(email)
+            .name("강승호")
+            .build();
+
+        // when & then
+        assertThatThrownBy(() -> memberService.signUpMember(request)).isInstanceOf(IllegalArgumentException.class);
     }
 
     private void assertMember(Member member, String email, String name, String profileUrl) {

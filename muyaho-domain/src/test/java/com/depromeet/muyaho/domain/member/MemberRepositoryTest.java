@@ -17,7 +17,7 @@ public class MemberRepositoryTest {
         // given
         String email = "will.seungho@gmail.com";
         String name = "강승호";
-        memberRepository.save(Member.newInstance(email, name, null));
+        memberRepository.save(MemberCreator.create(email, name, null));
 
         // when
         Member findMember = memberRepository.findMemberByEmail(email);
