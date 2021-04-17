@@ -4,7 +4,8 @@ Content-Type: application/json
 {
     "email": "will.seungho@gmail.com",
     "name": "강승호",
-    "profileUrl": "http://profile.com"
+    "profileUrl": "http://profile.com",
+    "provider": "KAKAO"
 }
 > {%
 client.global.set("AUTHORIZATION", response.body["data"])

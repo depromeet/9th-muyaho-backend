@@ -1,6 +1,7 @@
 package com.depromeet.muyaho.service.member.dto.request;
 
 import com.depromeet.muyaho.domain.member.Member;
+import com.depromeet.muyaho.domain.member.MemberProvider;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,15 +21,18 @@ public class SignUpMemberRequest {
 
     private String profileUrl;
 
+    private MemberProvider provider;
+
     public Member toEntity() {
-        return Member.newInstance(email, name, profileUrl);
+        return Member.newInstance(email, name, profileUrl, provider);
     }
 
     @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
-    public SignUpMemberRequest(String email, String name, String profileUrl) {
+    public SignUpMemberRequest(String email, String name, String profileUrl, MemberProvider provider) {
         this.email = email;
         this.name = name;
         this.profileUrl = profileUrl;
+        this.provider = provider;
     }
 
 }
