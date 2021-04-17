@@ -19,18 +19,24 @@ public class Member extends BaseTimeEntity {
     @Embedded
     private Email email;
 
+    @Column(nullable = false)
     private String name;
 
     private String profileUrl;
 
-    private Member(String email, String name, String profileUrl) {
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MemberProvider provider;
+
+    private Member(String email, String name, String profileUrl, MemberProvider provider) {
         this.email = Email.of(email);
         this.name = name;
         this.profileUrl = profileUrl;
+        this.provider = provider;
     }
 
-    public static Member newInstance(String email, String name, String profileUrl) {
-        return new Member(email, name, profileUrl);
+    public static Member newInstance(String email, String name, String profileUrl, MemberProvider provider) {
+        return new Member(email, name, profileUrl, provider);
     }
 
     public String getEmail() {
