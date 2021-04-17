@@ -4,3 +4,6 @@ bitcoin:
       url: https://api.upbit.com/v1/market/all
     trade:
       url: https://api.upbit.com/v1/ticker
+  bithumb:
+    trade:
+      url: https://api.bithumb.com/public/ticker

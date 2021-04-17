@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.external.upbit.dto.component;
+package com.depromeet.muyaho.external.bithumb.dto.component;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "bitcoin.upbit.trade")
-public class UpBitTickerComponent {
+@ConfigurationProperties(prefix = "bitcoin.bithumb.trade")
+public class BithumbTradeComponent {
 
     private String url;
 

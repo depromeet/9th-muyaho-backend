@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.external.upbit;
 
 import com.depromeet.muyaho.external.upbit.dto.component.UpBitMarketsComponent;
-import com.depromeet.muyaho.external.upbit.dto.component.UpBitTickerComponent;
+import com.depromeet.muyaho.external.upbit.dto.component.UpBitTradeComponent;
 import com.depromeet.muyaho.external.upbit.dto.response.UpBitMarketResponse;
 import com.depromeet.muyaho.external.upbit.dto.response.UpBitTradeInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class WebClientUpBitApiCallerImpl implements UpBitApiCaller {
 
     private final WebClient webClient;
     private final UpBitMarketsComponent marketsComponent;
-    private final UpBitTickerComponent tickerComponent;
+    private final UpBitTradeComponent tickerComponent;
 
     @Override
     public List<UpBitMarketResponse> retrieveMarkets() {
