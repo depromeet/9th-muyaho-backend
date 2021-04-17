@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
 
     @GetMapping("/ping")
-    public String ping() {
-        return "pong";
+    public ApiResponse<String> ping() {
+        return ApiResponse.success("pong");
     }
 
 }
