@@ -7,4 +7,6 @@ public interface MemberRepositoryCustom {
 
     Member findMemberByEmailAndProvider(String email, MemberProvider provider);
 
+	Member findMemberById(Long memberId);
+
 }

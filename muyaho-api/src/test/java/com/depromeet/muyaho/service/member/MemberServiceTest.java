@@ -5,6 +5,7 @@ import com.depromeet.muyaho.domain.member.MemberCreator;
 import com.depromeet.muyaho.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.member.MemberRepository;
 import com.depromeet.muyaho.service.member.dto.request.SignUpMemberRequest;
+import com.depromeet.muyaho.service.member.dto.response.MemberInfoResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,29 @@ class MemberServiceTest {
         assertThat(memberList).hasSize(2);
         assertMember(memberList.get(0), email, MemberProvider.APPLE);
         assertMember(memberList.get(1), email, MemberProvider.KAKAO);
+    }
+
+    @Test
+    void 멤버_id_를_통해_회원의_정보를_조회한다() {
+        // given
+        String email = "will.seungho@gmail.com";
+        String name = "강승호";
+        String profileUrl = "http://profile.com";
+        Member member = memberRepository.save(MemberCreator.create(email, name, profileUrl, MemberProvider.APPLE));
+
+        // when
+        MemberInfoResponse response = memberService.getMemberInfo(member.getId());
+
+        // then
+        assertThat(response.getEmail()).isEqualTo(email);
+        assertThat(response.getName()).isEqualTo(name);
+        assertThat(response.getProfileUrl()).isEqualTo(profileUrl);
+    }
+
+    @Test
+    void 존재하지_않는_멤버정보를_조회하면_에러가_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> memberService.getMemberInfo(999L)).isInstanceOf(IllegalArgumentException.class);
     }
 
     private void assertMember(Member member, String email, MemberProvider provider) {

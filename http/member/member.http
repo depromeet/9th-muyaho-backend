@@ -10,3 +10,8 @@ Content-Type: application/json
 > {%
 client.global.set("AUTHORIZATION", response.body["data"])
  %}
+
+
+### 내 정보를 가져오는 API
+GET {{api}}/api/v1/member
+Authorization: Bearer {{AUTHORIZATION}}
