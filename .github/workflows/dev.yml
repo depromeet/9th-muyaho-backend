@@ -1,3 +1,5 @@
+name: CD Development Server
+
 on:
   push:
     branches:
