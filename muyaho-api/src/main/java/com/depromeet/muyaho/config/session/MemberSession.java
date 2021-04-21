@@ -10,6 +10,8 @@ import java.io.Serializable;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberSession implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private final Long memberId;
 
     public static MemberSession of(Long memberId) {
