@@ -1,13 +1,12 @@
 server:
   port: 9090
 spring:
+  session:
+    store-type: jdbc
   profiles:
     active: local
     include:
       - domain
       - swagger
       - market
-  session:
-    store-type: jdbc
-  datasource:
-    data: classpath:schema/session.sql
+
