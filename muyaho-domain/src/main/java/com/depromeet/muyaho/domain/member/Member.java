@@ -10,14 +10,20 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uni_member_1", columnNames = {"provider", "uid"}),
+        @UniqueConstraint(name = "uni_member_2", columnNames = "name")
+    }
+)
 public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private Email email;
+    @Column(nullable = false)
+    private String uid;
 
     @Column(nullable = false)
     private String name;
@@ -28,19 +34,15 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private MemberProvider provider;
 
-    private Member(String email, String name, String profileUrl, MemberProvider provider) {
-        this.email = Email.of(email);
+    private Member(String uid, String name, String profileUrl, MemberProvider provider) {
+        this.uid = uid;
         this.name = name;
         this.profileUrl = profileUrl;
         this.provider = provider;
     }
 
-    public static Member newInstance(String email, String name, String profileUrl, MemberProvider provider) {
-        return new Member(email, name, profileUrl, provider);
-    }
-
-    public String getEmail() {
-        return this.email.getEmail();
+    public static Member newInstance(String uid, String name, String profileUrl, MemberProvider provider) {
+        return new Member(uid, name, profileUrl, provider);
     }
 
     public void updateMemberInfo(String name, String profileUrl) {

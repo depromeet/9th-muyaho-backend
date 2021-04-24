@@ -1,13 +1,6 @@
-# 회원가입 API
-POST {{api}}/api/v1/signup
-Content-Type: application/json
+# 테스트 세션 API
+GET {{api}}/test-session
 
-{
-    "email": "will.seungho@gmail.com",
-    "name": "강승호",
-    "profileUrl": "http://profile.com",
-    "provider": "KAKAO"
-}
 > {%
 client.global.set("AUTHORIZATION", response.body["data"])
  %}
