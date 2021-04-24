@@ -26,19 +26,15 @@ public class Stock extends BaseTimeEntity {
     @Column(nullable = false)
     private String stockCode;
 
-    @Column(nullable = false)
-    private int purchasePrice;
-
-    @Column(nullable = false)
-    private int quantity;
+    @Embedded
+    private StockAmount stockAmount;
 
     @Builder
     private Stock(Long memberId, StockType type, String stockCode, int purchasePrice, int quantity) {
         this.memberId = memberId;
         this.type = type;
         this.stockCode = stockCode;
-        this.purchasePrice = purchasePrice;
-        this.quantity = quantity;
+        this.stockAmount = StockAmount.of(purchasePrice, quantity);
     }
 
     public static Stock newInstance(Long memberId, String stockCode, StockType type, int purchasePrice, int quantity) {
@@ -49,6 +45,14 @@ public class Stock extends BaseTimeEntity {
             .purchasePrice(purchasePrice)
             .quantity(quantity)
             .build();
+    }
+
+    public int getPurchasePrice() {
+        return this.stockAmount.getPurchasePrice();
+    }
+
+    public int getQuantity() {
+        return this.stockAmount.getQuantity();
     }
 
 }
