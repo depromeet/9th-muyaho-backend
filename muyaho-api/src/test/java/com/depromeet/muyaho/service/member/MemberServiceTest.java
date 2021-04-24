@@ -5,6 +5,7 @@ import com.depromeet.muyaho.domain.member.MemberCreator;
 import com.depromeet.muyaho.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.member.MemberRepository;
 import com.depromeet.muyaho.service.member.dto.request.SignUpMemberRequest;
+import com.depromeet.muyaho.service.member.dto.request.UpdateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.response.MemberInfoResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -115,6 +116,35 @@ class MemberServiceTest {
     void 존재하지_않는_멤버정보를_조회하면_에러가_발생한다() {
         // when & then
         assertThatThrownBy(() -> memberService.getMemberInfo(999L)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 회원_정보를_수정한다() {
+        // given
+        String email = "will.seungho@gmail.com";
+        Member member = MemberCreator.create(email, "강승호", null, MemberProvider.KAKAO);
+        memberRepository.save(member);
+
+        String name = "승호강";
+        String profileUrl = "http://seungho.com";
+
+        UpdateMemberRequest request = UpdateMemberRequest.testInstance(name, profileUrl);
+
+        // when
+        memberService.updateMemberInfo(request, member.getId());
+
+        // then
+        List<Member> memberList = memberRepository.findAll();
+        assertMember(memberList.get(0), email, name, profileUrl, MemberProvider.KAKAO);
+    }
+
+    @Test
+    void 회원_정보_수정시_존재하지_않는_멤버일경우_에러가_발생한다() {
+        // given
+        UpdateMemberRequest request = UpdateMemberRequest.testInstance("승호", "profileUrl");
+
+        // when & then
+        assertThatThrownBy(() -> memberService.updateMemberInfo(request, 999L)).isInstanceOf(IllegalArgumentException.class);
     }
 
     private void assertMember(Member member, String email, MemberProvider provider) {

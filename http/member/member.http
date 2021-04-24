@@ -1,3 +1,4 @@
+# 회원가입 API
 POST {{api}}/api/v1/signup
 Content-Type: application/json
 
@@ -15,3 +16,13 @@ client.global.set("AUTHORIZATION", response.body["data"])
 ### 내 정보를 가져오는 API
 GET {{api}}/api/v1/member
 Authorization: Bearer {{AUTHORIZATION}}
+
+### 내 정보를 수정하는 API
+PUT {{api}}/api/v1/member
+Content-Type: application/json
+Authorization: Bearer {{AUTHORIZATION}}
+
+{
+    "name": "will",
+    "profileUrl": "https://avatars.githubusercontent.com/u/48153675?v=4"
+}

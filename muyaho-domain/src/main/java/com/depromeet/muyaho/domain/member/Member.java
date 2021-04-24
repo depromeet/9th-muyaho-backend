@@ -43,4 +43,9 @@ public class Member extends BaseTimeEntity {
         return this.email.getEmail();
     }
 
+    public void updateMemberInfo(String name, String profileUrl) {
+        this.name = name;
+        this.profileUrl = profileUrl;
+    }
+
 }
