@@ -41,9 +41,6 @@ class StockServiceTest {
         // then
         List<Stock> stockList = stockRepository.findAll();
         assertThat(stockList).hasSize(1);
-        assertThat(stockList.get(0).getCode()).isEqualTo(code);
-        assertThat(stockList.get(0).getName()).isEqualTo(name);
-        assertThat(stockList.get(0).getType()).isEqualTo(type);
         assertThat(stockList.get(0).getStatus()).isEqualTo(StockStatus.ACTIVE);
     }
 
@@ -59,10 +56,7 @@ class StockServiceTest {
         // then
         List<Stock> stockList = stockRepository.findAll();
         assertThat(stockList).hasSize(1);
-        assertThat(stockList.get(0).getCode()).isEqualTo(code);
-        assertThat(stockList.get(0).getName()).isEqualTo(name);
-        assertThat(stockList.get(0).getType()).isEqualTo(type);
-        assertThat(stockList.get(0).getStatus()).isEqualTo(StockStatus.DISABLED);
+        assertStock(stockList.get(0), code, name, type, StockStatus.DISABLED);
     }
 
     @MethodSource("각각_타입의_주식_리스트")
@@ -77,10 +71,7 @@ class StockServiceTest {
         // then
         List<Stock> stockList = stockRepository.findAll();
         assertThat(stockList).hasSize(1);
-        assertThat(stockList.get(0).getCode()).isEqualTo(code);
-        assertThat(stockList.get(0).getName()).isEqualTo(name);
-        assertThat(stockList.get(0).getType()).isEqualTo(type);
-        assertThat(stockList.get(0).getStatus()).isEqualTo(StockStatus.ACTIVE);
+        assertStock(stockList.get(0), code, name, type, StockStatus.ACTIVE);
     }
 
     @MethodSource("각각_타입의_주식_리스트")
@@ -98,10 +89,7 @@ class StockServiceTest {
         // then
         List<Stock> stockList = stockRepository.findAll();
         assertThat(stockList).hasSize(1);
-        assertThat(stockList.get(0).getCode()).isEqualTo(code);
-        assertThat(stockList.get(0).getName()).isEqualTo(name);
-        assertThat(stockList.get(0).getType()).isEqualTo(type);
-        assertThat(stockList.get(0).getStatus()).isEqualTo(StockStatus.ACTIVE);
+        assertStock(stockList.get(0), code, name, type, StockStatus.ACTIVE);
     }
 
     private static Stream<Arguments> 각각_타입의_주식_리스트() {
@@ -124,10 +112,7 @@ class StockServiceTest {
         // then
         List<Stock> stockList = stockRepository.findAll();
         assertThat(stockList).hasSize(1);
-        assertThat(stockList.get(0).getCode()).isEqualTo(code);
-        assertThat(stockList.get(0).getName()).isEqualTo(name);
-        assertThat(stockList.get(0).getType()).isEqualTo(type);
-        assertThat(stockList.get(0).getStatus()).isEqualTo(StockStatus.ACTIVE);
+        assertStock(stockList.get(0), code, name, type, StockStatus.ACTIVE);
     }
 
     private static Stream<Arguments> 비트코인과_해외주식_주식_리스트() {
@@ -137,21 +122,18 @@ class StockServiceTest {
         );
     }
 
-    @Test
-    void 등록된_종목_리스트를_불러온다() {
+    @MethodSource("각각_타입의_주식_리스트")
+    @ParameterizedTest
+    void 등록된_종목_리스트를_불러온다(String code, String name, StockMarketType type) {
         // given
-        Stock stock1 = StockCreator.createActive("code1", "비트코인", StockMarketType.BITCOIN);
-        Stock stock2 = StockCreator.createActive("code2", "리플", StockMarketType.BITCOIN);
-
-        stockRepository.saveAll(Arrays.asList(stock1, stock2));
+        stockRepository.save(StockCreator.createActive(code, name, type));
 
         // when
-        List<StockInfoResponse> responseList = stockService.retrieveStockInfo(StockMarketType.BITCOIN);
+        List<StockInfoResponse> responseList = stockService.retrieveStockInfo(type);
 
         // then
-        assertThat(responseList).hasSize(2);
-        assertStockResponse(responseList.get(0), stock1.getCode(), stock1.getName());
-        assertStockResponse(responseList.get(1), stock2.getCode(), stock2.getName());
+        assertThat(responseList).hasSize(1);
+        assertStockResponse(responseList.get(0), code, name);
     }
 
     @Test
@@ -166,6 +148,13 @@ class StockServiceTest {
 
         // then
         assertThat(responseList).isEmpty();
+    }
+
+    private void assertStock(Stock stock, String code, String name, StockMarketType type, StockStatus status) {
+        assertThat(stock.getCode()).isEqualTo(code);
+        assertThat(stock.getName()).isEqualTo(name);
+        assertThat(stock.getType()).isEqualTo(type);
+        assertThat(stock.getStatus()).isEqualTo(status);
     }
 
     private void assertStockResponse(StockInfoResponse stockInfoResponse, String code, String name) {

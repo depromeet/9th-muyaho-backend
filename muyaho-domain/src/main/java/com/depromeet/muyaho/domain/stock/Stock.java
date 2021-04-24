@@ -2,6 +2,7 @@ package com.depromeet.muyaho.domain.stock;
 
 import com.depromeet.muyaho.domain.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,7 @@ public class Stock extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private StockStatus status;
 
+    @Builder
     Stock(StockMarketType type, String code, String name, StockStatus status) {
         this.type = type;
         this.code = code;
@@ -37,7 +39,12 @@ public class Stock extends BaseTimeEntity {
     }
 
     public static Stock newInstance(StockMarketType type, String code, String name) {
-        return new Stock(type, code, name, StockStatus.ACTIVE);
+        return Stock.builder()
+            .type(type)
+            .code(code)
+            .name(name)
+            .status(StockStatus.ACTIVE)
+            .build();
     }
 
     public Stock disable() {

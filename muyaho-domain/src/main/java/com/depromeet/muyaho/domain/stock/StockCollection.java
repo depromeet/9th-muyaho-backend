@@ -13,7 +13,7 @@ public class StockCollection {
 
     private final List<Stock> stockList = new ArrayList<>();
 
-    public StockCollection(List<Stock> stockList) {
+    private StockCollection(List<Stock> stockList) {
         this.stockList.addAll(stockList);
     }
 

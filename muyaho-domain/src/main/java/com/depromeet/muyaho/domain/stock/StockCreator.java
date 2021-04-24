@@ -7,11 +7,21 @@ import lombok.NoArgsConstructor;
 public class StockCreator {
 
     public static Stock createActive(String code, String name, StockMarketType type) {
-        return new Stock(type, code, name, StockStatus.ACTIVE);
+        return Stock.builder()
+            .type(type)
+            .code(code)
+            .name(name)
+            .status(StockStatus.ACTIVE)
+            .build();
     }
 
     public static Stock createDisable(String code, String name, StockMarketType type) {
-        return new Stock(type, code, name, StockStatus.DISABLED);
+        return Stock.builder()
+            .type(type)
+            .code(code)
+            .name(name)
+            .status(StockStatus.DISABLED)
+            .build();
     }
 
 }
