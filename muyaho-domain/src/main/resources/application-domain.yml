@@ -13,9 +13,6 @@ spring:
   datasource:
     hikari:
       auto-commit: false
-logging:
-  level:
-    org.hibernate.type: trace
 ---
 spring:
   profiles: local
