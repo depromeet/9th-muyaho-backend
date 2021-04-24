@@ -26,7 +26,7 @@ public class MemberStockAmount {
     }
 
     private void validateStockInfo(int purchasePrice, int quantity) {
-        if (purchasePrice < 0 || quantity < 0) {
+        if (purchasePrice <= 0 || quantity <= 0) {
             throw new IllegalArgumentException(String.format("주식의 평단가 (%s)와 보유 수량 (%s)은 0보다 작을 수 없습니다", purchasePrice, quantity));
         }
     }

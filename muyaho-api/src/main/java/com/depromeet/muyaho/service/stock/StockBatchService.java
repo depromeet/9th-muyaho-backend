@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.service.stock;
 
 import com.depromeet.muyaho.domain.stock.StockMarketType;
-import com.depromeet.muyaho.event.stock.CameRenewRequestEvent;
+import com.depromeet.muyaho.event.stock.RequestedRenewEvent;
 import com.depromeet.muyaho.service.stock.dto.request.StockInfoRequest;
 import com.depromeet.muyaho.external.upbit.UpBitApiCaller;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class StockBatchService {
         List<StockInfoRequest> stockInfoList = upBitApiCaller.retrieveMarkets().stream()
             .map(market -> StockInfoRequest.of(market.getMarket(), market.getKoreanName()))
             .collect(Collectors.toList());
-        eventPublisher.publishEvent(CameRenewRequestEvent.of(StockMarketType.BITCOIN, stockInfoList));
+        eventPublisher.publishEvent(RequestedRenewEvent.of(StockMarketType.BITCOIN, stockInfoList));
     }
 
 }

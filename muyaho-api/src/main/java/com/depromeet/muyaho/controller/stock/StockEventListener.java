@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.controller.stock;
 
-import com.depromeet.muyaho.event.stock.CameRenewRequestEvent;
+import com.depromeet.muyaho.event.stock.RequestedRenewEvent;
 import com.depromeet.muyaho.service.stock.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -13,7 +13,7 @@ public class StockEventListener {
     private final StockService stockService;
 
     @EventListener
-    public void renewStockInfo(CameRenewRequestEvent event) {
+    public void renewStockInfo(RequestedRenewEvent event) {
         stockService.renewStock(event.getType(), event.getStockInfos());
     }
 

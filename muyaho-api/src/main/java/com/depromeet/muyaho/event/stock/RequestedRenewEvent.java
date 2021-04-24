@@ -10,14 +10,14 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class CameRenewRequestEvent {
+public class RequestedRenewEvent {
 
     private final StockMarketType type;
 
     private final List<StockInfoRequest> stockInfos;
 
-    public static CameRenewRequestEvent of(StockMarketType type, List<StockInfoRequest> stockInfos) {
-        return new CameRenewRequestEvent(type, stockInfos);
+    public static RequestedRenewEvent of(StockMarketType type, List<StockInfoRequest> stockInfos) {
+        return new RequestedRenewEvent(type, stockInfos);
     }
 
 }
