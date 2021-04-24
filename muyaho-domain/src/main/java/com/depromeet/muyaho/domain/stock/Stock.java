@@ -25,4 +25,7 @@ public class Stock extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private StockMarketType type;
 
+    @Enumerated(EnumType.STRING)
+    private StockStatus status;
+
 }
