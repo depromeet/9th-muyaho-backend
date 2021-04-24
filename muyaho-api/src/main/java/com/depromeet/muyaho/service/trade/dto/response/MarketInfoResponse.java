@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.service.stock.dto.response;
+package com.depromeet.muyaho.service.trade.dto.response;
 
 import lombok.*;
 

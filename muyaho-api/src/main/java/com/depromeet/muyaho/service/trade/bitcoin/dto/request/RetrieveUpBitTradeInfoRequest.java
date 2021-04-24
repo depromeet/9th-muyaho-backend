@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.service.stock.bitcoin.dto.request;
+package com.depromeet.muyaho.service.trade.bitcoin.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;

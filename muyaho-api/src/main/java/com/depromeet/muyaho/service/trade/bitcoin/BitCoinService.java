@@ -1,9 +1,9 @@
-package com.depromeet.muyaho.service.stock.bitcoin;
+package com.depromeet.muyaho.service.trade.bitcoin;
 
 import com.depromeet.muyaho.external.bithumb.BithumbApiCaller;
 import com.depromeet.muyaho.external.upbit.UpBitApiCaller;
-import com.depromeet.muyaho.service.stock.dto.response.TradeInfoResponse;
-import com.depromeet.muyaho.service.stock.dto.response.MarketInfoResponse;
+import com.depromeet.muyaho.service.trade.dto.response.TradeInfoResponse;
+import com.depromeet.muyaho.service.trade.dto.response.MarketInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
