@@ -1,0 +1,15 @@
+### 소유한 주식을 등록한다
+POST {{api}}/api/v1/stock
+Content-Type: application/json
+Authorization: Bearer {{AUTHORIZATION}}
+
+{
+    "stockCode": "abcd",
+    "type": "BITCOIN",
+    "purchasePrice": 10000,
+    "quantity": 2
+}
+
+### 소유한 주식을 조회한다
+GET {{api}}/api/v1/stock/list
+Authorization: Bearer {{AUTHORIZATION}}
