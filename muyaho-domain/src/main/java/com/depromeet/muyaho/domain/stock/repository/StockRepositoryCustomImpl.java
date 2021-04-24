@@ -30,7 +30,7 @@ public class StockRepositoryCustomImpl implements StockRepositoryCustom {
                 stock.type.eq(type),
                 stock.status.eq(StockStatus.ACTIVE)
             )
-            .orderBy(stock.id.desc())
+            .orderBy(stock.id.asc())
             .fetch();
     }
 
