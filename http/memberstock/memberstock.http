@@ -1,9 +1,14 @@
+# 새로운 소유한 주식을 등록한다
 POST {{api}}/api/v1/member/stock
 Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
 
 {
-    "stockId": 1,
-    "purchasePrice": 10000,
-    "quantity": 10
+    "stockId": 2,
+    "purchasePrice": 20000,
+    "quantity": 20
 }
+
+### 내가 소유한 주식 리스트를 조회한다
+GET {{api}}/api/v1/member/stock
+Authorization: Bearer {{AUTHORIZATION}}

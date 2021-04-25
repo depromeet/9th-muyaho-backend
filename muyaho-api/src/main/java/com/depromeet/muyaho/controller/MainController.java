@@ -5,6 +5,7 @@ import com.depromeet.muyaho.config.session.SessionConstants;
 import com.depromeet.muyaho.domain.member.Member;
 import com.depromeet.muyaho.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.member.MemberRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class MainController {
     }
 
     // 차후 연동 후 삭제
+    @Operation(summary = "(테스트용) 세션을 받아오는 API", description = "차후 연동 후 사라질 예정")
     @Profile("local")
     @GetMapping("/test-session")
     public ApiResponse<String> testSession() {

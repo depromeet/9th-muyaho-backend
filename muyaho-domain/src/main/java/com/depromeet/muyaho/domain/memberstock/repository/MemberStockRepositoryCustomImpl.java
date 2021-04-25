@@ -4,6 +4,8 @@ import com.depromeet.muyaho.domain.memberstock.MemberStock;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import static com.depromeet.muyaho.domain.memberstock.QMemberStock.memberStock;
 
 @RequiredArgsConstructor
@@ -18,6 +20,14 @@ public class MemberStockRepositoryCustomImpl implements MemberStockRepositoryCus
                 memberStock.memberId.eq(memberId),
                 memberStock.stockId.eq(stockId)
             ).fetchOne();
+    }
+
+    @Override
+    public List<MemberStock> findAllStocksByMemberId(Long memberId) {
+        return queryFactory.selectFrom(memberStock)
+            .where(
+                memberStock.memberId.eq(memberId)
+            ).fetch();
     }
 
 }
