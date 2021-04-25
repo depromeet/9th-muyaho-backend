@@ -5,6 +5,7 @@ import com.depromeet.muyaho.domain.memberstock.MemberStockRepository;
 import com.depromeet.muyaho.domain.stock.Stock;
 import com.depromeet.muyaho.domain.stock.StockRepository;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
+import com.depromeet.muyaho.service.memberstock.dto.request.UpdateMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import com.depromeet.muyaho.service.stock.StockServiceUtils;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,13 @@ public class MemberStockService {
         return memberStocks.stream()
             .map(memberStock -> MemberStockInfoResponse.of(memberStock, memberStock.getStock()))
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public MemberStockInfoResponse updateMemberStock(UpdateMemberStockRequest request, Long memberId) {
+        MemberStock memberStock = MemberStockServiceUtils.findMemberStockByIdAndMemberId(memberStockRepository, request.getMemberStockId(), memberId);
+        memberStock.updateAmount(request.getPurchasePrice(), request.getQuantity());
+        return MemberStockInfoResponse.of(memberStock, memberStock.getStock());
     }
 
 }

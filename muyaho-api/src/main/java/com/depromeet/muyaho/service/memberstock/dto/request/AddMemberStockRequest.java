@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -18,11 +17,9 @@ public class AddMemberStockRequest {
     @NotNull
     private Long stockId;
 
-    @Min(1)
     @NotNull
     private int purchasePrice;
 
-    @Min(1)
     @NotNull
     private int quantity;
 

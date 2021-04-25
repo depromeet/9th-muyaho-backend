@@ -9,6 +9,7 @@ import com.depromeet.muyaho.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.stock.StockRepository;
 import com.depromeet.muyaho.service.MemberSetupTest;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
+import com.depromeet.muyaho.service.memberstock.dto.request.UpdateMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -132,6 +133,51 @@ class MemberStockServiceTest extends MemberSetupTest {
         // then
         assertThat(responses).isEmpty();
     }
+
+    @Test
+    void 보유한_주식을_수정한다() {
+        // given
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        memberStockRepository.save(memberStock);
+
+        int purchasePrice = 30000;
+        int quantity = 999999;
+
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity);
+
+        // when
+        memberStockService.updateMemberStock(request, memberId);
+
+        // then
+        List<MemberStock> memberStockList = memberStockRepository.findAll();
+        assertThat(memberStockList).hasSize(1);
+        assertMemberStock(memberStockList.get(0), memberId, stock.getId(), purchasePrice, quantity);
+    }
+
+    @Test
+    void 다른_사람이_소유한_주식에_대해서_수정할_수_없다() {
+        // given
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        memberStockRepository.save(memberStock);
+
+        int purchasePrice = 30000;
+        int quantity = 999999;
+
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity);
+
+        // when
+        assertThatThrownBy(() -> memberStockService.updateMemberStock(request, 999L)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 보유하지_않은_주식에대해서_수정할_수없다() {
+        // given
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(999L, 10000, 10);
+
+        // when
+        assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(IllegalArgumentException.class);
+    }
+
 
     private void assertMemberStock(MemberStock memberStock, Long memberId, Long stockId, int purchasePrice, int quantity) {
         assertThat(memberStock.getMemberId()).isEqualTo(memberId);

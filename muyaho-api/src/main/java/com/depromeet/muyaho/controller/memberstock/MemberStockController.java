@@ -5,13 +5,11 @@ import com.depromeet.muyaho.config.resolver.MemberId;
 import com.depromeet.muyaho.controller.ApiResponse;
 import com.depromeet.muyaho.service.memberstock.MemberStockService;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
+import com.depromeet.muyaho.service.memberstock.dto.request.UpdateMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,6 +32,13 @@ public class MemberStockController {
     @GetMapping("/api/v1/member/stock")
     public ApiResponse<List<MemberStockInfoResponse>> getMyStocks(@MemberId Long memberId) {
         return ApiResponse.success(memberStockService.getMyStockInfos(memberId));
+    }
+
+    @Operation(summary = "내가 소유한 주식들을 수정하는 API", description = "로그인 필요")
+    @Auth
+    @PutMapping("/api/v1/member/stock")
+    public ApiResponse<MemberStockInfoResponse> updateMemberStock(@Valid @RequestBody UpdateMemberStockRequest request, @MemberId Long memberId) {
+        return ApiResponse.success(memberStockService.updateMemberStock(request, memberId));
     }
 
 }

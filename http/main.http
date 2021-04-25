@@ -1,1 +1,4 @@
 GET {{api}}/ping
+
+###
+GET {{api}}/api/v1/renew/bitcoin

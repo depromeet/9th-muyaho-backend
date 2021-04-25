@@ -15,7 +15,7 @@ public class MemberStockRepositoryCustomImpl implements MemberStockRepositoryCus
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public MemberStock findStockByMemberIdAndStockId(Long memberId, Long stockId) {
+    public MemberStock findByMemberIdAndStockId(Long memberId, Long stockId) {
         return queryFactory.selectFrom(memberStock)
             .innerJoin(memberStock.stock, stock)
             .where(
@@ -31,6 +31,15 @@ public class MemberStockRepositoryCustomImpl implements MemberStockRepositoryCus
             .where(
                 memberStock.memberId.eq(memberId)
             ).fetch();
+    }
+
+    @Override
+    public MemberStock findByIdAndMemberId(Long memberStockId, Long memberId) {
+        return queryFactory.selectFrom(memberStock)
+            .where(
+                memberStock.id.eq(memberStockId),
+                memberStock.memberId.eq(memberId)
+            ).fetchOne();
     }
 
 }
