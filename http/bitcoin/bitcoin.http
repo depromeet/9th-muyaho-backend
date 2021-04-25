@@ -1,5 +1,0 @@
-### 비트코인 종목 조회
-GET {{api}}/api/v1/tickets/bitcoin
-
-### 업비트 현재가 조회
-GET {{api}}/api/v1/trade/bitcoin/upbit?marketCodes=BTC,ETH,ETH,LTC

@@ -35,4 +35,12 @@ public class MemberStock extends BaseTimeEntity {
         return new MemberStock(memberId, stockId, purchasePrice, quantity);
     }
 
+    public int getPurchasePrice() {
+        return this.stockAmount.getPurchasePrice();
+    }
+
+    public int getQuantity() {
+        return this.stockAmount.getQuantity();
+    }
+
 }

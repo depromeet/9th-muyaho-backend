@@ -1,0 +1,9 @@
+POST {{api}}/api/v1/member/stock
+Content-Type: application/json
+Authorization: Bearer {{AUTHORIZATION}}
+
+{
+    "stockId": 1,
+    "purchasePrice": 10000,
+    "quantity": 10
+}
