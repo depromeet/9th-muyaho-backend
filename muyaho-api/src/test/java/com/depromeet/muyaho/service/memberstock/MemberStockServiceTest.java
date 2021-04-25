@@ -1,14 +1,13 @@
 package com.depromeet.muyaho.service.memberstock;
 
-import com.depromeet.muyaho.domain.memberstock.MemberStock;
-import com.depromeet.muyaho.domain.memberstock.MemberStockCreator;
-import com.depromeet.muyaho.domain.memberstock.MemberStockRepository;
+import com.depromeet.muyaho.domain.memberstock.*;
 import com.depromeet.muyaho.domain.stock.Stock;
 import com.depromeet.muyaho.domain.stock.StockCreator;
 import com.depromeet.muyaho.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.stock.StockRepository;
 import com.depromeet.muyaho.service.MemberSetupTest;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
+import com.depromeet.muyaho.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.request.UpdateMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import org.junit.jupiter.api.AfterEach;
@@ -33,6 +32,9 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Autowired
     private StockRepository stockRepository;
 
+    @Autowired
+    private DeletedMemberSockRepository deletedMemberSockRepository;
+
     private Stock stock;
 
     @BeforeEach
@@ -45,6 +47,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         super.cleanup();
         memberStockRepository.deleteAllInBatch();
         stockRepository.deleteAllInBatch();
+        deletedMemberSockRepository.deleteAll();
     }
 
     @Test
@@ -178,6 +181,69 @@ class MemberStockServiceTest extends MemberSetupTest {
         assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(IllegalArgumentException.class);
     }
 
+    @Test
+    void 내가_등록한_보유_주식을_삭제한다() {
+        // given
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        memberStockRepository.save(memberStock);
+
+        DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(memberStock.getId());
+
+        // when
+        memberStockService.deleteMemberStock(request, memberId);
+
+        // then
+        List<MemberStock> memberStockList = memberStockRepository.findAll();
+        assertThat(memberStockList).isEmpty();
+    }
+
+    @Test
+    void 내가_등록한_보유_주식을_삭제하면_기존의_id와_해당_정보들이_자동으로_백업된다() {
+        // given
+        int purchasePrice = 33333;
+        int quantity = 55;
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, purchasePrice, quantity);
+        memberStockRepository.save(memberStock);
+
+        DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(memberStock.getId());
+
+        // when
+        memberStockService.deleteMemberStock(request, memberId);
+
+        // then
+        List<DeletedMemberStock> deletedMemberStocks = deletedMemberSockRepository.findAll();
+        assertThat(deletedMemberStocks).hasSize(1);
+        assertDeletedMemberStack(deletedMemberStocks.get(0), memberStock.getId(), stock.getId(), memberId, purchasePrice, quantity);
+    }
+
+    @Test
+    void 다른사람이_소유한_보유_주식을_삭제할_수없다() {
+        // given
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        memberStockRepository.save(memberStock);
+
+        DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(memberStock.getId());
+
+        // when & then
+        assertThatThrownBy(() -> memberStockService.deleteMemberStock(request, 999L)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 소유하지_않은_보유_주식을_삭제할_수없다() {
+        // given
+        DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(999L);
+
+        // when & then
+        assertThatThrownBy(() -> memberStockService.deleteMemberStock(request, memberId)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    private void assertDeletedMemberStack(DeletedMemberStock deletedMemberStock, Long memberStockId, Long stockId, Long memberId, int purchasePrice, int quantity) {
+        assertThat(deletedMemberStock.getBackupId()).isEqualTo(memberStockId);
+        assertThat(deletedMemberStock.getStockId()).isEqualTo(stockId);
+        assertThat(deletedMemberStock.getMemberId()).isEqualTo(memberId);
+        assertThat(deletedMemberStock.getStockAmount().getPurchasePrice()).isEqualTo(purchasePrice);
+        assertThat(deletedMemberStock.getStockAmount().getQuantity()).isEqualTo(quantity);
+    }
 
     private void assertMemberStock(MemberStock memberStock, Long memberId, Long stockId, int purchasePrice, int quantity) {
         assertThat(memberStock.getMemberId()).isEqualTo(memberId);

@@ -23,3 +23,7 @@ Authorization: Bearer {{AUTHORIZATION}}
     "purchasePrice": 9999,
     "quantity": 300
 }
+
+### 내가 소유한 주식을 수정한다
+DELETE {{api}}/api/v1/member/stock?memberStockId=1
+Authorization: Bearer {{AUTHORIZATION}}

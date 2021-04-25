@@ -1,4 +1,4 @@
 GET {{api}}/ping
 
-###
+### 비트코인 종목 갱신
 GET {{api}}/api/v1/renew/bitcoin

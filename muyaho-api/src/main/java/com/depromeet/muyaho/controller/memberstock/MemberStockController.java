@@ -5,6 +5,7 @@ import com.depromeet.muyaho.config.resolver.MemberId;
 import com.depromeet.muyaho.controller.ApiResponse;
 import com.depromeet.muyaho.service.memberstock.MemberStockService;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
+import com.depromeet.muyaho.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.request.UpdateMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,6 +40,14 @@ public class MemberStockController {
     @PutMapping("/api/v1/member/stock")
     public ApiResponse<MemberStockInfoResponse> updateMemberStock(@Valid @RequestBody UpdateMemberStockRequest request, @MemberId Long memberId) {
         return ApiResponse.success(memberStockService.updateMemberStock(request, memberId));
+    }
+
+    @Operation(summary = "내가 소유한 주식들을 삭제하는 API", description = "로그인 필요")
+    @Auth
+    @DeleteMapping("/api/v1/member/stock")
+    public ApiResponse<String> deleteMemberStock(@Valid DeleteMemberStockRequest request, @MemberId Long memberId) {
+        memberStockService.deleteMemberStock(request, memberId);
+        return ApiResponse.SUCCESS;
     }
 
 }
