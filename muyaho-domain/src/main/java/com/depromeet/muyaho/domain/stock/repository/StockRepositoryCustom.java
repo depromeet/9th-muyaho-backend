@@ -13,6 +13,4 @@ public interface StockRepositoryCustom {
 
     Stock findStockById(Long stockId);
 
-    List<Stock> findAllByIds(List<Long> stockIds);
-
 }

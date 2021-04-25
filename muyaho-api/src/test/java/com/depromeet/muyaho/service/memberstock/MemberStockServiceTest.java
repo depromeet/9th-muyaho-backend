@@ -32,19 +32,18 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Autowired
     private StockRepository stockRepository;
 
-    private Long stockId;
+    private Stock stock;
 
     @BeforeEach
     void setUpStock() {
-        Stock stock = stockRepository.save(StockCreator.createActive("code", "비트코인", StockMarketType.BITCOIN));
-        stockId = stock.getId();
+        stock = stockRepository.save(StockCreator.createActive("code", "비트코인", StockMarketType.BITCOIN));
     }
 
     @AfterEach
     void cleanUP() {
         super.cleanup();
-        stockRepository.deleteAll();
-        memberStockRepository.deleteAll();
+        memberStockRepository.deleteAllInBatch();
+        stockRepository.deleteAllInBatch();
     }
 
     @Test
@@ -53,7 +52,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         int purchasePrice = 10000;
         int quantity = 5;
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stockId, purchasePrice, quantity);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), purchasePrice, quantity);
 
         // when
         memberStockService.addMemberStock(request, memberId);
@@ -61,7 +60,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         // then
         List<MemberStock> memberStockList = memberStockRepository.findAll();
         assertThat(memberStockList).hasSize(1);
-        assertMemberStock(memberStockList.get(0), memberId, stockId, purchasePrice, quantity);
+        assertMemberStock(memberStockList.get(0), memberId, stock.getId(), purchasePrice, quantity);
     }
 
     @Test
@@ -78,9 +77,9 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 이미_소유한_주식으로_등록한_주식을_다시_등록하려하면_에러가_발생한다() {
         // given
-        memberStockRepository.save(MemberStockCreator.create(memberId, stockId, 10000, 10));
+        memberStockRepository.save(MemberStockCreator.create(memberId, stock, 10000, 10));
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stockId, 1000, 1);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), 1000, 1);
 
         // when & then
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(IllegalArgumentException.class);
@@ -97,7 +96,7 @@ class MemberStockServiceTest extends MemberSetupTest {
 
         int purchasePrice = 10000;
         int quantity = 10;
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock.getId(), purchasePrice, quantity);
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, purchasePrice, quantity);
         memberStockRepository.save(memberStock);
 
         // when
@@ -116,7 +115,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 다른_사람이_소유한_주식에_접근할_수없다() {
         // given
-        memberStockRepository.save(MemberStockCreator.create(999L, stockId, 10000, 10));
+        memberStockRepository.save(MemberStockCreator.create(999L, stock, 10000, 10));
 
         // when
         List<MemberStockInfoResponse> responses = memberStockService.getMyStockInfos(memberId);
@@ -136,7 +135,7 @@ class MemberStockServiceTest extends MemberSetupTest {
 
     private void assertMemberStock(MemberStock memberStock, Long memberId, Long stockId, int purchasePrice, int quantity) {
         assertThat(memberStock.getMemberId()).isEqualTo(memberId);
-        assertThat(memberStock.getStockId()).isEqualTo(stockId);
+        assertThat(memberStock.getStock().getId()).isEqualTo(stockId);
         assertThat(memberStock.getPurchasePrice()).isEqualTo(purchasePrice);
         assertThat(memberStock.getQuantity()).isEqualTo(quantity);
     }

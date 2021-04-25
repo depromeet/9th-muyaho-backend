@@ -4,7 +4,6 @@ import com.depromeet.muyaho.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.memberstock.MemberStockRepository;
 import com.depromeet.muyaho.domain.stock.Stock;
 import com.depromeet.muyaho.domain.stock.StockRepository;
-import com.depromeet.muyaho.domain.stock.StockRetrieveCollection;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import com.depromeet.muyaho.service.stock.StockServiceUtils;
@@ -26,22 +25,15 @@ public class MemberStockService {
     public MemberStockInfoResponse addMemberStock(AddMemberStockRequest request, Long memberId) {
         MemberStockServiceUtils.validateNotExistStockInMember(memberStockRepository, request.getStockId(), memberId);
         Stock findStock = StockServiceUtils.findStockById(stockRepository, request.getStockId());
-        MemberStock memberStock = memberStockRepository.save(request.toEntity(memberId));
-        return MemberStockInfoResponse.of(memberStock, findStock);
+        MemberStock memberStock = memberStockRepository.save(request.toEntity(memberId, findStock));
+        return MemberStockInfoResponse.of(memberStock, memberStock.getStock());
     }
 
     @Transactional(readOnly = true)
     public List<MemberStockInfoResponse> getMyStockInfos(Long memberId) {
         List<MemberStock> memberStocks = memberStockRepository.findAllStocksByMemberId(memberId);
-        StockRetrieveCollection collection = StockRetrieveCollection.of(stockRepository.findAllByIds(getStockIds(memberStocks)));
         return memberStocks.stream()
-            .map(memberStock -> MemberStockInfoResponse.of(memberStock, collection.getStock(memberStock.getStockId())))
-            .collect(Collectors.toList());
-    }
-
-    private List<Long> getStockIds(List<MemberStock> memberStocks) {
-        return memberStocks.stream()
-            .map(MemberStock::getStockId)
+            .map(memberStock -> MemberStockInfoResponse.of(memberStock, memberStock.getStock()))
             .collect(Collectors.toList());
     }
 

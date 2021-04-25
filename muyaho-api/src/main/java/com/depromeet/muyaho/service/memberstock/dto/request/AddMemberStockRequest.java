@@ -1,6 +1,7 @@
 package com.depromeet.muyaho.service.memberstock.dto.request;
 
 import com.depromeet.muyaho.domain.memberstock.MemberStock;
+import com.depromeet.muyaho.domain.stock.Stock;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,8 +26,8 @@ public class AddMemberStockRequest {
     @NotNull
     private int quantity;
 
-    public MemberStock toEntity(Long memberId) {
-        return MemberStock.of(memberId, stockId, purchasePrice, quantity);
+    public MemberStock toEntity(Long memberId, Stock stock) {
+        return MemberStock.of(memberId, stock, purchasePrice, quantity);
     }
 
     public static AddMemberStockRequest testInstance(Long stockId, int purchasePrice, int quantity) {

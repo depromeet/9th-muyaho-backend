@@ -42,12 +42,4 @@ public class StockRepositoryCustomImpl implements StockRepositoryCustom {
             ).fetchOne();
     }
 
-    @Override
-    public List<Stock> findAllByIds(List<Long> stockIds) {
-        return queryFactory.selectFrom(stock).distinct()
-            .where(
-                stock.id.in(stockIds)
-            ).fetch();
-    }
-
 }

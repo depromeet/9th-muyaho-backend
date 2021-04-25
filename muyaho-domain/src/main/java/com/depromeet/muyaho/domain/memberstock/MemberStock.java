@@ -1,6 +1,7 @@
 package com.depromeet.muyaho.domain.memberstock;
 
 import com.depromeet.muyaho.domain.BaseTimeEntity;
+import com.depromeet.muyaho.domain.stock.Stock;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,20 +20,21 @@ public class MemberStock extends BaseTimeEntity {
     @Column(nullable = false)
     private Long memberId;
 
-    @Column(nullable = false)
-    private Long stockId;
+    @JoinColumn(name = "stock_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Stock stock;
 
     @Embedded
     private MemberStockAmount stockAmount;
 
-    private MemberStock(Long memberId, Long stockId, int purchasePrice, int quantity) {
+    private MemberStock(Long memberId, Stock stock, int purchasePrice, int quantity) {
         this.memberId = memberId;
-        this.stockId = stockId;
+        this.stock = stock;
         this.stockAmount = MemberStockAmount.of(purchasePrice, quantity);
     }
 
-    public static MemberStock of(Long memberId, Long stockId, int purchasePrice, int quantity) {
-        return new MemberStock(memberId, stockId, purchasePrice, quantity);
+    public static MemberStock of(Long memberId, Stock stock, int purchasePrice, int quantity) {
+        return new MemberStock(memberId, stock, purchasePrice, quantity);
     }
 
     public int getPurchasePrice() {
