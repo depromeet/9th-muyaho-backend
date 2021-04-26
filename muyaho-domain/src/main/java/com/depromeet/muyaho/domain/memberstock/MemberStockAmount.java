@@ -10,7 +10,6 @@ import javax.persistence.Embeddable;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
-
 public class MemberStockAmount {
 
     @Column(nullable = false)

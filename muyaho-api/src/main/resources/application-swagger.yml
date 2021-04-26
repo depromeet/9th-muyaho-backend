@@ -15,6 +15,7 @@ springdoc:
   paths-to-match:
     - /api/**
     - /ping
+    - /test-session
 ---
 spring:
   profiles: prod

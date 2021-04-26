@@ -34,4 +34,12 @@ public class StockRepositoryCustomImpl implements StockRepositoryCustom {
             .fetch();
     }
 
+    @Override
+    public Stock findStockById(Long stockId) {
+        return queryFactory.selectFrom(stock)
+            .where(
+                stock.id.eq(stockId)
+            ).fetchOne();
+    }
+
 }

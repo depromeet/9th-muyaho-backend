@@ -6,6 +6,7 @@ import com.depromeet.muyaho.controller.ApiResponse;
 import com.depromeet.muyaho.service.member.MemberService;
 import com.depromeet.muyaho.service.member.dto.request.UpdateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.response.MemberInfoResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +18,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @Operation(summary = "나의 회원 정보를 조회하는 API", description = "로그인 필요")
     @Auth
     @GetMapping("/api/v1/member")
     public ApiResponse<MemberInfoResponse> getMyMemberInfo(@MemberId Long memberId) {
         return ApiResponse.success(memberService.getMemberInfo(memberId));
     }
 
+    @Operation(summary = "나의 회원 정보를 수정하는 API", description = "로그인 필요")
     @Auth
     @PutMapping("/api/v1/member")
     public ApiResponse<MemberInfoResponse> updateMemberInfo(@Valid @RequestBody UpdateMemberRequest request, @MemberId Long memberId) {
