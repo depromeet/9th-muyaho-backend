@@ -15,7 +15,7 @@ class MemberStockServiceUtils {
         }
     }
 
-    public static MemberStock findMemberStockByIdAndMemberId(MemberStockRepository memberStockRepository, Long memberStockId, Long memberId) {
+    static MemberStock findMemberStockByIdAndMemberId(MemberStockRepository memberStockRepository, Long memberStockId, Long memberId) {
         MemberStock memberStock = memberStockRepository.findByIdAndMemberId(memberStockId, memberId);
         if (memberStock == null) {
             throw new IllegalArgumentException(String.format("멤버 (%s)에게 해당하는 소유 주식 (%s)이 존재하지 않습니다", memberId, memberStockId));
