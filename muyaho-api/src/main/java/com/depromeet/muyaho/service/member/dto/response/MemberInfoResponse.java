@@ -1,6 +1,7 @@
 package com.depromeet.muyaho.service.member.dto.response;
 
 import com.depromeet.muyaho.domain.member.Member;
+import com.depromeet.muyaho.domain.member.MemberProvider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,8 +16,10 @@ public class MemberInfoResponse {
 
     private String profileUrl;
 
+    private MemberProvider provider;
+
     public static MemberInfoResponse of(Member member) {
-        return new MemberInfoResponse(member.getName(), member.getProfileUrl());
+        return new MemberInfoResponse(member.getName(), member.getProfileUrl(), member.getProvider());
     }
 
 }

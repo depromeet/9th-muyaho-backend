@@ -31,7 +31,7 @@ public class MainController {
     @Profile("local")
     @GetMapping("/test-session")
     public ApiResponse<String> testSession() {
-        Member findMember = memberRepository.findMemberByUid(testMember.getUid());
+        Member findMember = memberRepository.findMemberByUidAndProvider(testMember.getUid(), MemberProvider.KAKAO);
         if (findMember == null) {
             findMember = memberRepository.save(testMember);
         }
