@@ -19,7 +19,7 @@ public class MainController {
 
     private final MemberRepository memberRepository;
     private final HttpSession httpSession;
-    private static final Member testMember = Member.newInstance("test-uid", "테스트 계정", null, MemberProvider.KAKAO);
+    private static final Member testMember = Member.newInstance("test-uid", null, "테스트 계정", null, MemberProvider.KAKAO);
 
     @GetMapping("/ping")
     public ApiResponse<String> ping() {

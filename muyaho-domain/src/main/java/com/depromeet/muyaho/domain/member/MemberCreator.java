@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 public class MemberCreator {
 
     public static Member create(String uid, String name, String profileUrl, MemberProvider provider) {
-        return Member.newInstance(uid, name, profileUrl, provider);
+        return Member.newInstance(uid, null, name, profileUrl, provider);
     }
 
 }

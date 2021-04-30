@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(
     uniqueConstraints = {
-        @UniqueConstraint(name = "uni_member_1", columnNames = {"provider", "uid"}),
+        @UniqueConstraint(name = "uni_member_1", columnNames = {"uid", "provider"}),
         @UniqueConstraint(name = "uni_member_2", columnNames = "name")
     }
 )
@@ -25,6 +25,8 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private String uid;
 
+    private Email email;
+
     @Column(nullable = false)
     private String name;
 
@@ -34,20 +36,28 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private MemberProvider provider;
 
-    private Member(String uid, String name, String profileUrl, MemberProvider provider) {
+    private Member(String uid, String email, String name, String profileUrl, MemberProvider provider) {
         this.uid = uid;
+        this.email = email == null ? null : Email.of(email);
         this.name = name;
         this.profileUrl = profileUrl;
         this.provider = provider;
     }
 
-    public static Member newInstance(String uid, String name, String profileUrl, MemberProvider provider) {
-        return new Member(uid, name, profileUrl, provider);
+    public static Member newInstance(String uid, String email, String name, String profileUrl, MemberProvider provider) {
+        return new Member(uid, email, name, profileUrl, provider);
     }
 
     public void updateMemberInfo(String name, String profileUrl) {
         this.name = name;
         this.profileUrl = profileUrl;
+    }
+
+    public String getEmail() {
+        if (this.email == null) {
+            return null;
+        }
+        return this.email.getEmail();
     }
 
 }

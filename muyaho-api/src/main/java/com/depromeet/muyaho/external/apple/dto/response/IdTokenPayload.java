@@ -27,12 +27,13 @@ public class IdTokenPayload {
 
     private String email;
 
-    private IdTokenPayload(String sub) {
+    private IdTokenPayload(String sub, String email) {
         this.sub = sub;
+        this.email = email;
     }
 
-    public static IdTokenPayload testInstance(String uid) {
-        return new IdTokenPayload(uid);
+    public static IdTokenPayload testInstance(String uid, String email) {
+        return new IdTokenPayload(uid, email);
     }
 
 }

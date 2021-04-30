@@ -23,7 +23,7 @@ public class AuthController {
 
     @PostMapping("/api/v1/login")
     public ApiResponse<String> handleAppleAuthenticationWithToken(@Valid @RequestBody AuthRequest request) {
-        Long memberId = authService.handleAppleAuthentication(request.getToken());
+        Long memberId = authService.handleAuthentication(request);
         httpSession.setAttribute(SessionConstants.AUTH_SESSION, MemberSession.of(memberId));
         return ApiResponse.success(httpSession.getId());
     }

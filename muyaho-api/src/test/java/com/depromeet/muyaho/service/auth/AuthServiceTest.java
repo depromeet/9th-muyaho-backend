@@ -6,6 +6,7 @@ import com.depromeet.muyaho.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.member.MemberRepository;
 import com.depromeet.muyaho.external.apple.AppleTokenDecoder;
 import com.depromeet.muyaho.external.apple.dto.response.IdTokenPayload;
+import com.depromeet.muyaho.service.auth.dto.request.AuthRequest;
 import com.depromeet.muyaho.service.auth.dto.request.SignupMemberRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ class AuthServiceTest {
     private MemberRepository memberRepository;
 
     private static final String uid = "uid";
+    private static final String email = "muyaho@gmail.com";
 
     @BeforeEach
     void setUp() {
@@ -39,13 +41,15 @@ class AuthServiceTest {
     }
 
     @Test
-    void 애플_로그인_요청시_이미_회원가입한_유저면_멤버의_id_가_반환된다() {
+    void 애플_로그인_요청시_이미_회원가입한_유저면_멤버의_PK_가_반환된다() {
         // given
         Member member = MemberCreator.create(uid, "무야호", null, MemberProvider.APPLE);
         memberRepository.save(member);
 
+        AuthRequest request = AuthRequest.testInstance("token", MemberProvider.APPLE);
+
         // when
-        Long memberId = authService.handleAppleAuthentication("idToken");
+        Long memberId = authService.handleAuthentication(request);
 
         // then
         assertThat(memberId).isEqualTo(member.getId());
@@ -53,12 +57,15 @@ class AuthServiceTest {
 
     @Test
     void 애플_로그인_요청시_회원가입_하지_않은_유저면_에러가_발생한다() {
+        // given
+        AuthRequest request = AuthRequest.testInstance("token", MemberProvider.APPLE);
+
         // when & then
-        assertThatThrownBy(() -> authService.handleAppleAuthentication("idToken")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> authService.handleAuthentication(request)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void 새로운_유저가_애플로_회원가입한다() {
+    void 새로운_유저가_애플로_회원가입요청하면_멤버정보가_DB에_저장된다() {
         // given
         String name = "무야호";
         String profileUrl = "http://profile.com";
@@ -76,7 +83,7 @@ class AuthServiceTest {
         // then
         List<Member> memberList = memberRepository.findAll();
         assertThat(memberList).hasSize(1);
-        assertMember(memberList.get(0), uid, name, profileUrl, provider);
+        assertMember(memberList.get(0), uid, email, name, profileUrl, provider);
     }
 
     @Test
@@ -99,8 +106,9 @@ class AuthServiceTest {
         assertThatThrownBy(() -> authService.signUpMember(request)).isInstanceOf(IllegalArgumentException.class);
     }
 
-    private void assertMember(Member member, String uid, String name, String profileUrl, MemberProvider provider) {
+    private void assertMember(Member member, String uid, String email, String name, String profileUrl, MemberProvider provider) {
         assertThat(member.getUid()).isEqualTo(uid);
+        assertThat(member.getEmail()).isEqualTo(email);
         assertThat(member.getName()).isEqualTo(name);
         assertThat(member.getProfileUrl()).isEqualTo(profileUrl);
         assertThat(member.getProvider()).isEqualTo(provider);
@@ -109,7 +117,7 @@ class AuthServiceTest {
     private static class StubAppleTokenDecoder implements AppleTokenDecoder {
         @Override
         public IdTokenPayload getUserInfoFromToken(String idToken) {
-            return IdTokenPayload.testInstance(uid);
+            return IdTokenPayload.testInstance(uid, email);
         }
     }
 
