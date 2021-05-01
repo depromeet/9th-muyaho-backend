@@ -21,14 +21,15 @@ public class MainController {
     private final HttpSession httpSession;
     private static final Member testMember = Member.newInstance("test-uid", null, "테스트 계정", null, MemberProvider.KAKAO);
 
+    @Operation(summary = "Health Check")
     @GetMapping("/ping")
     public ApiResponse<String> ping() {
         return ApiResponse.success("pong");
     }
 
     // 차후 연동 후 삭제
-    @Operation(summary = "(테스트용) 세션을 받아오는 API", description = "차후 연동 후 사라질 예정")
-    @Profile("local")
+    @Operation(summary = "(테스트용) 세션을 받아오는 API (Deprecated)", description = "차후 연동 후 사라질 예정")
+    @Profile({"local", "dev"})
     @GetMapping("/test-session")
     public ApiResponse<String> testSession() {
         Member findMember = memberRepository.findMemberByUidAndProvider(testMember.getUid(), MemberProvider.KAKAO);

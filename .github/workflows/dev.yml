@@ -11,6 +11,18 @@ jobs:
       - name: Checkout@v2
         uses: actions/checkout@v2
 
+      - name: Create rds secret properties
+        env:
+          PROFILES: dev
+          DB_URI: ${{secrets.JDBC_URI}}
+          DB_USERNAME: ${{secrets.DB_USERNAME}}
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          DB_DRIVER: ${{secrets.DB_DRIVER}}
+
+          RESOURCE_PWD: muyaho-domain/src/main/resources
+        run: |
+          echo -e "spring.profiles=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
+
       - name: Versioning
         id: docker-image-version
         run: |
@@ -29,6 +41,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build and push muyaho-api
+        id: build
         env:
           DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           DOCKER_REPOSITORY: muyaho-api
@@ -38,27 +51,20 @@ jobs:
           docker tag $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
-          echo -e "API_IMAGE=$DOCKER_REGISTRY/$DOCKER_REPOSITORY\nTAG=$IMAGE_TAG" > deploy/.env
+          echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
 
-      - name: Zip deploy
-        run: zip -r deploy.zip deploy
-
-      - name: Upload deploy
-        uses: actions/upload-artifact@v2
+      - name: Render Amazon ECS task definition
+        id: render-web-container
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          name: deploy.zip
-          path: deploy.zip
-  deploy:
-    needs:
-      - build
-    runs-on: muyaho-api
-    steps:
-      - name: Download deploy.zip
-        uses: actions/download-artifact@v2
-        with:
-          name: deploy.zip
+          task-definition: task-definition.json
+          container-name: muyaho-api
+          image: ${{ steps.build.outputs.image }}
 
-      - name: run server
-        run: |
-          unzip -o ./deploy.zip
-          cd deploy/ && sh ./run.sh
+      - name: Deploy to Amazon ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render-web-container.outputs.task-definition }}
+          cluster: muyaho-api
+          service: muyaho-api-dev
+          wait-for-service-stability: true
