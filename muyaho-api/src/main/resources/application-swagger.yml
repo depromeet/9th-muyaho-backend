@@ -1,5 +1,5 @@
 spring:
-  profiles: local
+  profiles: local, dev
 springdoc:
   swagger-ui:
     enabled: true
