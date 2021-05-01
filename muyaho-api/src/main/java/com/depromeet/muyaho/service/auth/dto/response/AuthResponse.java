@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthResponse {
 
-    private String sessionId;
+    private final String sessionId;
+
+    public static AuthResponse of(String sessionId) {
+        return new AuthResponse(sessionId);
+    }
 
 }

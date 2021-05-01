@@ -6,6 +6,7 @@ import com.depromeet.muyaho.controller.ApiResponse;
 import com.depromeet.muyaho.service.auth.AuthService;
 import com.depromeet.muyaho.service.auth.dto.request.AuthRequest;
 import com.depromeet.muyaho.service.auth.dto.request.SignupMemberRequest;
+import com.depromeet.muyaho.service.auth.dto.response.AuthResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,17 +23,17 @@ public class AuthController {
     private final HttpSession httpSession;
 
     @PostMapping("/api/v1/login")
-    public ApiResponse<String> handleAppleAuthenticationWithToken(@Valid @RequestBody AuthRequest request) {
+    public ApiResponse<AuthResponse> handleAppleAuthenticationWithToken(@Valid @RequestBody AuthRequest request) {
         Long memberId = authService.handleAuthentication(request);
         httpSession.setAttribute(SessionConstants.AUTH_SESSION, MemberSession.of(memberId));
-        return ApiResponse.success(httpSession.getId());
+        return ApiResponse.success(AuthResponse.of(httpSession.getId()));
     }
 
     @PostMapping("/api/v1/signup")
-    public ApiResponse<String> signUpMember(@Valid @RequestBody SignupMemberRequest request) {
+    public ApiResponse<AuthResponse> signUpMember(@Valid @RequestBody SignupMemberRequest request) {
         Long memberId = authService.signUpMember(request);
         httpSession.setAttribute(SessionConstants.AUTH_SESSION, MemberSession.of(memberId));
-        return ApiResponse.success(httpSession.getId());
+        return ApiResponse.success(AuthResponse.of(httpSession.getId()));
     }
 
 }
