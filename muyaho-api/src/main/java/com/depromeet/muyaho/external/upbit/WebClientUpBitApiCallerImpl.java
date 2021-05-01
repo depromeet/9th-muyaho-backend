@@ -1,5 +1,7 @@
 package com.depromeet.muyaho.external.upbit;
 
+import com.depromeet.muyaho.exception.BadGatewayException;
+import com.depromeet.muyaho.exception.ValidationException;
 import com.depromeet.muyaho.external.upbit.dto.component.UpBitMarketsComponent;
 import com.depromeet.muyaho.external.upbit.dto.component.UpBitTradeComponent;
 import com.depromeet.muyaho.external.upbit.dto.response.UpBitMarketResponse;
@@ -26,7 +28,7 @@ public class WebClientUpBitApiCallerImpl implements UpBitApiCaller {
         return webClient.get()
             .uri(marketsComponent.getUrl())
             .retrieve()
-            .onStatus(HttpStatus::isError, errorResponse -> Mono.error(new IllegalArgumentException("업비트 외부 API 연동 중 에러가 발생하였습니다")))
+            .onStatus(HttpStatus::isError, errorResponse -> Mono.error(new BadGatewayException("업비트 외부 API 연동 중 에러가 발생하였습니다")))
             .bodyToMono(new ParameterizedTypeReference<List<UpBitMarketResponse>>() {
             })
             .block();
@@ -37,8 +39,8 @@ public class WebClientUpBitApiCallerImpl implements UpBitApiCaller {
         return webClient.get()
             .uri(tickerComponent.getUrl(), uriBuilder -> uriBuilder.queryParam("markets", marketCode).build())
             .retrieve()
-            .onStatus(HttpStatus::is4xxClientError, errorResponse -> Mono.error(new IllegalArgumentException(String.format("잘못된 종목 코드 (%s) 입니다", marketCode))))
-            .onStatus(HttpStatus::is5xxServerError, errorResponse -> Mono.error(new IllegalArgumentException("업비트 외부 API 연동 중 에러가 발생하였습니다")))
+            .onStatus(HttpStatus::is4xxClientError, errorResponse -> Mono.error(new ValidationException(String.format("잘못된 종목 코드 (%s) 입니다", marketCode))))
+            .onStatus(HttpStatus::is5xxServerError, errorResponse -> Mono.error(new BadGatewayException("업비트 외부 API 연동 중 에러가 발생하였습니다")))
             .bodyToMono(new ParameterizedTypeReference<List<UpBitTradeInfoResponse>>() {
             })
             .block();

@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.external.apple;
 
+import com.depromeet.muyaho.exception.ErrorCode;
 import com.depromeet.muyaho.exception.ValidationException;
 import com.depromeet.muyaho.external.apple.dto.response.IdTokenPayload;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +23,7 @@ public class AppleTokenDecoderImpl implements AppleTokenDecoder {
         try {
             return objectMapper.readValue(decodedPayload, IdTokenPayload.class);
         } catch (IOException e) {
-            throw new ValidationException(String.format("잘못된 토큰 (%s) 입니다", idToken));
+            throw new ValidationException(String.format("잘못된 토큰 (%s) 입니다", idToken), ErrorCode.INVALID_TOKEN_EXCEPTION);
         }
     }
 

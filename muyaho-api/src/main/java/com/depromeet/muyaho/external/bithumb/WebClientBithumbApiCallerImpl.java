@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.external.bithumb;
 
+import com.depromeet.muyaho.exception.BadGatewayException;
 import com.depromeet.muyaho.external.bithumb.dto.component.BithumbTradeComponent;
 import com.depromeet.muyaho.external.bithumb.dto.response.BithumbTradeInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class WebClientBithumbApiCallerImpl implements BithumbApiCaller {
         return webClient.get()
             .uri(bithumbTradeComponent.getUrl().concat("/").concat(marketCode))
             .retrieve()
-            .onStatus(HttpStatus::isError, errorResponse -> Mono.error(new IllegalArgumentException("빗썸 외부 API 연동 중 에러가 발생하였습니다")))
+            .onStatus(HttpStatus::isError, errorResponse -> Mono.error(new BadGatewayException("빗썸 외부 API 연동 중 에러가 발생하였습니다")))
             .bodyToMono(BithumbTradeInfoResponse.class)
             .block();
     }

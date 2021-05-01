@@ -24,7 +24,7 @@ public class ControllerAdvice {
     protected ApiResponse<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
         String field = e.getBindingResult().getFieldError() == null ? "" : e.getBindingResult().getFieldError().getField();
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, String.format("%s이 %s", field, e.getBindingResult().getFieldError().getDefaultMessage()));
+        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, String.format("%s - %s", field, e.getBindingResult().getFieldError().getDefaultMessage()));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -69,9 +69,9 @@ public class ControllerAdvice {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ValidationException.class)
-    public ApiResponse<Object> handleValidationException(final ValidationException exception) {
+    protected ApiResponse<Object> handleValidationException(final ValidationException exception) {
         log.error(exception.getMessage(), exception);
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION);
+        return ApiResponse.error(getValueOrDefault(exception.getErrorCode(), ErrorCode.VALIDATION_EXCEPTION));
     }
 
     /**
@@ -81,7 +81,7 @@ public class ControllerAdvice {
     @ExceptionHandler(NotFoundException.class)
     protected ApiResponse<Object> handleNotFoundException(final NotFoundException exception) {
         log.error(exception.getMessage(), exception);
-        return ApiResponse.error(ErrorCode.NOT_FOUND_EXCEPTION);
+        return ApiResponse.error(getValueOrDefault(exception.getErrorCode(), ErrorCode.NOT_FOUND_EXCEPTION));
     }
 
     /**
@@ -91,21 +91,25 @@ public class ControllerAdvice {
     @ExceptionHandler(ConflictException.class)
     protected ApiResponse<Object> handleConflictException(final ConflictException exception) {
         log.error(exception.getMessage(), exception);
-        return ApiResponse.error(ErrorCode.CONFLICT_EXCEPTION);
+        return ApiResponse.error(getValueOrDefault(exception.getErrorCode(), ErrorCode.CONFLICT_EXCEPTION));
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(MuyahoException.class)
-    protected ApiResponse<Object> handleMuyahoException(final MuyahoException exception) {
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    @ExceptionHandler(BadGatewayException.class)
+    protected ApiResponse<Object> handleBadGatewayException(final BadGatewayException exception) {
         log.error(exception.getMessage(), exception);
-        return ApiResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        return ApiResponse.error(ErrorCode.BAD_GATEWAY_EXCEPTION);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(IllegalArgumentException.class)
-    protected ApiResponse<Object> handleIllegalArgumentException(final IllegalArgumentException exception) {
+    protected ApiResponse<Object> handleIllegalArgumentException(final Exception exception) {
         log.error(exception.getMessage(), exception);
         return ApiResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+    }
+
+    private static ErrorCode getValueOrDefault(ErrorCode customCode, ErrorCode defaultCode) {
+        return customCode == null ? defaultCode : customCode;
     }
 
 }

@@ -8,12 +8,16 @@ import lombok.RequiredArgsConstructor;
 public enum ErrorCode {
 
     // Common
-    UNAUTHORIZED_EXCEPTION("C001", "세션이 만료되었습니다"),
+    UNAUTHORIZED_EXCEPTION("C001", "세션이 만료되었습니다. 다시 로그인 해주세요"),
     NOT_FOUND_EXCEPTION("C002", "존재하지 않습니다"),
-    VALIDATION_EXCEPTION("C003", "잘못된 입력입니다"),
+    VALIDATION_EXCEPTION("C003", "잘못된 요청입니다"),
     CONFLICT_EXCEPTION("C004", "이미 존재합니다"),
     INTERNAL_SERVER_EXCEPTION("C005", "서버 내부에서 에러가 발생하였습니다"),
-    METHOD_NOT_ALLOWED_EXCEPTION("C006", "Method Not Allowed"),
+    METHOD_NOT_ALLOWED_EXCEPTION("C006", "지원하지 않는 메소드 입니다"),
+    BAD_GATEWAY_EXCEPTION("C007", "외부 연동 중 에러가 발생하였습니다"),
+
+    // Token
+    INVALID_TOKEN_EXCEPTION("T001", "잘못된 토큰입니다"),
 
     // Member
     MEMBER_EMAIL_FORMAT_EXCEPTION("M001", "이메일 포맷에 어긋납니다");
