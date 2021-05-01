@@ -4,5 +4,6 @@ services:
     build: .
     ports:
       - 9090:9090
+    command: java -jar muyaho.jar
     environment:
       - "SPRING_PROFILES_ACTIVE=local"

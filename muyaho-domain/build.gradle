@@ -3,6 +3,7 @@ jar { enabled = true }
 
 dependencies {
     runtimeOnly 'com.h2database:h2'
+    runtimeOnly group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.2'
 
     implementation "com.querydsl:querydsl-jpa"
     implementation "com.querydsl:querydsl-core"

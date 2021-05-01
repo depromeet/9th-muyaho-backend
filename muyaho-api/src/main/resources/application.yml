@@ -9,4 +9,5 @@ spring:
       - domain
       - swagger
       - market
+      - rds
 
