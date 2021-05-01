@@ -13,6 +13,7 @@ public enum ErrorCode {
     VALIDATION_EXCEPTION("C003", "잘못된 입력입니다"),
     CONFLICT_EXCEPTION("C004", "이미 존재합니다"),
     INTERNAL_SERVER_EXCEPTION("C005", "서버 내부에서 에러가 발생하였습니다"),
+    METHOD_NOT_ALLOWED_EXCEPTION("C006", "Method Not Allowed"),
 
     // Member
     MEMBER_EMAIL_FORMAT_EXCEPTION("M001", "이메일 포맷에 어긋납니다");

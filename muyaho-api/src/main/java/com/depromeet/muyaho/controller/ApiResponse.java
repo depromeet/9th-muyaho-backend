@@ -27,4 +27,8 @@ public class ApiResponse<T> {
         return new ApiResponse<>(errorCode.getCode(), errorCode.getMessage(), null);
     }
 
+    public static ApiResponse<Object> error(ErrorCode errorCode, String message) {
+        return new ApiResponse<>(errorCode.getCode(), message, null);
+    }
+
 }
