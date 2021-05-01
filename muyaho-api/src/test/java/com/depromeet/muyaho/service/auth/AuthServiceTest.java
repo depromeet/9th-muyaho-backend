@@ -1,5 +1,7 @@
 package com.depromeet.muyaho.service.auth;
 
+import com.depromeet.muyaho.config.exception.ConflictException;
+import com.depromeet.muyaho.config.exception.NotFoundException;
 import com.depromeet.muyaho.domain.member.Member;
 import com.depromeet.muyaho.domain.member.MemberCreator;
 import com.depromeet.muyaho.domain.member.MemberProvider;
@@ -61,7 +63,7 @@ class AuthServiceTest {
         AuthRequest request = AuthRequest.testInstance("token", MemberProvider.APPLE);
 
         // when & then
-        assertThatThrownBy(() -> authService.handleAuthentication(request)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> authService.handleAuthentication(request)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -103,7 +105,7 @@ class AuthServiceTest {
             .build();
 
         // when & then
-        assertThatThrownBy(() -> authService.signUpMember(request)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> authService.signUpMember(request)).isInstanceOf(ConflictException.class);
     }
 
     private void assertMember(Member member, String uid, String email, String name, String profileUrl, MemberProvider provider) {

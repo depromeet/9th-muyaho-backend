@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.controller;
 
+import com.depromeet.muyaho.config.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApiResponse<T> {
 
-    public static final ApiResponse<String> SUCCESS = success("SUCCESS");
+    public static final ApiResponse<String> SUCCESS = success("");
 
     private String code;
 
@@ -19,7 +20,11 @@ public class ApiResponse<T> {
     private T data;
 
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>("SUCCESS", "", data);
+        return new ApiResponse<>("", "", data);
+    }
+
+    public static ApiResponse<Object> error(ErrorCode errorCode) {
+        return new ApiResponse<>(errorCode.getCode(), errorCode.getMessage(), null);
     }
 
 }
