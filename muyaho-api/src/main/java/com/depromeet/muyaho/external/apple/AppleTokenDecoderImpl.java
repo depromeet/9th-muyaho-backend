@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.external.apple;
 
-import com.depromeet.muyaho.config.exception.ValidationException;
+import com.depromeet.muyaho.exception.ValidationException;
 import com.depromeet.muyaho.external.apple.dto.response.IdTokenPayload;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

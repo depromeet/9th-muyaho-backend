@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.domain.member;
 
-import com.depromeet.muyaho.config.exception.ValidationException;
+import com.depromeet.muyaho.exception.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

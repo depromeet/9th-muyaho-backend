@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.service.memberstock;
 
-import com.depromeet.muyaho.config.exception.ConflictException;
-import com.depromeet.muyaho.config.exception.NotFoundException;
+import com.depromeet.muyaho.exception.ConflictException;
+import com.depromeet.muyaho.exception.NotFoundException;
 import com.depromeet.muyaho.domain.memberstock.*;
 import com.depromeet.muyaho.domain.stock.Stock;
 import com.depromeet.muyaho.domain.stock.StockCreator;

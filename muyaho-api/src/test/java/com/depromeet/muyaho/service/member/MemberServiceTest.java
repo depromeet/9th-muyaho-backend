@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.service.member;
 
-import com.depromeet.muyaho.config.exception.NotFoundException;
+import com.depromeet.muyaho.exception.NotFoundException;
 import com.depromeet.muyaho.domain.member.Member;
 import com.depromeet.muyaho.domain.member.MemberCreator;
 import com.depromeet.muyaho.domain.member.MemberProvider;

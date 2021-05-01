@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.controller;
 
-import com.depromeet.muyaho.config.exception.ErrorCode;
+import com.depromeet.muyaho.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

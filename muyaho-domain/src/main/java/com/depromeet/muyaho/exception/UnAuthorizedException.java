@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.config.exception;
+package com.depromeet.muyaho.exception;
 
 public class UnAuthorizedException extends MuyahoException {
 

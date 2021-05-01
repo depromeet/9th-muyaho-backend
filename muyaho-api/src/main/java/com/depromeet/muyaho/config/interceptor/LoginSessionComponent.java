@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.config.interceptor;
 
-import com.depromeet.muyaho.config.exception.UnAuthorizedException;
+import com.depromeet.muyaho.exception.UnAuthorizedException;
 import com.depromeet.muyaho.config.session.MemberSession;
 import com.depromeet.muyaho.config.session.SessionConstants;
 import lombok.RequiredArgsConstructor;

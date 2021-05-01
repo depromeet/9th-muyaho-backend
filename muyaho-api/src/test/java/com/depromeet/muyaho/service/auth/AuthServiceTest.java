@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.service.auth;
 
-import com.depromeet.muyaho.config.exception.ConflictException;
-import com.depromeet.muyaho.config.exception.NotFoundException;
+import com.depromeet.muyaho.exception.ConflictException;
+import com.depromeet.muyaho.exception.NotFoundException;
 import com.depromeet.muyaho.domain.member.Member;
 import com.depromeet.muyaho.domain.member.MemberCreator;
 import com.depromeet.muyaho.domain.member.MemberProvider;

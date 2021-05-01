@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.service.stock;
 
-import com.depromeet.muyaho.config.exception.NotFoundException;
+import com.depromeet.muyaho.exception.NotFoundException;
 import com.depromeet.muyaho.domain.stock.Stock;
 import com.depromeet.muyaho.domain.stock.StockRepository;
 import lombok.AccessLevel;

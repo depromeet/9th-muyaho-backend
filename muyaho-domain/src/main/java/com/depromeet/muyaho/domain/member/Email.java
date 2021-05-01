@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.domain.member;
 
-import com.depromeet.muyaho.config.exception.ErrorCode;
-import com.depromeet.muyaho.config.exception.ValidationException;
+import com.depromeet.muyaho.exception.ErrorCode;
+import com.depromeet.muyaho.exception.ValidationException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
