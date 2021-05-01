@@ -15,9 +15,9 @@ public class MemberStockInfoResponse {
 
     private final StockInfoResponse stock;
 
-    private final int purchasePrice;
+    private final double purchasePrice;
 
-    private final int quantity;
+    private final double quantity;
 
     public static MemberStockInfoResponse of(MemberStock memberStock, Stock stock) {
         return new MemberStockInfoResponse(memberStock.getId(), StockInfoResponse.of(stock),

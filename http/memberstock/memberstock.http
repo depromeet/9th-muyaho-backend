@@ -5,8 +5,8 @@ Authorization: Bearer {{AUTHORIZATION}}
 
 {
     "stockId": 2,
-    "purchasePrice": 20000,
-    "quantity": 20
+    "purchasePrice": 20000.55,
+    "quantity": 20.3
 }
 
 ### 내가 소유한 주식 리스트를 조회한다
@@ -20,10 +20,10 @@ Authorization: Bearer {{AUTHORIZATION}}
 
 {
     "memberStockId": 1,
-    "purchasePrice": 9999,
-    "quantity": 300
+    "purchasePrice": 9999.9,
+    "quantity": 300.33333
 }
 
-### 내가 소유한 주식을 수정한다
+### 내가 소유한 주식을 삭제한다
 DELETE {{api}}/api/v1/member/stock?memberStockId=1
 Authorization: Bearer {{AUTHORIZATION}}

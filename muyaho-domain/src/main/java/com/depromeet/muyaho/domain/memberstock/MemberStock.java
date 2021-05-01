@@ -30,13 +30,13 @@ public class MemberStock extends BaseTimeEntity {
     @Embedded
     private MemberStockAmount stockAmount;
 
-    private MemberStock(Long memberId, Stock stock, int purchasePrice, int quantity) {
+    private MemberStock(Long memberId, Stock stock, double purchasePrice, double quantity) {
         this.memberId = memberId;
         this.stock = stock;
         this.stockAmount = MemberStockAmount.of(purchasePrice, quantity);
     }
 
-    public static MemberStock of(Long memberId, Stock stock, int purchasePrice, int quantity) {
+    public static MemberStock of(Long memberId, Stock stock, double purchasePrice, double quantity) {
         return new MemberStock(memberId, stock, purchasePrice, quantity);
     }
 
@@ -48,11 +48,11 @@ public class MemberStock extends BaseTimeEntity {
         return DeletedMemberStock.of(id, memberId, stock.getId(), getPurchasePrice(), getQuantity());
     }
 
-    public int getPurchasePrice() {
+    public double getPurchasePrice() {
         return this.stockAmount.getPurchasePrice();
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return this.stockAmount.getQuantity();
     }
 

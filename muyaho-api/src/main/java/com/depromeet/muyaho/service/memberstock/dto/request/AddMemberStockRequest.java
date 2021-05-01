@@ -18,10 +18,10 @@ public class AddMemberStockRequest {
     private Long stockId;
 
     @NotNull
-    private int purchasePrice;
+    private double purchasePrice;
 
     @NotNull
-    private int quantity;
+    private double quantity;
 
     public MemberStock toEntity(Long memberId, Stock stock) {
         return MemberStock.of(memberId, stock, purchasePrice, quantity);

@@ -13,24 +13,24 @@ import javax.persistence.Embeddable;
 public class MemberStockAmount {
 
     @Column(nullable = false)
-    private int purchasePrice;
+    private double purchasePrice;
 
     @Column(nullable = false)
-    private int quantity;
+    private double quantity;
 
-    private MemberStockAmount(int purchasePrice, int quantity) {
+    private MemberStockAmount(double purchasePrice, double quantity) {
         validateStockInfo(purchasePrice, quantity);
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
     }
 
-    private void validateStockInfo(int purchasePrice, int quantity) {
+    private void validateStockInfo(double purchasePrice, double quantity) {
         if (purchasePrice <= 0 || quantity <= 0) {
             throw new IllegalArgumentException(String.format("주식의 평단가 (%s)와 보유 수량 (%s)은 0보다 작을 수 없습니다", purchasePrice, quantity));
         }
     }
 
-    public static MemberStockAmount of(int purchasePrice, int quantity) {
+    public static MemberStockAmount of(double purchasePrice, double quantity) {
         return new MemberStockAmount(purchasePrice, quantity);
     }
 

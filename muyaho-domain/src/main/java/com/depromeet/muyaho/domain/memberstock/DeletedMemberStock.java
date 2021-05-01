@@ -31,14 +31,14 @@ public class DeletedMemberStock extends BaseTimeEntity {
     private MemberStockAmount stockAmount;
 
     @Builder
-    public DeletedMemberStock(Long backupId, Long memberId, Long stockId, int purchasePrice, int quantity) {
+    public DeletedMemberStock(Long backupId, Long memberId, Long stockId, double purchasePrice, double quantity) {
         this.backupId = backupId;
         this.memberId = memberId;
         this.stockId = stockId;
         this.stockAmount = MemberStockAmount.of(purchasePrice, quantity);
     }
 
-    public static DeletedMemberStock of(Long backupId, Long memberId, Long stockId, int purchasePrice, int quantity) {
+    public static DeletedMemberStock of(Long backupId, Long memberId, Long stockId, double purchasePrice, double quantity) {
         return DeletedMemberStock.builder()
             .backupId(backupId)
             .memberId(memberId)
