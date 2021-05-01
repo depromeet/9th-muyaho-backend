@@ -12,4 +12,8 @@ public abstract class MuyahoException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
+    public MuyahoException(String message) {
+        super(message);
+    }
+
 }

@@ -25,14 +25,14 @@ public class AuthService {
         if (request.isAppleType()) {
             return handleAppleAuthentication(request.getToken());
         }
-        throw new ValidationException(String.format("잘못된 소셜 타입 (%s) 입니다.", request.getProvider()), ErrorCode.MEMBER_NOT_EXIST_PROVIDER);
+        throw new ValidationException(String.format("잘못된 소셜 타입 (%s) 입니다.", request.getProvider()));
     }
 
     private Long handleAppleAuthentication(String idToken) {
         IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(idToken);
         Member member = memberRepository.findMemberByUidAndProvider(payload.getSub(), MemberProvider.APPLE);
         if (member == null) {
-            throw new NotFoundException(String.format("(애플) 존재하지 않는 회원 토큰: (%s) 입니다. 회원가입이 필요합니다", idToken), ErrorCode.MEMBER_NOT_FOUND_EXCEPTION);
+            throw new NotFoundException(String.format("(애플) 존재하지 않는 회원 토큰: (%s) 입니다. 회원가입이 필요합니다", idToken));
         }
         return member.getId();
     }
@@ -41,7 +41,7 @@ public class AuthService {
         if (request.isAppleType()) {
             return signUpAppleMember(request.getToken(), request.getName(), request.getProfileUrl());
         }
-        throw new ValidationException(String.format("잘못된 소셜 타입 (%s) 입니다.", request.getProvider()), ErrorCode.MEMBER_NOT_EXIST_PROVIDER);
+        throw new ValidationException(String.format("잘못된 소셜 타입 (%s) 입니다.", request.getProvider()));
     }
 
     private Long signUpAppleMember(String idToken, String name, String profileUrl) {
@@ -49,7 +49,7 @@ public class AuthService {
         IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(idToken);
         Member member = memberRepository.findMemberByUidAndProvider(payload.getSub(), MemberProvider.APPLE);
         if (member != null) {
-            throw new ConflictException(String.format("이미 존재하는 멤버 (%s - %s) 입니다", payload.getSub(), MemberProvider.APPLE), ErrorCode.MEMBER_CONFLICT_EXCEPTION);
+            throw new ConflictException(String.format("이미 존재하는 멤버 (%s - %s) 입니다", payload.getSub(), MemberProvider.APPLE));
         }
         Member newMember = memberRepository.save(Member.newInstance(payload.getSub(), payload.getEmail(), name, profileUrl, MemberProvider.APPLE));
         return newMember.getId();

@@ -1,5 +1,7 @@
 package com.depromeet.muyaho.domain.memberstock;
 
+import com.depromeet.muyaho.config.exception.ErrorCode;
+import com.depromeet.muyaho.config.exception.ValidationException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +28,7 @@ public class MemberStockAmount {
 
     private void validateStockInfo(double purchasePrice, double quantity) {
         if (purchasePrice <= 0 || quantity <= 0) {
-            throw new IllegalArgumentException(String.format("주식의 평단가 (%s)와 보유 수량 (%s)은 0보다 작을 수 없습니다", purchasePrice, quantity));
+            throw new ValidationException(String.format("주식의 평단가 (%s)와 보유 수량 (%s)은 0보다 작을 수 없습니다", purchasePrice, quantity));
         }
     }
 

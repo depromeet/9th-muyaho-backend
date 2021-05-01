@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.domain.member;
 
+import com.depromeet.muyaho.config.exception.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +28,7 @@ class EmailTest {
         // when & then
         assertThatThrownBy(() -> {
             Email.of(email);
-        }).isInstanceOf(IllegalArgumentException.class);
+        }).isInstanceOf(ValidationException.class);
     }
 
     @Test
@@ -38,7 +39,7 @@ class EmailTest {
         // when & then
         assertThatThrownBy(() -> {
             Email.of(email);
-        }).isInstanceOf(IllegalArgumentException.class);
+        }).isInstanceOf(ValidationException.class);
     }
 
     @Test
@@ -49,7 +50,7 @@ class EmailTest {
         // when & then
         assertThatThrownBy(() -> {
             Email.of(email);
-        }).isInstanceOf(IllegalArgumentException.class);
+        }).isInstanceOf(ValidationException.class);
     }
 
     @Test

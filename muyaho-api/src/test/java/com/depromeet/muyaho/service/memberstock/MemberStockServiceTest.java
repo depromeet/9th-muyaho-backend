@@ -1,5 +1,7 @@
 package com.depromeet.muyaho.service.memberstock;
 
+import com.depromeet.muyaho.config.exception.ConflictException;
+import com.depromeet.muyaho.config.exception.NotFoundException;
 import com.depromeet.muyaho.domain.memberstock.*;
 import com.depromeet.muyaho.domain.stock.Stock;
 import com.depromeet.muyaho.domain.stock.StockCreator;
@@ -75,7 +77,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         AddMemberStockRequest request = AddMemberStockRequest.testInstance(notExistStockId, 10000, 10);
 
         // when & then
-        assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -86,7 +88,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), 1000, 1);
 
         // when & then
-        assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(ConflictException.class);
     }
 
     @Test
@@ -169,7 +171,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity);
 
         // when
-        assertThatThrownBy(() -> memberStockService.updateMemberStock(request, 999L)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> memberStockService.updateMemberStock(request, 999L)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -178,7 +180,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(999L, 10000, 10);
 
         // when
-        assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -225,7 +227,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(memberStock.getId());
 
         // when & then
-        assertThatThrownBy(() -> memberStockService.deleteMemberStock(request, 999L)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> memberStockService.deleteMemberStock(request, 999L)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -234,7 +236,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(999L);
 
         // when & then
-        assertThatThrownBy(() -> memberStockService.deleteMemberStock(request, memberId)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> memberStockService.deleteMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
     }
 
     private void assertDeletedMemberStack(DeletedMemberStock deletedMemberStock, Long memberStockId, Long stockId, Long memberId, int purchasePrice, int quantity) {

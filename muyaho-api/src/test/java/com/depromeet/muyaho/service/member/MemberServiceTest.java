@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.service.member;
 
+import com.depromeet.muyaho.config.exception.NotFoundException;
 import com.depromeet.muyaho.domain.member.Member;
 import com.depromeet.muyaho.domain.member.MemberCreator;
 import com.depromeet.muyaho.domain.member.MemberProvider;
@@ -48,7 +49,7 @@ class MemberServiceTest {
     @Test
     void 존재하지_않는_멤버정보를_조회하면_에러가_발생한다() {
         // when & then
-        assertThatThrownBy(() -> memberService.getMemberInfo(999L)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> memberService.getMemberInfo(999L)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -77,7 +78,7 @@ class MemberServiceTest {
         UpdateMemberRequest request = UpdateMemberRequest.testInstance("승호", "profileUrl");
 
         // when & then
-        assertThatThrownBy(() -> memberService.updateMemberInfo(request, 999L)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> memberService.updateMemberInfo(request, 999L)).isInstanceOf(NotFoundException.class);
     }
 
     private void assertMember(Member member, String uid, String name, String profileUrl, MemberProvider provider) {

@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.domain.memberstock;
 
+import com.depromeet.muyaho.config.exception.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -11,7 +12,7 @@ public class MemberStockAmountTest {
         // given
         int purchasePrice = 0;
         // when & then
-        assertThatThrownBy(() -> MemberStockAmount.of(purchasePrice, 1000)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> MemberStockAmount.of(purchasePrice, 1000)).isInstanceOf(ValidationException.class);
     }
 
     @Test
@@ -20,7 +21,7 @@ public class MemberStockAmountTest {
         int quantity = 0;
 
         // when & then
-        assertThatThrownBy(() -> MemberStockAmount.of(1000, quantity)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> MemberStockAmount.of(1000, quantity)).isInstanceOf(ValidationException.class);
     }
 
 }

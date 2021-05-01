@@ -1,5 +1,7 @@
 package com.depromeet.muyaho.domain.member;
 
+import com.depromeet.muyaho.config.exception.ErrorCode;
+import com.depromeet.muyaho.config.exception.ValidationException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,7 +29,7 @@ public class Email {
 
     private void validateFormat(String email) {
         if (!EMAIL_REGEX.matcher(email).matches()) {
-            throw new IllegalArgumentException(String.format("(%s)은 이메일 포맷에 맞지 않습니다", email));
+            throw new ValidationException(String.format("(%s)은 이메일 포맷에 맞지 않습니다", email), ErrorCode.MEMBER_EMAIL_FORMAT_EXCEPTION);
         }
     }
 

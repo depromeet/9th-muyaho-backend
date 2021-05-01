@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.config.interceptor;
 
+import com.depromeet.muyaho.config.exception.UnAuthorizedException;
 import com.depromeet.muyaho.config.session.MemberSession;
 import com.depromeet.muyaho.config.session.SessionConstants;
 import lombok.RequiredArgsConstructor;
@@ -30,17 +31,17 @@ public class LoginSessionComponent {
 
     private void validateHasAuthorizationHeader(String header) {
         if (header == null) {
-            throw new IllegalArgumentException("세션이 존재하지 않습니다");
+            throw new UnAuthorizedException("세션이 존재하지 않습니다");
         }
         if (!header.startsWith(BEARER_TOKEN)) {
-            throw new IllegalArgumentException(String.format("잘못된 세션 (%s) 입니다", header));
+            throw new UnAuthorizedException(String.format("잘못된 세션 (%s) 입니다", header));
         }
     }
 
     private MemberSession getSession(String header) {
         Session session = sessionRepository.getSession(header.split(BEARER_TOKEN)[1]);
         if (session == null) {
-            throw new IllegalArgumentException(String.format("잘못된 세션 (%s) 입니다", header));
+            throw new UnAuthorizedException(String.format("잘못된 세션 (%s) 입니다", header));
         }
         return session.getAttribute(SessionConstants.AUTH_SESSION);
     }
