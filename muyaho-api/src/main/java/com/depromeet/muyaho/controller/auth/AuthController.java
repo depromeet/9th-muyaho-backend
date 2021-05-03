@@ -38,8 +38,8 @@ public class AuthController {
         return ApiResponse.success(AuthResponse.of(httpSession.getId()));
     }
 
-    @PutMapping("/api/v1/check/name")
-    public ApiResponse<String> checkNotExistName(@Valid @RequestBody CheckNotExistNameRequest request) {
+    @GetMapping("/api/v1/check/name")
+    public ApiResponse<String> checkNotExistName(@Valid CheckNotExistNameRequest request) {
         authService.checkNotExistNickName(request.getName());
         return ApiResponse.SUCCESS;
     }

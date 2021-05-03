@@ -1,5 +1,8 @@
 server:
   port: 9090
+  servlet:
+    encoding:
+      charset: UTF-8
 spring:
   session:
     store-type: jdbc
@@ -10,4 +13,3 @@ spring:
       - swagger
       - market
       - rds
-
