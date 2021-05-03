@@ -29,4 +29,12 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
             ).fetchOne();
     }
 
+    @Override
+    public Member findMemberByName(String name) {
+        return queryFactory.selectFrom(member)
+            .where(
+                member.name.eq(name)
+            ).fetchOne();
+    }
+
 }

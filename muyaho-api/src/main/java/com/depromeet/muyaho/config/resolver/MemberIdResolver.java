@@ -14,10 +14,10 @@ public class MemberIdResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasAnnotation = parameter.getParameterAnnotation(MemberId.class) != null;
-        if (parameter.getMethodAnnotation(Auth.class) == null) {
-            throw new IllegalArgumentException("해당 컨트롤러에 Auth 어노테이션을 추가해주세요.");
-        }
         boolean isMatchType = parameter.getParameterType().equals(Long.class);
+        if (hasAnnotation && parameter.getMethodAnnotation(Auth.class) == null) {
+            throw new IllegalArgumentException("인증이 필요한 컨트롤러 입니다. Auth 어노테이션을 붙여주세요.");
+        }
         return hasAnnotation && isMatchType;
     }
 

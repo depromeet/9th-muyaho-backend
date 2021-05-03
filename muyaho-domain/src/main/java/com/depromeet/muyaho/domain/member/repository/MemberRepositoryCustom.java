@@ -9,4 +9,6 @@ public interface MemberRepositoryCustom {
 
     Member findMemberByUidAndProvider(String uid, MemberProvider provider);
 
+    Member findMemberByName(String name);
+
 }

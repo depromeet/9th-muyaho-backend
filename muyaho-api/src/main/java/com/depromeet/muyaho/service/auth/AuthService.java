@@ -11,8 +11,10 @@ import com.depromeet.muyaho.external.apple.AppleTokenDecoder;
 import com.depromeet.muyaho.external.apple.dto.response.IdTokenPayload;
 import com.depromeet.muyaho.service.auth.dto.request.AuthRequest;
 import com.depromeet.muyaho.service.auth.dto.request.SignupMemberRequest;
+import com.depromeet.muyaho.service.member.MemberServiceUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -38,6 +40,7 @@ public class AuthService {
     }
 
     public Long signUpMember(SignupMemberRequest request) {
+        MemberServiceUtils.validateNotExistName(memberRepository, request.getName());
         if (request.isAppleType()) {
             return signUpAppleMember(request.getToken(), request.getName(), request.getProfileUrl());
         }
@@ -53,6 +56,11 @@ public class AuthService {
         }
         Member newMember = memberRepository.save(Member.newInstance(payload.getSub(), payload.getEmail(), name, profileUrl, MemberProvider.APPLE));
         return newMember.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public void checkNotExistNickName(String name) {
+        MemberServiceUtils.validateNotExistName(memberRepository, name);
     }
 
 }

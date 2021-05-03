@@ -91,11 +91,30 @@ class AuthServiceTest {
     @Test
     void 회원가입시_이미_존재하는_애플_멤버의경우_에러가_발생한다() {
         // given
+        String profileUrl = "http://profile.com";
+        MemberProvider provider = MemberProvider.APPLE;
+
+        memberRepository.save(MemberCreator.create(uid, "name1", profileUrl, provider));
+
+        SignupMemberRequest request = SignupMemberRequest.testBuilder()
+            .token("token")
+            .name("name2")
+            .profileUrl(profileUrl)
+            .provider(provider)
+            .build();
+
+        // when & then
+        assertThatThrownBy(() -> authService.signUpMember(request)).isInstanceOf(ConflictException.class);
+    }
+
+    @Test
+    void 회원가입시_닉네임이_중복되면_에러가_발생한다() {
+        // given
         String name = "무야호";
         String profileUrl = "http://profile.com";
         MemberProvider provider = MemberProvider.APPLE;
 
-        memberRepository.save(MemberCreator.create(uid, name, profileUrl, provider));
+        memberRepository.save(MemberCreator.create("another uuid", name, profileUrl, provider));
 
         SignupMemberRequest request = SignupMemberRequest.testBuilder()
             .token("token")
@@ -106,6 +125,19 @@ class AuthServiceTest {
 
         // when & then
         assertThatThrownBy(() -> authService.signUpMember(request)).isInstanceOf(ConflictException.class);
+    }
+
+    @Test
+    void 닉네임_중복체크_이미_존재하는_닉네임일_경우_에러가_발생한다() {
+        // given
+        String name = "무야호";
+        String profileUrl = "http://profile.com";
+        MemberProvider provider = MemberProvider.APPLE;
+
+        memberRepository.save(MemberCreator.create("another uuid", name, profileUrl, provider));
+
+        // when & then
+        assertThatThrownBy(() -> authService.checkNotExistNickName(name)).isInstanceOf(ConflictException.class);
     }
 
     private void assertMember(Member member, String uid, String email, String name, String profileUrl, MemberProvider provider) {
