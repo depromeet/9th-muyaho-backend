@@ -10,10 +10,7 @@ import com.depromeet.muyaho.service.auth.dto.request.SignupMemberRequest;
 import com.depromeet.muyaho.service.auth.dto.response.AuthResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -41,8 +38,8 @@ public class AuthController {
         return ApiResponse.success(AuthResponse.of(httpSession.getId()));
     }
 
-    @GetMapping("/api/v1/check/name")
-    public ApiResponse<String> checkNotExistName(@Valid CheckNotExistNameRequest request) {
+    @PutMapping("/api/v1/check/name")
+    public ApiResponse<String> checkNotExistName(@Valid @RequestBody CheckNotExistNameRequest request) {
         authService.checkNotExistNickName(request.getName());
         return ApiResponse.SUCCESS;
     }

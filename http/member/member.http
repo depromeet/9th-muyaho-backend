@@ -19,3 +19,11 @@ Authorization: Bearer {{AUTHORIZATION}}
     "name": "will",
     "profileUrl": "https://avatars.githubusercontent.com/u/48153675?v=4"
 }
+
+### 닉네임 체크
+PUT {{api}}/api/v1/check/name
+Content-Type: application/json
+
+{
+    "name": "테스트 계정"
+}
