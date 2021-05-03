@@ -16,11 +16,9 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED_EXCEPTION("C006", "지원하지 않는 메소드 입니다"),
     BAD_GATEWAY_EXCEPTION("C007", "외부 연동 중 에러가 발생하였습니다"),
 
-    // Token
-    INVALID_TOKEN_EXCEPTION("T001", "잘못된 토큰입니다"),
-
-    // Member
-    MEMBER_EMAIL_FORMAT_EXCEPTION("M001", "이메일 포맷에 어긋납니다");
+    VALIDATION_NOT_SUPPORTED_PROVIDER_EXCEPTION("V001", "아직 지원하고 있지 않은 소셜 타입입니다"),
+    VALIDATION_INVALID_TOKEN_EXCEPTION("V002", "잘못된 토큰입니다"),
+    VALIDATION_INVALID_EMAIL_EXCEPTION("V003", "이메일 포맷에 어긋납니다");
 
     private final String code;
     private final String message;

@@ -1,6 +1,7 @@
 package com.depromeet.muyaho.service.auth;
 
 import com.depromeet.muyaho.exception.ConflictException;
+import com.depromeet.muyaho.exception.ErrorCode;
 import com.depromeet.muyaho.exception.NotFoundException;
 import com.depromeet.muyaho.exception.ValidationException;
 import com.depromeet.muyaho.domain.member.Member;
@@ -24,7 +25,7 @@ public class AuthService {
         if (request.isAppleType()) {
             return handleAppleAuthentication(request.getToken());
         }
-        throw new ValidationException(String.format("잘못된 소셜 타입 (%s) 입니다.", request.getProvider()));
+        throw new ValidationException(String.format("잘못된 소셜 타입 (%s) 입니다.", request.getProvider()), ErrorCode.VALIDATION_NOT_SUPPORTED_PROVIDER_EXCEPTION);
     }
 
     private Long handleAppleAuthentication(String idToken) {
@@ -40,7 +41,7 @@ public class AuthService {
         if (request.isAppleType()) {
             return signUpAppleMember(request.getToken(), request.getName(), request.getProfileUrl());
         }
-        throw new ValidationException(String.format("잘못된 소셜 타입 (%s) 입니다.", request.getProvider()));
+        throw new ValidationException(String.format("잘못된 소셜 타입 (%s) 입니다.", request.getProvider()), ErrorCode.VALIDATION_NOT_SUPPORTED_PROVIDER_EXCEPTION);
     }
 
     private Long signUpAppleMember(String idToken, String name, String profileUrl) {

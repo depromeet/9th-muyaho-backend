@@ -29,7 +29,7 @@ public class Email {
 
     private void validateFormat(String email) {
         if (!EMAIL_REGEX.matcher(email).matches()) {
-            throw new ValidationException(String.format("(%s)은 이메일 포맷에 맞지 않습니다", email), ErrorCode.MEMBER_EMAIL_FORMAT_EXCEPTION);
+            throw new ValidationException(String.format("(%s)은 이메일 포맷에 맞지 않습니다", email), ErrorCode.VALIDATION_INVALID_EMAIL_EXCEPTION);
         }
     }
 

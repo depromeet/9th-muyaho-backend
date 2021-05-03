@@ -23,7 +23,7 @@ public class AuthController {
     private final AuthService authService;
     private final HttpSession httpSession;
 
-    @Operation(summary = "로그인 요청 API")
+    @Operation(summary = "로그인 요청 API", description = "appleType 스웨거 버그입니다")
     @PostMapping("/api/v1/login")
     public ApiResponse<AuthResponse> handleAppleAuthenticationWithToken(@Valid @RequestBody AuthRequest request) {
         Long memberId = authService.handleAuthentication(request);
@@ -31,7 +31,7 @@ public class AuthController {
         return ApiResponse.success(AuthResponse.of(httpSession.getId()));
     }
 
-    @Operation(summary = "회원가입 API")
+    @Operation(summary = "회원가입 API", description = "appleType 스웨거 버그입니다")
     @PostMapping("/api/v1/signup")
     public ApiResponse<AuthResponse> signUpMember(@Valid @RequestBody SignupMemberRequest request) {
         Long memberId = authService.signUpMember(request);
