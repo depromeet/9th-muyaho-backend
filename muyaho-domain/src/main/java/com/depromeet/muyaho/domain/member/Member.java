@@ -53,6 +53,17 @@ public class Member extends BaseTimeEntity {
         this.profileUrl = profileUrl;
     }
 
+    public DeleteMember delete() {
+        return DeleteMember.builder()
+            .previousId(id)
+            .name(name)
+            .email(getEmail())
+            .uid(uid)
+            .profileUrl(profileUrl)
+            .provider(provider)
+            .build();
+    }
+
     public String getEmail() {
         if (this.email == null) {
             return null;

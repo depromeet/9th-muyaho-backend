@@ -1,10 +1,7 @@
 package com.depromeet.muyaho.service.member;
 
+import com.depromeet.muyaho.domain.member.*;
 import com.depromeet.muyaho.exception.NotFoundException;
-import com.depromeet.muyaho.domain.member.Member;
-import com.depromeet.muyaho.domain.member.MemberCreator;
-import com.depromeet.muyaho.domain.member.MemberProvider;
-import com.depromeet.muyaho.domain.member.MemberRepository;
 import com.depromeet.muyaho.service.member.dto.request.UpdateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.response.MemberInfoResponse;
 import org.junit.jupiter.api.AfterEach;
@@ -26,9 +23,13 @@ class MemberServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private DeleteMemberRepository deleteMemberRepository;
+
     @AfterEach
     void cleanUp() {
         memberRepository.deleteAll();
+        deleteMemberRepository.deleteAll();
     }
 
     @Test
@@ -79,6 +80,49 @@ class MemberServiceTest {
 
         // when & then
         assertThatThrownBy(() -> memberService.updateMemberInfo(request, 999L)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void 회원탈퇴시_MEMBER_테이블에서_해당_데이터가_삭제된다() {
+        // given
+        Member member = MemberCreator.create("uid", "강승호", null, MemberProvider.KAKAO);
+        memberRepository.save(member);
+
+        // when
+        memberService.deleteMemberInfo(member.getId());
+
+        // then
+        List<Member> memberList = memberRepository.findAll();
+        assertThat(memberList).isEmpty();
+    }
+
+    @Test
+    void 회원탈퇴시_백업_테이블에_해당_데이터가_보관된다() {
+        // given
+        Member member = MemberCreator.create("uid", "강승호", null, MemberProvider.KAKAO);
+        memberRepository.save(member);
+
+        // when
+        memberService.deleteMemberInfo(member.getId());
+
+        // then
+        List<DeleteMember> deleteMembers = deleteMemberRepository.findAll();
+        assertThat(deleteMembers).hasSize(1);
+        assertDeleteMember(deleteMembers.get(0), member.getId(), member.getUid(), member.getName(), member.getProfileUrl(), member.getProvider());
+    }
+
+    @Test
+    void 존재하지_않는_유저를_삭제할_수없다() {
+        // when & then
+        assertThatThrownBy(() ->  memberService.deleteMemberInfo(999L)).isInstanceOf(NotFoundException.class);
+    }
+
+    private void assertDeleteMember(DeleteMember deleteMember, Long id, String uid, String name, String profileUrl, MemberProvider provider) {
+        assertThat(deleteMember.getPreviousId()).isEqualTo(id);
+        assertThat(deleteMember.getUid()).isEqualTo(uid);
+        assertThat(deleteMember.getName()).isEqualTo(name);
+        assertThat(deleteMember.getProfileUrl()).isEqualTo(profileUrl);
+        assertThat(deleteMember.getProvider()).isEqualTo(provider);
     }
 
     private void assertMember(Member member, String uid, String name, String profileUrl, MemberProvider provider) {

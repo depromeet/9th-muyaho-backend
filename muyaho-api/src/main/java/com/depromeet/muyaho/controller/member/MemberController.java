@@ -32,4 +32,12 @@ public class MemberController {
         return ApiResponse.success(memberService.updateMemberInfo(request, memberId));
     }
 
+    @Operation(summary = "회원탈퇴 API")
+    @Auth
+    @DeleteMapping("/api/v1/member")
+    public ApiResponse<String> deleteMemberInfo(@MemberId Long memberId) {
+        memberService.deleteMemberInfo(memberId);
+        return ApiResponse.SUCCESS;
+    }
+
 }

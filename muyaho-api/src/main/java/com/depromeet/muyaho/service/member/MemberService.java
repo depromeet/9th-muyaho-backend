@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.service.member;
 
+import com.depromeet.muyaho.domain.member.DeleteMemberRepository;
 import com.depromeet.muyaho.domain.member.Member;
 import com.depromeet.muyaho.domain.member.MemberRepository;
 import com.depromeet.muyaho.service.member.dto.request.UpdateMemberRequest;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final DeleteMemberRepository deleteMemberRepository;
 
     @Transactional(readOnly = true)
     public MemberInfoResponse getMemberInfo(Long memberId) {
@@ -25,6 +27,13 @@ public class MemberService {
         Member member = MemberServiceUtils.findMemberById(memberRepository, memberId);
         member.updateMemberInfo(request.getName(), request.getProfileUrl());
         return MemberInfoResponse.of(member);
+    }
+
+    @Transactional
+    public void deleteMemberInfo(Long memberId) {
+        Member member = MemberServiceUtils.findMemberById(memberRepository, memberId);
+        deleteMemberRepository.save(member.delete());
+        memberRepository.delete(member);
     }
 
 }

@@ -27,3 +27,7 @@ Content-Type: application/json
 {
     "name": "테스트 계정"
 }
+
+### 회원탈퇴
+DELETE {{api}}/api/v1/member
+Authorization: Bearer {{AUTHORIZATION}}
