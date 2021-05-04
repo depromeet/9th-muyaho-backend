@@ -7,6 +7,7 @@ import com.depromeet.muyaho.external.upbit.dto.component.UpBitTradeComponent;
 import com.depromeet.muyaho.external.upbit.dto.response.UpBitMarketResponse;
 import com.depromeet.muyaho.external.upbit.dto.response.UpBitTradeInfoResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class WebClientUpBitApiCallerImpl implements UpBitApiCaller {
@@ -25,6 +27,7 @@ public class WebClientUpBitApiCallerImpl implements UpBitApiCaller {
 
     @Override
     public List<UpBitMarketResponse> retrieveMarkets() {
+        log.info("업비트 현재 거래되는 종목명/코드 조회 요청 API 사용");
         return webClient.get()
             .uri(marketsComponent.getUrl())
             .retrieve()
@@ -36,6 +39,7 @@ public class WebClientUpBitApiCallerImpl implements UpBitApiCaller {
 
     @Override
     public List<UpBitTradeInfoResponse> retrieveTrades(String marketCode) {
+        log.info("업비트 가격정보 조회 요청 API 사용 marketCode: {}", marketCode);
         return webClient.get()
             .uri(tickerComponent.getUrl(), uriBuilder -> uriBuilder.queryParam("markets", marketCode).build())
             .retrieve()
