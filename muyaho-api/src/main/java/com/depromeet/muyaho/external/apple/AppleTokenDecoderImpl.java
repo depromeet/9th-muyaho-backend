@@ -18,11 +18,11 @@ public class AppleTokenDecoderImpl implements AppleTokenDecoder {
 
     @Override
     public IdTokenPayload getUserInfoFromToken(String idToken) {
-        String payload = idToken.split("\\.")[1];
-        String decodedPayload = new String(Base64.getDecoder().decode(payload));
         try {
+            String payload = idToken.split("\\.")[1];
+            String decodedPayload = new String(Base64.getDecoder().decode(payload));
             return objectMapper.readValue(decodedPayload, IdTokenPayload.class);
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new ValidationException(String.format("잘못된 토큰 (%s) 입니다", idToken), ErrorCode.VALIDATION_INVALID_TOKEN_EXCEPTION);
         }
     }
