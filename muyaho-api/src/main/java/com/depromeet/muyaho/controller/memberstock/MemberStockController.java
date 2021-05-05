@@ -9,6 +9,7 @@ import com.depromeet.muyaho.service.memberstock.dto.request.DeleteMemberStockReq
 import com.depromeet.muyaho.service.memberstock.dto.request.UpdateMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,28 +22,28 @@ public class MemberStockController {
 
     private final MemberStockService memberStockService;
 
-    @Operation(summary = "내가 소유한 주식을 새롭게 등록하는 API", description = "로그인 필요")
+    @Operation(summary = "내가 소유한 주식을 새롭게 등록하는 API", description = "Authorization 헤더가 필요합니다", security = {@SecurityRequirement(name = "bearer-key")})
     @Auth
     @PostMapping("/api/v1/member/stock")
     public ApiResponse<MemberStockInfoResponse> addMemberStock(@Valid @RequestBody AddMemberStockRequest request, @MemberId Long memberId) {
         return ApiResponse.success(memberStockService.addMemberStock(request, memberId));
     }
 
-    @Operation(summary = "내가 소유한 주식들을 조회하는 API", description = "로그인 필요")
+    @Operation(summary = "내가 소유한 주식들을 조회하는 API", description = "Authorization 헤더가 필요합니다", security = {@SecurityRequirement(name = "bearer-key")})
     @Auth
     @GetMapping("/api/v1/member/stock")
     public ApiResponse<List<MemberStockInfoResponse>> getMyStocks(@MemberId Long memberId) {
         return ApiResponse.success(memberStockService.getMyStockInfos(memberId));
     }
 
-    @Operation(summary = "내가 소유한 주식들을 수정하는 API", description = "로그인 필요")
+    @Operation(summary = "내가 소유한 주식들을 수정하는 API", description = "Authorization 헤더가 필요합니다", security = {@SecurityRequirement(name = "bearer-key")})
     @Auth
     @PutMapping("/api/v1/member/stock")
     public ApiResponse<MemberStockInfoResponse> updateMemberStock(@Valid @RequestBody UpdateMemberStockRequest request, @MemberId Long memberId) {
         return ApiResponse.success(memberStockService.updateMemberStock(request, memberId));
     }
 
-    @Operation(summary = "내가 소유한 주식들을 삭제하는 API", description = "로그인 필요")
+    @Operation(summary = "내가 소유한 주식들을 삭제하는 API", description = "Authorization 헤더가 필요합니다", security = {@SecurityRequirement(name = "bearer-key")})
     @Auth
     @DeleteMapping("/api/v1/member/stock")
     public ApiResponse<String> deleteMemberStock(@Valid DeleteMemberStockRequest request, @MemberId Long memberId) {

@@ -38,6 +38,7 @@ public class AuthController {
         return ApiResponse.success(AuthResponse.of(httpSession.getId()));
     }
 
+    @Operation(summary = "중복된 이름이 있는지 검증하는 API")
     @GetMapping("/api/v1/check/name")
     public ApiResponse<String> checkNotExistName(@Valid CheckNotExistNameRequest request) {
         authService.checkNotExistNickName(request.getName());
