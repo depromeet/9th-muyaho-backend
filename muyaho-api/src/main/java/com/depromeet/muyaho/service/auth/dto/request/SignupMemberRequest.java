@@ -36,4 +36,8 @@ public class SignupMemberRequest {
         return provider.equals(MemberProvider.APPLE);
     }
 
+    public boolean isKaKaoType() {
+        return provider.equals(MemberProvider.KAKAO);
+    }
+
 }
