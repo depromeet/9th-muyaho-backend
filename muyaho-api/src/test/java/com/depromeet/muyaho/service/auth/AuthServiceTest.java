@@ -8,6 +8,8 @@ import com.depromeet.muyaho.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.member.MemberRepository;
 import com.depromeet.muyaho.external.apple.AppleTokenDecoder;
 import com.depromeet.muyaho.external.apple.dto.response.IdTokenPayload;
+import com.depromeet.muyaho.external.kakao.KaKaoApiCaller;
+import com.depromeet.muyaho.external.kakao.dto.response.KaKaoUserInfoResponse;
 import com.depromeet.muyaho.service.auth.dto.request.AuthRequest;
 import com.depromeet.muyaho.service.auth.dto.request.SignupMemberRequest;
 import org.junit.jupiter.api.AfterEach;
@@ -34,7 +36,7 @@ class AuthServiceTest {
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService(new StubAppleTokenDecoder(), memberRepository);
+        authService = new AuthService(new StubAppleTokenDecoder(), new StubKaKaoApiCaller(), memberRepository);
     }
 
     @AfterEach
@@ -61,6 +63,30 @@ class AuthServiceTest {
     void 애플_로그인_요청시_회원가입_하지_않은_유저면_에러가_발생한다() {
         // given
         AuthRequest request = AuthRequest.testInstance("token", MemberProvider.APPLE);
+
+        // when & then
+        assertThatThrownBy(() -> authService.handleAuthentication(request)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void 카카오_로그인_요청시_이미_회원가입한_유저면_멤버의_PK_가_반환된다() {
+        // given
+        Member member = MemberCreator.create(uid, "무야호", null, MemberProvider.KAKAO);
+        memberRepository.save(member);
+
+        AuthRequest request = AuthRequest.testInstance("token", MemberProvider.KAKAO);
+
+        // when
+        Long memberId = authService.handleAuthentication(request);
+
+        // then
+        assertThat(memberId).isEqualTo(member.getId());
+    }
+
+    @Test
+    void 카카오_로그인_요청시_아직_회원가입_지_않은_유저면_404_에러가_발생한다() {
+        // given
+        AuthRequest request = AuthRequest.testInstance("token", MemberProvider.KAKAO);
 
         // when & then
         assertThatThrownBy(() -> authService.handleAuthentication(request)).isInstanceOf(NotFoundException.class);
@@ -152,6 +178,13 @@ class AuthServiceTest {
         @Override
         public IdTokenPayload getUserInfoFromToken(String idToken) {
             return IdTokenPayload.testInstance(uid, email);
+        }
+    }
+
+    private static class StubKaKaoApiCaller implements KaKaoApiCaller {
+        @Override
+        public KaKaoUserInfoResponse getKaKaoUserProfileInfo(String accessToken) {
+            return KaKaoUserInfoResponse.testInstance(uid, email);
         }
     }
 

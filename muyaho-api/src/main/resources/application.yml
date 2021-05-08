@@ -13,3 +13,4 @@ spring:
       - swagger
       - market
       - rds
+      - oauth
