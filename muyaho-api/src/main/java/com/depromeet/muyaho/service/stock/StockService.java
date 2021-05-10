@@ -1,9 +1,6 @@
 package com.depromeet.muyaho.service.stock;
 
-import com.depromeet.muyaho.domain.stock.Stock;
-import com.depromeet.muyaho.domain.stock.StockCollection;
-import com.depromeet.muyaho.domain.stock.StockMarketType;
-import com.depromeet.muyaho.domain.stock.StockRepository;
+import com.depromeet.muyaho.domain.stock.*;
 import com.depromeet.muyaho.service.stock.dto.request.StockInfoRequest;
 import com.depromeet.muyaho.service.stock.dto.response.StockInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +24,20 @@ public class StockService {
 
         final Map<String, Stock> stockMap = stockCollection.getStockMap();
         List<Stock> stockList = stockInfos.stream()
+            .filter(stock -> isAllowedCurrency(type, stock.getCode()))
             .map(stock -> stockMap.getOrDefault(stock.getCode(), Stock.newInstance(type, stock.getCode(), stock.getName())))
             .map(Stock::active)
             .collect(Collectors.toList());
-        
+
         stockRepository.saveAll(stockList);
+    }
+
+    private boolean isAllowedCurrency(StockMarketType type, String code) {
+        if (type.isAllowAll()) {
+            return true;
+        }
+        return type.getAllowedCurrencies().stream()
+            .anyMatch(code::startsWith);
     }
 
     @Transactional(readOnly = true)
