@@ -28,7 +28,7 @@ public class MemberStockService {
     @Transactional
     public MemberStockInfoResponse addMemberStock(AddMemberStockRequest request, Long memberId) {
         MemberStockServiceUtils.validateNotExistStockInMember(memberStockRepository, request.getStockId(), memberId);
-        Stock findStock = StockServiceUtils.findStockById(stockRepository, request.getStockId());
+        Stock findStock = StockServiceUtils.findActiveStockById(stockRepository, request.getStockId());
         MemberStock memberStock = memberStockRepository.save(request.toEntity(memberId, findStock));
         return MemberStockInfoResponse.of(memberStock, memberStock.getStock());
     }

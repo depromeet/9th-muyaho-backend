@@ -189,21 +189,6 @@ class StockServiceTest {
     }
 
     @Test
-    void 해당_타입에서_허용된_통화만_불러온다() {
-        // given
-        Stock stock1 = StockCreator.createActive("KRW-ABC", "허용된 비트코인", StockMarketType.BITCOIN);
-        Stock stock2 = StockCreator.createActive("ABC", "허용되지 않은 비트코인", StockMarketType.BITCOIN);
-        stockRepository.saveAll(Arrays.asList(stock1, stock2));
-
-        // when
-        List<StockInfoResponse> responseList = stockService.retrieveStockInfo(StockMarketType.BITCOIN);
-
-        // then
-        assertThat(responseList).hasSize(1);
-        assertThat(responseList.get(0).getCode()).isEqualTo(stock1.getCode());
-    }
-
-    @Test
     void 따로_통화_제한이_없는경우_활성화된_모든_주식을_조회한다() {
         // given
         Stock stock1 = StockCreator.createActive("KRW-ABC", "제한 없는 국내주식", StockMarketType.DOMESTIC_STOCK);
@@ -215,8 +200,8 @@ class StockServiceTest {
 
         // then
         assertThat(responseList).hasSize(2);
-        assertThat(responseList.get(0).getCode()).isEqualTo(stock1.getCode());
-        assertThat(responseList.get(1).getCode()).isEqualTo(stock2.getCode());
+        assertThat(responseList.get(0).getCode()).isEqualTo(stock2.getCode());
+        assertThat(responseList.get(1).getCode()).isEqualTo(stock1.getCode());
     }
 
     private void assertStock(Stock stock, String code, String name, StockMarketType type, StockStatus status) {

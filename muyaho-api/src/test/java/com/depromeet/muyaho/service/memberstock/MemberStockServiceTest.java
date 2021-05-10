@@ -92,6 +92,16 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
+    void 비활성화된_주식을_등록하려는_경우_에러가_발생한다() {
+        // given
+        Stock disActiveStock = stockRepository.save(StockCreator.createDisable("Disable", "비활성화", StockMarketType.BITCOIN));
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(disActiveStock.getId(), 1000, 10);
+
+        // when
+        assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
     void 내가_소유한_주식_들을_조회하면_보유한_주식_정보와함께_조회된다() {
         // given
         String code = "KRW-BIT";

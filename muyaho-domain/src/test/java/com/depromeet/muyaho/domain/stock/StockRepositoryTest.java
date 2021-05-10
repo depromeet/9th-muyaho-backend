@@ -22,11 +22,11 @@ class StockRepositoryTest {
     }
 
     @Test
-    void 비트코인_허용된_통화만_조회된다() {
+    void 활성화된_주식만_조회된다() {
         // given
         StockMarketType type = StockMarketType.BITCOIN;
-        Stock allowedStock = StockCreator.createActive("KRW-ABC", "허용된 비트코인", type);
-        Stock notAllowedStock = StockCreator.createActive("ABC", "허용되지 않은 비트코인", type);
+        Stock allowedStock = StockCreator.createActive("AABC", "허용된 비트코인", type);
+        Stock notAllowedStock = StockCreator.createDisable("ABC", "허용되지 않은 비트코인", type);
         stockRepository.saveAll(Arrays.asList(allowedStock, notAllowedStock));
 
         // when
@@ -35,20 +35,6 @@ class StockRepositoryTest {
         // then
         assertThat(stockList).hasSize(1);
         assertThat(stockList.get(0).getCode()).isEqualTo(allowedStock.getCode());
-    }
-
-    @Test
-    void 국내주식_허용된_통화만_조회된다() {
-        // given
-        StockMarketType type = StockMarketType.DOMESTIC_STOCK;
-        Stock stock = StockCreator.createActive("code", "code", type);
-        stockRepository.save(stock);
-
-        // when
-        List<Stock> stockList = stockRepository.findAllActiveStockByType(type);
-
-        // then
-        assertThat(stockList).hasSize(1);
     }
 
 }
