@@ -12,18 +12,18 @@ public class UpBitTradeInfoResponse {
 
     private String market;
 
-    private int openingPrice;
+    private double openingPrice;
 
-    private int highPrice;
+    private double highPrice;
 
-    private int lowPrice;
+    private double lowPrice;
 
-    private int tradePrice;
+    private double tradePrice;
 
-    private int prevClosingPrice;
+    private double prevClosingPrice;
 
     @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
-    public UpBitTradeInfoResponse(String market, int openingPrice, int highPrice, int lowPrice, int tradePrice, int prevClosingPrice, int changeRate) {
+    public UpBitTradeInfoResponse(String market, double openingPrice, double highPrice, double lowPrice, double tradePrice, double prevClosingPrice) {
         this.market = market;
         this.openingPrice = openingPrice;
         this.highPrice = highPrice;

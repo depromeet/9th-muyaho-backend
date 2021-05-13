@@ -1,6 +1,7 @@
 package com.depromeet.muyaho.domain.memberstock.repository;
 
 import com.depromeet.muyaho.domain.memberstock.MemberStock;
+import com.depromeet.muyaho.domain.stock.StockMarketType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -25,21 +26,23 @@ public class MemberStockRepositoryCustomImpl implements MemberStockRepositoryCus
     }
 
     @Override
-    public List<MemberStock> findAllStocksByMemberId(Long memberId) {
-        return queryFactory.selectFrom(memberStock)
-            .innerJoin(memberStock.stock, stock).fetchJoin()
-            .where(
-                memberStock.memberId.eq(memberId)
-            ).fetch();
-    }
-
-    @Override
     public MemberStock findByIdAndMemberId(Long memberStockId, Long memberId) {
         return queryFactory.selectFrom(memberStock)
+            .innerJoin(memberStock.stock, stock).fetchJoin()
             .where(
                 memberStock.id.eq(memberStockId),
                 memberStock.memberId.eq(memberId)
             ).fetchOne();
+    }
+
+    @Override
+    public List<MemberStock> findAllStocksByMemberIdAndType(Long memberId, StockMarketType type) {
+        return queryFactory.selectFrom(memberStock)
+            .innerJoin(memberStock.stock, stock).fetchJoin()
+            .where(
+                memberStock.memberId.eq(memberId),
+                stock.type.eq(type)
+            ).fetch();
     }
 
 }

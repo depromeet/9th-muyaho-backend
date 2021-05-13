@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,6 +34,19 @@ public class MemberStockAmount {
 
     public static MemberStockAmount of(double purchasePrice, double quantity) {
         return new MemberStockAmount(purchasePrice, quantity);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MemberStockAmount amount = (MemberStockAmount) o;
+        return Double.compare(amount.purchasePrice, purchasePrice) == 0 && Double.compare(amount.quantity, quantity) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(purchasePrice, quantity);
     }
 
 }

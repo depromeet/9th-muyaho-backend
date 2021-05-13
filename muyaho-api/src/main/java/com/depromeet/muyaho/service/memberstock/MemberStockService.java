@@ -14,9 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RequiredArgsConstructor
 @Service
 public class MemberStockService {
@@ -31,14 +28,6 @@ public class MemberStockService {
         Stock findStock = StockServiceUtils.findActiveStockById(stockRepository, request.getStockId());
         MemberStock memberStock = memberStockRepository.save(request.toEntity(memberId, findStock));
         return MemberStockInfoResponse.of(memberStock, memberStock.getStock());
-    }
-
-    @Transactional(readOnly = true)
-    public List<MemberStockInfoResponse> getMyStockInfos(Long memberId) {
-        List<MemberStock> memberStocks = memberStockRepository.findAllStocksByMemberId(memberId);
-        return memberStocks.stream()
-            .map(memberStock -> MemberStockInfoResponse.of(memberStock, memberStock.getStock()))
-            .collect(Collectors.toList());
     }
 
     @Transactional
