@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberStockCreator {
 
-    public static MemberStock create(Long memberId, Stock stock, int purchasePrice, int quantity) {
+    public static MemberStock create(Long memberId, Stock stock, double purchasePrice, double quantity) {
         return MemberStock.of(memberId, stock, purchasePrice, quantity);
     }
 

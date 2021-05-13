@@ -3,10 +3,12 @@ package com.depromeet.muyaho.controller.memberstock;
 import com.depromeet.muyaho.config.interceptor.Auth;
 import com.depromeet.muyaho.config.resolver.MemberId;
 import com.depromeet.muyaho.controller.ApiResponse;
+import com.depromeet.muyaho.service.memberstock.MemberStockRetrieveService;
 import com.depromeet.muyaho.service.memberstock.MemberStockService;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.request.UpdateMemberStockRequest;
+import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockCurrentInfoResponse;
 import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +24,7 @@ import java.util.List;
 public class MemberStockController {
 
     private final MemberStockService memberStockService;
+    private final MemberStockRetrieveService memberStockRetrieveService;
 
     @Operation(summary = "내가 소유한 주식을 새롭게 등록하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization", description = "Bearer Token"))
     @Auth
@@ -32,9 +35,9 @@ public class MemberStockController {
 
     @Operation(summary = "내가 소유한 주식들을 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
-    @GetMapping("/api/v1/member/stock")
-    public ApiResponse<List<MemberStockInfoResponse>> getMyStocks(@MemberId Long memberId) {
-        return ApiResponse.success(memberStockService.getMyStockInfos(memberId));
+    @GetMapping("/api/v1/member/stock/bitcoin")
+    public ApiResponse<List<MemberStockCurrentInfoResponse>> getMyBitCoinStocks(@MemberId Long memberId) {
+        return ApiResponse.success(memberStockRetrieveService.getMyBitCoinStock(memberId));
     }
 
     @Operation(summary = "내가 소유한 주식들을 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))

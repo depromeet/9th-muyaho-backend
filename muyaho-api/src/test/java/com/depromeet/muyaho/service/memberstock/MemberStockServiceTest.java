@@ -11,7 +11,6 @@ import com.depromeet.muyaho.service.MemberSetupTest;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.request.UpdateMemberStockRequest;
-import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,8 +54,8 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 멤버가_새롭게_소유한_주식을_등록한다() {
         // given
-        int purchasePrice = 10000;
-        int quantity = 5;
+        double purchasePrice = 10000;
+        double quantity = 5;
 
         AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), purchasePrice, quantity);
 
@@ -102,61 +101,13 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 내가_소유한_주식_들을_조회하면_보유한_주식_정보와함께_조회된다() {
-        // given
-        String code = "KRW-BIT";
-        String name = "비트코인";
-        StockMarketType type = StockMarketType.BITCOIN;
-        Stock stock = StockCreator.createActive(code, name, type);
-        stockRepository.save(stock);
-
-        int purchasePrice = 10000;
-        int quantity = 10;
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, purchasePrice, quantity);
-        memberStockRepository.save(memberStock);
-
-        // when
-        List<MemberStockInfoResponse> responses = memberStockService.getMyStockInfos(memberId);
-
-        // then
-        assertThat(responses).hasSize(1);
-        assertThat(responses.get(0).getMemberStockId()).isEqualTo(memberStock.getId());
-        assertThat(responses.get(0).getPurchasePrice()).isEqualTo(purchasePrice);
-        assertThat(responses.get(0).getQuantity()).isEqualTo(quantity);
-        assertThat(responses.get(0).getStock().getCode()).isEqualTo(code);
-        assertThat(responses.get(0).getStock().getName()).isEqualTo(name);
-        assertThat(responses.get(0).getStock().getType()).isEqualTo(type);
-    }
-
-    @Test
-    void 다른_사람이_소유한_주식에_접근할_수없다() {
-        // given
-        memberStockRepository.save(MemberStockCreator.create(999L, stock, 10000, 10));
-
-        // when
-        List<MemberStockInfoResponse> responses = memberStockService.getMyStockInfos(memberId);
-
-        // then
-        assertThat(responses).isEmpty();
-    }
-
-    @Test
-    void 아무_주식도_소유하고_있지않을때_조회하면_빈_리스트가_반환된다() {
-        // when
-        List<MemberStockInfoResponse> responses = memberStockService.getMyStockInfos(memberId);
-
-        // then
-        assertThat(responses).isEmpty();
-    }
-
-    @Test
     void 보유한_주식을_수정한다() {
         // given
         MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
         memberStockRepository.save(memberStock);
 
-        int purchasePrice = 30000;
-        int quantity = 999999;
+        double purchasePrice = 30000;
+        double quantity = 999999;
 
         UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity);
 
@@ -175,8 +126,8 @@ class MemberStockServiceTest extends MemberSetupTest {
         MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
         memberStockRepository.save(memberStock);
 
-        int purchasePrice = 30000;
-        int quantity = 999999;
+        double purchasePrice = 30000;
+        double quantity = 999999;
 
         UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity);
 
@@ -212,8 +163,8 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 내가_등록한_보유_주식을_삭제하면_기존의_id와_해당_정보들이_자동으로_백업된다() {
         // given
-        int purchasePrice = 33333;
-        int quantity = 55;
+        double purchasePrice = 33333;
+        double quantity = 55;
         MemberStock memberStock = MemberStockCreator.create(memberId, stock, purchasePrice, quantity);
         memberStockRepository.save(memberStock);
 
@@ -249,7 +200,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         assertThatThrownBy(() -> memberStockService.deleteMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
     }
 
-    private void assertDeletedMemberStack(DeletedMemberStock deletedMemberStock, Long memberStockId, Long stockId, Long memberId, int purchasePrice, int quantity) {
+    private void assertDeletedMemberStack(DeletedMemberStock deletedMemberStock, Long memberStockId, Long stockId, Long memberId, double purchasePrice, double quantity) {
         assertThat(deletedMemberStock.getBackupId()).isEqualTo(memberStockId);
         assertThat(deletedMemberStock.getStockId()).isEqualTo(stockId);
         assertThat(deletedMemberStock.getMemberId()).isEqualTo(memberId);
@@ -257,7 +208,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         assertThat(deletedMemberStock.getStockAmount().getQuantity()).isEqualTo(quantity);
     }
 
-    private void assertMemberStock(MemberStock memberStock, Long memberId, Long stockId, int purchasePrice, int quantity) {
+    private void assertMemberStock(MemberStock memberStock, Long memberId, Long stockId, double purchasePrice, double quantity) {
         assertThat(memberStock.getMemberId()).isEqualTo(memberId);
         assertThat(memberStock.getStock().getId()).isEqualTo(stockId);
         assertThat(memberStock.getPurchasePrice()).isEqualTo(purchasePrice);

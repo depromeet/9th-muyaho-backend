@@ -27,7 +27,7 @@ public class AddMemberStockRequest {
         return MemberStock.of(memberId, stock, purchasePrice, quantity);
     }
 
-    public static AddMemberStockRequest testInstance(Long stockId, int purchasePrice, int quantity) {
+    public static AddMemberStockRequest testInstance(Long stockId, double purchasePrice, double quantity) {
         return new AddMemberStockRequest(stockId, purchasePrice, quantity);
     }
 

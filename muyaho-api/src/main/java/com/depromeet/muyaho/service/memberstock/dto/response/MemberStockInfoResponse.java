@@ -3,21 +3,28 @@ package com.depromeet.muyaho.service.memberstock.dto.response;
 import com.depromeet.muyaho.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.stock.Stock;
 import com.depromeet.muyaho.service.stock.dto.response.StockInfoResponse;
-import lombok.AccessLevel;
+import com.depromeet.muyaho.utils.DecimalStringUtils;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberStockInfoResponse {
 
     private final Long memberStockId;
 
     private final StockInfoResponse stock;
 
-    private final double purchasePrice;
+    private final String purchasePrice;
 
-    private final double quantity;
+    private final String quantity;
+
+    @Builder
+    private MemberStockInfoResponse(Long memberStockId, StockInfoResponse stock, double purchasePrice, double quantity) {
+        this.memberStockId = memberStockId;
+        this.stock = stock;
+        this.purchasePrice = DecimalStringUtils.covertToString(purchasePrice);
+        this.quantity = DecimalStringUtils.covertToString(quantity);
+    }
 
     public static MemberStockInfoResponse of(MemberStock memberStock, Stock stock) {
         return new MemberStockInfoResponse(memberStock.getId(), StockInfoResponse.of(stock),

@@ -16,12 +16,12 @@ public class UpdateMemberStockRequest {
     private Long memberStockId;
 
     @NotNull
-    private int purchasePrice;
+    private double purchasePrice;
 
     @NotNull
-    private int quantity;
+    private double quantity;
 
-    public static UpdateMemberStockRequest testInstance(Long memberStockId, int purchasePrice, int quantity) {
+    public static UpdateMemberStockRequest testInstance(Long memberStockId, double purchasePrice, double quantity) {
         return new UpdateMemberStockRequest(memberStockId, purchasePrice, quantity);
     }
 

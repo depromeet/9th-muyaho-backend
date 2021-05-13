@@ -40,7 +40,7 @@ public class MemberStock extends BaseTimeEntity {
         return new MemberStock(memberId, stock, purchasePrice, quantity);
     }
 
-    public void updateAmount(int purchasePrice, int quantity) {
+    public void updateAmount(double purchasePrice, double quantity) {
         this.stockAmount = MemberStockAmount.of(purchasePrice, quantity);
     }
 
@@ -54,6 +54,10 @@ public class MemberStock extends BaseTimeEntity {
 
     public double getQuantity() {
         return this.stockAmount.getQuantity();
+    }
+
+    public String getStockCode() {
+        return this.stock.getCode();
     }
 
 }
