@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import java.math.BigDecimal;
@@ -17,9 +19,11 @@ import java.util.Objects;
 public class MemberStockAmount {
 
     @Embedded
+    @AttributeOverride(name = "money", column = @Column(name = "purchase_price"))
     private Money purchasePrice;
 
     @Embedded
+    @AttributeOverride(name = "quantity", column = @Column(name = "purchase_quantity"))
     private Quantity quantity;
 
     private MemberStockAmount(double purchasePrice, double quantity) {

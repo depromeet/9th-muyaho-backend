@@ -4,9 +4,9 @@ Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
 
 {
-    "stockId": 3,
+    "stockId": 2,
     "purchasePrice": 10000,
-    "quantity": 1
+    "quantity": 10
 }
 
 ### 내가 소유한 주식 리스트를 조회한다
