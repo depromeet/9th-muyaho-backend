@@ -85,9 +85,9 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
 
         assertThat(responses.get(0).getPurchasePrice()).isEqualTo("10000");
         assertThat(responses.get(0).getQuantity()).isEqualTo("10");
-        assertThat(responses.get(0).getPurchaseTotalPrice()).isEqualTo("100000");
+        assertThat(responses.get(0).getPurchaseAmount()).isEqualTo("100000");
         assertThat(responses.get(0).getCurrentPrice()).isEqualTo("20000.5");
-        assertThat(responses.get(0).getCurrentTotalPrice()).isEqualTo("200005");
+        assertThat(responses.get(0).getCurrentAmount()).isEqualTo("200005");
     }
 
     @Test

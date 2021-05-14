@@ -16,20 +16,20 @@ public class MemberStockCurrentInfoResponse {
     private final StockInfoResponse stock;
     private final String quantity;
     private final String purchasePrice;
+    private final String purchaseAmount;
     private final String currentPrice;
-    private final String currentTotalPrice;
-    private final String purchaseTotalPrice;
+    private final String currentAmount;
     private final String earningRate;
 
     @Builder
     private MemberStockCurrentInfoResponse(Long memberStockId, StockInfoResponse stock, BigDecimal quantity, BigDecimal purchasePrice, BigDecimal currentPrice) {
         this.memberStockId = memberStockId;
         this.stock = stock;
-        this.purchasePrice = roundFloor(purchasePrice);
         this.quantity = roundFloor(quantity);
+        this.purchasePrice = roundFloor(purchasePrice);
+        this.purchaseAmount = roundFloor(quantity.multiply(purchasePrice));
         this.currentPrice = roundFloor(currentPrice);
-        this.currentTotalPrice = roundFloor(quantity.multiply(currentPrice));
-        this.purchaseTotalPrice = roundFloor(quantity.multiply(purchasePrice));
+        this.currentAmount = roundFloor(quantity.multiply(currentPrice));
         this.earningRate = roundFloor(calculateDifferencePercent(currentPrice, purchasePrice));
     }
 

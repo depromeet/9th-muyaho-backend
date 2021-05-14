@@ -21,12 +21,15 @@ public class MemberStockInfoResponse {
 
     private final String quantity;
 
+    private final String purchaseAmount;
+
     @Builder
     private MemberStockInfoResponse(Long memberStockId, StockInfoResponse stock, BigDecimal purchasePrice, BigDecimal quantity) {
         this.memberStockId = memberStockId;
         this.stock = stock;
         this.purchasePrice = roundFloor(purchasePrice);
         this.quantity = roundFloor(quantity);
+        this.purchaseAmount = roundFloor(purchasePrice.multiply(quantity));
     }
 
     public static MemberStockInfoResponse of(MemberStock memberStock, Stock stock) {
