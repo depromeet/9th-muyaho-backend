@@ -18,7 +18,9 @@ public enum ErrorCode {
 
     VALIDATION_NOT_SUPPORTED_PROVIDER_EXCEPTION("V001", "아직 지원하고 있지 않은 소셜 타입입니다"),
     VALIDATION_INVALID_TOKEN_EXCEPTION("V002", "잘못된 토큰입니다"),
-    VALIDATION_INVALID_EMAIL_EXCEPTION("V003", "이메일 포맷에 어긋납니다");
+    VALIDATION_INVALID_EMAIL_EXCEPTION("V003", "이메일 포맷에 어긋납니다"),
+    VALIDATION_INVALID_MONEY_EXCEPTION("V004", "잘못된 돈을 입력하셨습니다"),
+    VALIDATION_INVALID_QUANTITY_EXCEPTION("V005", "잘못된 보유 수량입니다");
 
     private final String code;
     private final String message;

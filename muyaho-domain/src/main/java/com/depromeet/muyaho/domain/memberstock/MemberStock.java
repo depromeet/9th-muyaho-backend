@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,14 +46,14 @@ public class MemberStock extends BaseTimeEntity {
     }
 
     public DeletedMemberStock delete() {
-        return DeletedMemberStock.of(id, memberId, stock.getId(), getPurchasePrice(), getQuantity());
+        return DeletedMemberStock.of(id, memberId, stock.getId(), getPurchasePrice().doubleValue(), getQuantity().doubleValue());
     }
 
-    public double getPurchasePrice() {
+    public BigDecimal getPurchasePrice() {
         return this.stockAmount.getPurchasePrice();
     }
 
-    public double getQuantity() {
+    public BigDecimal getQuantity() {
         return this.stockAmount.getQuantity();
     }
 

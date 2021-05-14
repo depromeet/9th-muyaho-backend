@@ -4,32 +4,34 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @ToString
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class UpBitTradeInfoResponse {
 
     private String market;
 
-    private double openingPrice;
+    private BigDecimal openingPrice;
 
-    private double highPrice;
+    private BigDecimal highPrice;
 
-    private double lowPrice;
+    private BigDecimal lowPrice;
 
-    private double tradePrice;
+    private BigDecimal tradePrice;
 
-    private double prevClosingPrice;
+    private BigDecimal prevClosingPrice;
 
-    @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
-    public UpBitTradeInfoResponse(String market, double openingPrice, double highPrice, double lowPrice, double tradePrice, double prevClosingPrice) {
+    private UpBitTradeInfoResponse(String market, BigDecimal tradePrice) {
         this.market = market;
-        this.openingPrice = openingPrice;
-        this.highPrice = highPrice;
-        this.lowPrice = lowPrice;
         this.tradePrice = tradePrice;
-        this.prevClosingPrice = prevClosingPrice;
+    }
+
+    public static UpBitTradeInfoResponse testInstance(String market, double tradePrice) {
+        return new UpBitTradeInfoResponse(market, new BigDecimal(tradePrice));
     }
 
 }

@@ -3,9 +3,12 @@ package com.depromeet.muyaho.service.memberstock.dto.response;
 import com.depromeet.muyaho.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.stock.Stock;
 import com.depromeet.muyaho.service.stock.dto.response.StockInfoResponse;
-import com.depromeet.muyaho.utils.DecimalStringUtils;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.math.BigDecimal;
+
+import static com.depromeet.muyaho.utils.BigDecimalUtils.*;
 
 @Getter
 public class MemberStockInfoResponse {
@@ -19,11 +22,11 @@ public class MemberStockInfoResponse {
     private final String quantity;
 
     @Builder
-    private MemberStockInfoResponse(Long memberStockId, StockInfoResponse stock, double purchasePrice, double quantity) {
+    private MemberStockInfoResponse(Long memberStockId, StockInfoResponse stock, BigDecimal purchasePrice, BigDecimal quantity) {
         this.memberStockId = memberStockId;
         this.stock = stock;
-        this.purchasePrice = DecimalStringUtils.covertToString(purchasePrice);
-        this.quantity = DecimalStringUtils.covertToString(quantity);
+        this.purchasePrice = roundFloor(purchasePrice);
+        this.quantity = roundFloor(quantity);
     }
 
     public static MemberStockInfoResponse of(MemberStock memberStock, Stock stock) {

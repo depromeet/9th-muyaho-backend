@@ -48,10 +48,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
 
         @Override
         public List<UpBitTradeInfoResponse> retrieveTrades(String marketCode) {
-            return Collections.singletonList(UpBitTradeInfoResponse.testBuilder()
-                .tradePrice(20000.5)
-                .market(marketCode)
-                .build());
+            return Collections.singletonList(UpBitTradeInfoResponse.testInstance(marketCode, 20000.5));
         }
     }
 

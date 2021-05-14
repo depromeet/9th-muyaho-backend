@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -204,15 +205,16 @@ class MemberStockServiceTest extends MemberSetupTest {
         assertThat(deletedMemberStock.getBackupId()).isEqualTo(memberStockId);
         assertThat(deletedMemberStock.getStockId()).isEqualTo(stockId);
         assertThat(deletedMemberStock.getMemberId()).isEqualTo(memberId);
-        assertThat(deletedMemberStock.getStockAmount().getPurchasePrice()).isEqualTo(purchasePrice);
-        assertThat(deletedMemberStock.getStockAmount().getQuantity()).isEqualTo(quantity);
+        assertThat(deletedMemberStock.getStockAmount().getPurchasePrice()).isEqualByComparingTo(new BigDecimal(purchasePrice));
+        assertThat(deletedMemberStock.getStockAmount().getQuantity()).isEqualByComparingTo(new BigDecimal(quantity));
     }
 
     private void assertMemberStock(MemberStock memberStock, Long memberId, Long stockId, double purchasePrice, double quantity) {
         assertThat(memberStock.getMemberId()).isEqualTo(memberId);
         assertThat(memberStock.getStock().getId()).isEqualTo(stockId);
-        assertThat(memberStock.getPurchasePrice()).isEqualTo(purchasePrice);
-        assertThat(memberStock.getQuantity()).isEqualTo(quantity);
+        assertThat(memberStock.getPurchasePrice()).isEqualByComparingTo(new BigDecimal(purchasePrice));
+        assertThat(memberStock.getPurchasePrice()).isEqualByComparingTo(new BigDecimal(purchasePrice));
+        assertThat(memberStock.getQuantity()).isEqualByComparingTo(new BigDecimal(quantity));
     }
 
 }

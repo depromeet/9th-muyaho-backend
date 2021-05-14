@@ -1,12 +1,14 @@
 package com.depromeet.muyaho.domain.memberstock;
 
-import com.depromeet.muyaho.exception.ValidationException;
+import com.depromeet.muyaho.domain.common.Money;
+import com.depromeet.muyaho.domain.common.Quantity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
@@ -14,26 +16,27 @@ import java.util.Objects;
 @Embeddable
 public class MemberStockAmount {
 
-    @Column(nullable = false)
-    private double purchasePrice;
+    @Embedded
+    private Money purchasePrice;
 
-    @Column(nullable = false)
-    private double quantity;
+    @Embedded
+    private Quantity quantity;
 
     private MemberStockAmount(double purchasePrice, double quantity) {
-        validateStockInfo(purchasePrice, quantity);
-        this.purchasePrice = purchasePrice;
-        this.quantity = quantity;
-    }
-
-    private void validateStockInfo(double purchasePrice, double quantity) {
-        if (purchasePrice <= 0 || quantity <= 0) {
-            throw new ValidationException(String.format("주식의 평단가 (%s)와 보유 수량 (%s)은 0보다 작을 수 없습니다", purchasePrice, quantity));
-        }
+        this.purchasePrice = Money.of(purchasePrice);
+        this.quantity = Quantity.of(quantity);
     }
 
     public static MemberStockAmount of(double purchasePrice, double quantity) {
         return new MemberStockAmount(purchasePrice, quantity);
+    }
+
+    public BigDecimal getPurchasePrice() {
+        return purchasePrice.getMoney();
+    }
+
+    public BigDecimal getQuantity() {
+        return quantity.getQuantity();
     }
 
     @Override
@@ -41,7 +44,7 @@ public class MemberStockAmount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MemberStockAmount amount = (MemberStockAmount) o;
-        return Double.compare(amount.purchasePrice, purchasePrice) == 0 && Double.compare(amount.quantity, quantity) == 0;
+        return Objects.equals(purchasePrice, amount.purchasePrice) && Objects.equals(quantity, amount.quantity);
     }
 
     @Override
