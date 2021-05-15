@@ -5,6 +5,10 @@ import com.depromeet.muyaho.domain.stock.Stock;
 import com.depromeet.muyaho.domain.stock.StockCreator;
 import com.depromeet.muyaho.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.stock.StockRepository;
+import com.depromeet.muyaho.external.stock.StockApiCaller;
+import com.depromeet.muyaho.external.stock.StockType;
+import com.depromeet.muyaho.external.stock.dto.response.StockCodeResponse;
+import com.depromeet.muyaho.external.stock.dto.response.StockPriceResponse;
 import com.depromeet.muyaho.external.upbit.UpBitApiCaller;
 import com.depromeet.muyaho.external.upbit.dto.response.UpBitMarketResponse;
 import com.depromeet.muyaho.external.upbit.dto.response.UpBitTradeInfoResponse;
@@ -36,7 +40,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
 
     @BeforeEach
     void setUpStock() {
-        memberStockRetrieveService = new MemberStockRetrieveService(memberStockRepository, new StubUpBitApiCaller());
+        memberStockRetrieveService = new MemberStockRetrieveService(memberStockRepository, new StubUpBitApiCaller(), new StubStockApiCaller());
         stock = stockRepository.save(StockCreator.createActive("code", "비트코인", StockMarketType.BITCOIN));
     }
 
@@ -49,6 +53,18 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
         @Override
         public List<UpBitTradeInfoResponse> retrieveTrades(String marketCode) {
             return Collections.singletonList(UpBitTradeInfoResponse.testInstance(marketCode, 20000.5));
+        }
+    }
+
+    private static class StubStockApiCaller implements StockApiCaller {
+        @Override
+        public List<StockCodeResponse> getStockCodes(StockType type) {
+            return null;
+        }
+
+        @Override
+        public List<StockPriceResponse> getStockPrice(String codes) {
+            return null;
         }
     }
 
@@ -74,7 +90,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
         memberStockRepository.save(memberStock);
 
         // when
-        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getMyBitCoinStock(memberId);
+        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getStocksInfo(StockMarketType.BITCOIN, memberId);
 
         // then
         assertThat(responses).hasSize(1);
@@ -96,7 +112,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
         memberStockRepository.save(MemberStockCreator.create(999L, stock, 10000, 10));
 
         // when
-        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getMyBitCoinStock(memberId);
+        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getStocksInfo(StockMarketType.BITCOIN, memberId);
 
         // then
         assertThat(responses).isEmpty();
@@ -105,7 +121,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
     @Test
     void 아무_주식도_소유하고_있지않을때_조회하면_빈_리스트가_반환된다() {
         // when
-        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getMyBitCoinStock(memberId);
+        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getStocksInfo(StockMarketType.BITCOIN, memberId);
 
         // then
         assertThat(responses).isEmpty();

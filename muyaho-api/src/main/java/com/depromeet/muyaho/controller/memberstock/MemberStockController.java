@@ -3,6 +3,7 @@ package com.depromeet.muyaho.controller.memberstock;
 import com.depromeet.muyaho.config.interceptor.Auth;
 import com.depromeet.muyaho.config.resolver.MemberId;
 import com.depromeet.muyaho.controller.ApiResponse;
+import com.depromeet.muyaho.domain.stock.StockMarketType;
 import com.depromeet.muyaho.service.memberstock.MemberStockRetrieveService;
 import com.depromeet.muyaho.service.memberstock.MemberStockService;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
@@ -36,8 +37,8 @@ public class MemberStockController {
     @Operation(summary = "내가 소유한 주식들을 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
     @GetMapping("/api/v1/member/stock/bitcoin")
-    public ApiResponse<List<MemberStockCurrentInfoResponse>> getMyBitCoinStocks(@MemberId Long memberId) {
-        return ApiResponse.success(memberStockRetrieveService.getMyBitCoinStock(memberId));
+    public ApiResponse<List<MemberStockCurrentInfoResponse>> getStocksInfo(@RequestParam StockMarketType type, @MemberId Long memberId) {
+        return ApiResponse.success(memberStockRetrieveService.getStocksInfo(type, memberId));
     }
 
     @Operation(summary = "내가 소유한 주식들을 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))

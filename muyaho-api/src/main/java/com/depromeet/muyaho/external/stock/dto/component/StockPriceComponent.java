@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "stock.markets")
-public class StockCodeComponent {
+@ConfigurationProperties(prefix = "stock.trade")
+public class StockPriceComponent {
 
     private String url;
 
