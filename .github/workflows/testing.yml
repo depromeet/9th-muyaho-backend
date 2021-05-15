@@ -1,8 +1,13 @@
-name: Testing CI
+name: CI Testing and Coverage
 
 on:
   pull_request:
     branches:
+      - master
+      - develop
+  push:
+    branches:
+      - master
       - develop
 jobs:
   testing:
@@ -19,3 +24,9 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODE_COV_TOKEN }}
+          file: muyaho-api/build/jacoco-report/test/jacocoTestReport.xml

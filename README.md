@@ -1,4 +1,5 @@
 # 9th_muyaho_backend (영차)
+![Generic badge](https://img.shields.io/badge/version-0.0.2-orange.svg)
 ## Introduction
 ### 주식 수익률 계산기, 주린이 눈물
 
