@@ -21,12 +21,9 @@ public class StockCollection {
         return new StockCollection(stockList);
     }
 
-    public void disable() {
-        stockList.forEach(Stock::disable);
-    }
-
-    public Map<String, Stock> getStockMap() {
+    public Map<String, Stock> toDisableMap() {
         return this.stockList.stream()
+            .map(Stock::disable)
             .collect(Collectors.toMap(Stock::getCode, stock -> stock));
     }
 

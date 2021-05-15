@@ -3,6 +3,7 @@ package com.depromeet.muyaho.service.member;
 import com.depromeet.muyaho.domain.member.DeleteMemberRepository;
 import com.depromeet.muyaho.domain.member.Member;
 import com.depromeet.muyaho.domain.member.MemberRepository;
+import com.depromeet.muyaho.service.member.dto.request.CheckDuplicateNameRequest;
 import com.depromeet.muyaho.service.member.dto.request.CreateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.request.UpdateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.response.MemberInfoResponse;
@@ -25,8 +26,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public void checkIsDuplicateName(String name) {
-        MemberServiceUtils.validateNotExistName(memberRepository, name);
+    public void checkIsDuplicateName(CheckDuplicateNameRequest request) {
+        MemberServiceUtils.validateNotExistName(memberRepository, request.getName());
     }
 
     @Transactional(readOnly = true)

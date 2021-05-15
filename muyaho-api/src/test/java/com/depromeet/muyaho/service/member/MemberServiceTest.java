@@ -3,6 +3,7 @@ package com.depromeet.muyaho.service.member;
 import com.depromeet.muyaho.domain.member.*;
 import com.depromeet.muyaho.exception.ConflictException;
 import com.depromeet.muyaho.exception.NotFoundException;
+import com.depromeet.muyaho.service.member.dto.request.CheckDuplicateNameRequest;
 import com.depromeet.muyaho.service.member.dto.request.CreateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.request.UpdateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.response.MemberInfoResponse;
@@ -107,6 +108,15 @@ class MemberServiceTest {
     }
 
     @Test
+    void 닉네임_중복체크_존재하지_않은_닉네임일경우_통과한다() {
+        // given
+        CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance("무야호");
+
+        // when
+        memberService.checkIsDuplicateName(request);
+    }
+
+    @Test
     void 닉네임_중복체크_이미_존재하는_닉네임일_경우_에러가_발생한다() {
         // given
         String name = "무야호";
@@ -115,8 +125,10 @@ class MemberServiceTest {
 
         memberRepository.save(MemberCreator.create("another uuid", name, profileUrl, provider));
 
+        CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance(name);
+
         // when & then
-        assertThatThrownBy(() -> memberService.checkIsDuplicateName(name)).isInstanceOf(ConflictException.class);
+        assertThatThrownBy(() -> memberService.checkIsDuplicateName(request)).isInstanceOf(ConflictException.class);
     }
 
     @Test

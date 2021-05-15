@@ -16,7 +16,7 @@ public enum StockMarketType {
 
     private final List<String> allowedCurrencies;
 
-    public boolean isAllow(String code) {
+    public boolean isAllowedCode(String code) {
         if (allowedCurrencies.isEmpty()) {
             return true;
         }

@@ -19,17 +19,17 @@ public class StockService {
 
     @Transactional
     public void renewStock(StockMarketType type, List<StockInfoRequest> stockInfos) {
-        StockCollection stockCollection = StockCollection.of(stockRepository.findAllByType(type));
-        stockCollection.disable();
+        StockCollection collection = StockCollection.of(stockRepository.findAllByType(type));
+        stockRepository.saveAll(activateListedStocks(collection, type, stockInfos));
+    }
 
-        final Map<String, Stock> stockMap = stockCollection.getStockMap();
-        List<Stock> stockList = stockInfos.stream()
-            .filter(stock -> type.isAllow(stock.getCode()))
-            .map(stock -> stockMap.getOrDefault(stock.getCode(), Stock.newInstance(type, stock.getCode(), stock.getName())))
+    private List<Stock> activateListedStocks(StockCollection collection, StockMarketType type, List<StockInfoRequest> stockInfos) {
+        Map<String, Stock> presentStocks = collection.toDisableMap();
+        return stockInfos.stream()
+            .filter(request -> request.isAllowed(type))
+            .map(request -> presentStocks.getOrDefault(request.getCode(), request.toEntity(type)))
             .map(Stock::active)
             .collect(Collectors.toList());
-
-        stockRepository.saveAll(stockList);
     }
 
     @Transactional(readOnly = true)
