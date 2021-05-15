@@ -48,7 +48,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void 애플_로그인_요청시_이미_회원가입한_유저면_멤버의_PK_가_반환된다() {
+    void 애플_로그인_요청시_회원가입한_유저면_멤버의_PK_가_반환된다() {
         // given
         Member member = MemberCreator.create(uid, "무야호", null, MemberProvider.APPLE);
         memberRepository.save(member);
@@ -63,7 +63,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void 애플_로그인_요청시_회원가입_하지_않은_유저면_에러가_발생한다() {
+    void 애플_로그인_요청시_회원가입_하지_않은_유저면_404_에러가_발생한다() {
         // given
         AuthRequest request = AuthRequest.testInstance("token", MemberProvider.APPLE);
 
@@ -72,7 +72,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void 카카오_로그인_요청시_이미_회원가입한_유저면_멤버의_PK_가_반환된다() {
+    void 카카오_로그인_요청시_회원가입한_유저면_멤버의_PK_가_반환된다() {
         // given
         Member member = MemberCreator.create(uid, "무야호", null, MemberProvider.KAKAO);
         memberRepository.save(member);
@@ -87,7 +87,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void 카카오_로그인_요청시_아직_회원가입_지_않은_유저면_404_에러가_발생한다() {
+    void 카카오_로그인_요청시_아직_회원가입하지_않은_유저면_404_에러가_발생한다() {
         // given
         AuthRequest request = AuthRequest.testInstance("token", MemberProvider.KAKAO);
 
@@ -99,8 +99,30 @@ class AuthServiceTest {
     void 새로운_유저가_애플로_회원가입요청하면_멤버정보가_DB에_저장된다() {
         // given
         String name = "무야호";
-        String profileUrl = "http://profile.com";
+        String profileUrl = "https://profile.com";
         MemberProvider provider = MemberProvider.APPLE;
+
+        SignupMemberRequest request = SignupMemberRequest.testBuilder()
+            .token("token")
+            .name(name)
+            .profileUrl(profileUrl)
+            .provider(provider)
+            .build();
+
+        authService.signUpMember(request);
+
+        // then
+        List<Member> memberList = memberRepository.findAll();
+        assertThat(memberList).hasSize(1);
+        assertMember(memberList.get(0), uid, email, name, profileUrl, provider);
+    }
+
+    @Test
+    void 새로운_유저가_카카오로_회원가입시_회원정보가_DB_에_저장된다() {
+        // given
+        String name = "무야호";
+        String profileUrl = "https://profile.com";
+        MemberProvider provider = MemberProvider.KAKAO;
 
         SignupMemberRequest request = SignupMemberRequest.testBuilder()
             .token("token")

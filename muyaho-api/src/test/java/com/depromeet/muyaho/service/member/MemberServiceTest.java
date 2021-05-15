@@ -62,7 +62,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void 회원가입시_이미_존재하는_애플_멤버의경우_에러가_발생한다() {
+    void 회원가입시_이미_존재하는_애플_멤버의경우_409_에러가_발생한다() {
         // given
         String uid = "uid";
         String email = "will.seungho@gmail.com";
@@ -85,7 +85,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void 회원가입시_닉네임이_중복되면_에러가_발생한다() {
+    void 회원가입시_닉네임이_중복되면_409_에러가_발생한다() {
         // given
         String uid = "uid";
         String email = "will.seungho@gmail.com";
@@ -117,7 +117,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void 닉네임_중복체크_이미_존재하는_닉네임일_경우_에러가_발생한다() {
+    void 닉네임_중복체크_이미_존재하는_닉네임일_경우_409_에러가_발생한다() {
         // given
         String name = "무야호";
         String profileUrl = "https://profile.com";
@@ -132,11 +132,12 @@ class MemberServiceTest {
     }
 
     @Test
-    void 회원의_정보를_조회한다() {
+    void 회원정보를_요청하면_회원에_대한_정보가_반환된다() {
         // given
         String name = "강승호";
         String profileUrl = "https://profile.com";
-        Member member = memberRepository.save(MemberCreator.create("uid", name, profileUrl, MemberProvider.APPLE));
+        MemberProvider provider = MemberProvider.APPLE;
+        Member member = memberRepository.save(MemberCreator.create("uid", name, profileUrl, provider));
 
         // when
         MemberInfoResponse response = memberService.getMemberInfo(member.getId());
@@ -144,16 +145,17 @@ class MemberServiceTest {
         // then
         assertThat(response.getName()).isEqualTo(name);
         assertThat(response.getProfileUrl()).isEqualTo(profileUrl);
+        assertThat(response.getProvider()).isEqualTo(provider);
     }
 
     @Test
-    void 존재하지_않는_멤버정보를_조회하면_에러가_발생한다() {
+    void 존재하지_않는_멤버정보를_조회하면_404_에러가_발생한다() {
         // when & then
         assertThatThrownBy(() -> memberService.getMemberInfo(999L)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
-    void 회원_정보를_수정한다() {
+    void 회원_정보를_수정하면_DB_에_수정된_회원정보가_저장된다() {
         // given
         String uid = "uid";
         Member member = MemberCreator.create(uid, "강승호", null, MemberProvider.KAKAO);
@@ -173,7 +175,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void 회원정보_수정시_닉네임이_중복되면_에러가_발생한다() {
+    void 회원정보_수정시_닉네임이_중복되면_409_에러가_발생한다() {
         // given
         String name = "강승호";
         Member member1 = MemberCreator.create("uid1", "승호강", null, MemberProvider.KAKAO);
@@ -187,7 +189,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void 회원_정보_수정시_존재하지_않는_멤버일경우_에러가_발생한다() {
+    void 회원_정보_수정시_존재하지_않는_멤버일경우_404_에러가_발생한다() {
         // given
         UpdateMemberRequest request = UpdateMemberRequest.testInstance("승호", "profileUrl");
 
@@ -210,7 +212,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void 회원탈퇴시_백업_테이블에_해당_데이터가_보관된다() {
+    void 회원탈퇴시_백업_테이블에_해당_데이터가_백업된다() {
         // given
         Member member = MemberCreator.create("uid", "강승호", null, MemberProvider.KAKAO);
         memberRepository.save(member);
@@ -225,7 +227,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void 존재하지_않는_유저를_삭제할_수없다() {
+    void 존재하지_않은_멤버를_삭제요청하면_404_에러가_발생한다() {
         // when & then
         assertThatThrownBy(() -> memberService.deleteMemberInfo(999L)).isInstanceOf(NotFoundException.class);
     }

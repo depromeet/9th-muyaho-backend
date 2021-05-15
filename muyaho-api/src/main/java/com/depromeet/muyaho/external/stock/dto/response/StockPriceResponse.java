@@ -14,4 +14,8 @@ public class StockPriceResponse {
 
     private BigDecimal price;
 
+    public static StockPriceResponse testInstance(String code, double price) {
+        return new StockPriceResponse(code, new BigDecimal(price));
+    }
+
 }

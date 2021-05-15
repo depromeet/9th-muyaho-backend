@@ -53,7 +53,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 멤버가_새롭게_소유한_주식을_등록한다() {
+    void 멤버가_새롭게_보유한_주식을_등록한다() {
         // given
         double purchasePrice = 10000;
         double quantity = 5;
@@ -70,7 +70,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 존재하지_않은_주식을_소유한_주식으로_등록하려하면_에러가_발생한다() {
+    void 존재하지_않은_주식을_소유한_주식으로_등록하려하면_404_에러가_발생한다() {
         // given
         Long notExistStockId = 999L;
 
@@ -81,7 +81,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 이미_소유한_주식으로_등록한_주식을_다시_등록하려하면_에러가_발생한다() {
+    void 이미_소유한_주식으로_등록한_주식을_다시_등록하려하면_409_에러가_발생한다() {
         // given
         memberStockRepository.save(MemberStockCreator.create(memberId, stock, 10000, 10));
 
@@ -92,7 +92,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 비활성화된_주식을_등록하려는_경우_에러가_발생한다() {
+    void 비활성화된_주식을_등록하려는_경우_404_에러가_발생한다() {
         // given
         Stock disActiveStock = stockRepository.save(StockCreator.createDisable("Disable", "비활성화", StockMarketType.BITCOIN));
         AddMemberStockRequest request = AddMemberStockRequest.testInstance(disActiveStock.getId(), 1000, 10);
@@ -102,7 +102,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 보유한_주식을_수정한다() {
+    void 보유한_주식의_보유량과_평단가를_수정하면_DB_에_반영된다() {
         // given
         MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
         memberStockRepository.save(memberStock);
@@ -137,7 +137,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 보유하지_않은_주식에대해서_수정할_수없다() {
+    void 회원이_보유하지_않은_주식에대해서_수정할_수없다() {
         // given
         UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(999L, 10000, 10);
 
@@ -146,7 +146,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 내가_등록한_보유_주식을_삭제한다() {
+    void 내가_등록한_보유_주식을_등록_해제하면_기존의_DB_테이블에서_삭제된다() {
         // given
         MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
         memberStockRepository.save(memberStock);
@@ -162,7 +162,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 내가_등록한_보유_주식을_삭제하면_기존의_id와_해당_정보들이_자동으로_백업된다() {
+    void 내가_등록한_보유_주식을_삭제하면_기존의_id와_해당_정보들이_백업_테이블로_자동으로_백업된다() {
         // given
         double purchasePrice = 33333;
         double quantity = 55;
@@ -181,7 +181,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 다른사람이_소유한_보유_주식을_삭제할_수없다() {
+    void 다른사람이_소유한_보유_주식을_삭제할수없다() {
         // given
         MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
         memberStockRepository.save(memberStock);
@@ -193,7 +193,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 소유하지_않은_보유_주식을_삭제할_수없다() {
+    void 소유하지_않은_보유_주식을_삭제할수없다() {
         // given
         DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(999L);
 

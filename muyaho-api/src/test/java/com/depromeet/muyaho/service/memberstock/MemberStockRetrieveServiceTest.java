@@ -63,8 +63,8 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
         }
 
         @Override
-        public List<StockPriceResponse> getStockPrice(String codes) {
-            return null;
+        public List<StockPriceResponse> getStockPrice(String code) {
+            return Collections.singletonList(StockPriceResponse.testInstance(code, 30000));
         }
     }
 
@@ -76,7 +76,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 내가_소유한_주식_들을_조회하면_보유한_주식_정보와함께_조회된다() {
+    void 내가_소유한_비트코인_현재가를_조회한다() {
         // given
         String code = "KRW-BIT";
         String name = "비트코인";
@@ -94,16 +94,54 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
 
         // then
         assertThat(responses).hasSize(1);
-        assertThat(responses.get(0).getMemberStockId()).isEqualTo(memberStock.getId());
-        assertThat(responses.get(0).getStock().getCode()).isEqualTo(code);
-        assertThat(responses.get(0).getStock().getName()).isEqualTo(name);
-        assertThat(responses.get(0).getStock().getType()).isEqualTo(type);
+        assertMemberStockInfo(responses.get(0), memberStock.getId(), code, name, type);
+        assertStockPrice(responses.get(0), "10000", "10", "100000", "20000.5", "200005");
+    }
 
-        assertThat(responses.get(0).getPurchasePrice()).isEqualTo("10000");
-        assertThat(responses.get(0).getQuantity()).isEqualTo("10");
-        assertThat(responses.get(0).getPurchaseAmount()).isEqualTo("100000");
-        assertThat(responses.get(0).getCurrentPrice()).isEqualTo("20000.5");
-        assertThat(responses.get(0).getCurrentAmount()).isEqualTo("200005");
+    @Test
+    void 내가보유한_국내주식_현재가를_조회한다() {
+        // given
+        String code = "code";
+        String name = "NC";
+        StockMarketType type = StockMarketType.DOMESTIC_STOCK;
+        Stock stock = StockCreator.createActive(code, name, type);
+        stockRepository.save(stock);
+
+        double purchasePrice = 20000;
+        double quantity = 20;
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, purchasePrice, quantity);
+        memberStockRepository.save(memberStock);
+
+        // when
+        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(StockMarketType.DOMESTIC_STOCK, memberId);
+
+        // then
+        assertThat(responses).hasSize(1);
+        assertMemberStockInfo(responses.get(0), memberStock.getId(), code, name, type);
+        assertStockPrice(responses.get(0), "20000", "20", "400000", "30000", "600000");
+    }
+
+    @Test
+    void 내가보유한_해외주식_현재가를_조회한다() {
+        // given
+        String code = "code";
+        String name = "APPLE";
+        StockMarketType type = StockMarketType.OVERSEAS_STOCK;
+        Stock stock = StockCreator.createActive(code, name, type);
+        stockRepository.save(stock);
+
+        double purchasePrice = 40000;
+        double quantity = 10;
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, purchasePrice, quantity);
+        memberStockRepository.save(memberStock);
+
+        // when
+        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(StockMarketType.OVERSEAS_STOCK, memberId);
+
+        // then
+        assertThat(responses).hasSize(1);
+        assertMemberStockInfo(responses.get(0), memberStock.getId(), code, name, type);
+        assertStockPrice(responses.get(0), "40000", "10", "400000", "30000", "300000");
     }
 
     @Test
@@ -125,6 +163,21 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
 
         // then
         assertThat(responses).isEmpty();
+    }
+
+    private void assertMemberStockInfo(MemberStockCurrentInfoResponse response, Long id, String code, String name, StockMarketType type) {
+        assertThat(response.getMemberStockId()).isEqualTo(id);
+        assertThat(response.getStock().getCode()).isEqualTo(code);
+        assertThat(response.getStock().getName()).isEqualTo(name);
+        assertThat(response.getStock().getType()).isEqualTo(type);
+    }
+
+    private void assertStockPrice(MemberStockCurrentInfoResponse response, String purchasePrice, String quantity, String purchaseAmount, String current, String currentAmount) {
+        assertThat(response.getPurchasePrice()).isEqualTo(purchasePrice);
+        assertThat(response.getQuantity()).isEqualTo(quantity);
+        assertThat(response.getPurchaseAmount()).isEqualTo(purchaseAmount);
+        assertThat(response.getCurrentPrice()).isEqualTo(current);
+        assertThat(response.getCurrentAmount()).isEqualTo(currentAmount);
     }
 
 }
