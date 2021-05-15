@@ -16,8 +16,12 @@ public enum StockMarketType {
 
     private final List<String> allowedCurrencies;
 
-    public boolean isAllowAll() {
-        return this.allowedCurrencies.isEmpty();
+    public boolean isAllow(String code) {
+        if (allowedCurrencies.isEmpty()) {
+            return true;
+        }
+        return allowedCurrencies.stream()
+            .anyMatch(code::startsWith);
     }
 
 }

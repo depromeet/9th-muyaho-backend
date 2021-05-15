@@ -39,7 +39,7 @@ public class WebClientStockApiCallerImpl implements StockApiCaller {
         return webClient.get()
             .uri(String.format("%s?codes=%s", stockPriceComponent.getUrl(), codes))
             .retrieve()
-            .onStatus(HttpStatus::isError, errorResponse -> Mono.error(new BadGatewayException(String.format("주식 외부 API 연동 중 에러가 발생하였습니다"))))
+            .onStatus(HttpStatus::isError, errorResponse -> Mono.error(new BadGatewayException("주식 외부 API 연동 중 에러가 발생하였습니다")))
             .bodyToMono(new ParameterizedTypeReference<List<StockPriceResponse>>() {
             })
             .block();

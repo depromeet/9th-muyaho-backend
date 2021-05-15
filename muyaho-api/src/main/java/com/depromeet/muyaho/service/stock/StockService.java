@@ -24,20 +24,12 @@ public class StockService {
 
         final Map<String, Stock> stockMap = stockCollection.getStockMap();
         List<Stock> stockList = stockInfos.stream()
-            .filter(stock -> isAllowedCurrency(type, stock.getCode()))
+            .filter(stock -> type.isAllow(stock.getCode()))
             .map(stock -> stockMap.getOrDefault(stock.getCode(), Stock.newInstance(type, stock.getCode(), stock.getName())))
             .map(Stock::active)
             .collect(Collectors.toList());
 
         stockRepository.saveAll(stockList);
-    }
-
-    private boolean isAllowedCurrency(StockMarketType type, String code) {
-        if (type.isAllowAll()) {
-            return true;
-        }
-        return type.getAllowedCurrencies().stream()
-            .anyMatch(code::startsWith);
     }
 
     @Transactional(readOnly = true)
