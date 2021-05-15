@@ -5,7 +5,6 @@ import com.depromeet.muyaho.config.session.SessionConstants;
 import com.depromeet.muyaho.controller.ApiResponse;
 import com.depromeet.muyaho.service.auth.AuthService;
 import com.depromeet.muyaho.service.auth.dto.request.AuthRequest;
-import com.depromeet.muyaho.service.auth.dto.request.CheckNotExistNameRequest;
 import com.depromeet.muyaho.service.auth.dto.request.SignupMemberRequest;
 import com.depromeet.muyaho.service.auth.dto.response.AuthResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
     private final HttpSession httpSession;
 
-    @Operation(summary = "로그인 요청 API", description = "appleType 스웨거 버그입니다")
+    @Operation(summary = "로그인 요청 API")
     @PostMapping("/api/v1/login")
     public ApiResponse<AuthResponse> handleAppleAuthenticationWithToken(@Valid @RequestBody AuthRequest request) {
         Long memberId = authService.handleAuthentication(request);
@@ -30,19 +29,12 @@ public class AuthController {
         return ApiResponse.success(AuthResponse.of(httpSession.getId()));
     }
 
-    @Operation(summary = "회원가입 API", description = "appleType 스웨거 버그입니다")
+    @Operation(summary = "회원가입 API")
     @PostMapping("/api/v1/signup")
     public ApiResponse<AuthResponse> signUpMember(@Valid @RequestBody SignupMemberRequest request) {
         Long memberId = authService.signUpMember(request);
         httpSession.setAttribute(SessionConstants.AUTH_SESSION, MemberSession.of(memberId));
         return ApiResponse.success(AuthResponse.of(httpSession.getId()));
-    }
-
-    @Operation(summary = "중복된 이름이 있는지 검증하는 API")
-    @GetMapping("/api/v1/check/name")
-    public ApiResponse<String> checkNotExistName(@Valid CheckNotExistNameRequest request) {
-        authService.checkNotExistNickName(request.getName());
-        return ApiResponse.SUCCESS;
     }
 
 }

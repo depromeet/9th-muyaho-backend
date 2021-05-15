@@ -1,7 +1,9 @@
 package com.depromeet.muyaho.service.member;
 
 import com.depromeet.muyaho.domain.member.*;
+import com.depromeet.muyaho.exception.ConflictException;
 import com.depromeet.muyaho.exception.NotFoundException;
+import com.depromeet.muyaho.service.member.dto.request.CreateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.request.UpdateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.response.MemberInfoResponse;
 import org.junit.jupiter.api.AfterEach;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,10 +36,94 @@ class MemberServiceTest {
     }
 
     @Test
+    void 회원가입_요청시_DB_에_회원정보가_추가된다() {
+        // given
+        String uid = "uid";
+        String email = "will.seungho@gmail.com";
+        String name = "무야호";
+        String profileUrl = "https://profile.com";
+        MemberProvider provider = MemberProvider.APPLE;
+
+        CreateMemberRequest request = CreateMemberRequest.builder()
+            .uid(uid)
+            .email(email)
+            .name(name)
+            .profileUrl(profileUrl)
+            .provider(provider)
+            .build();
+
+        memberService.createMember(request);
+
+        // then
+        List<Member> memberList = memberRepository.findAll();
+        assertThat(memberList).hasSize(1);
+        assertMember(memberList.get(0), uid, email, name, profileUrl, provider);
+    }
+
+    @Test
+    void 회원가입시_이미_존재하는_애플_멤버의경우_에러가_발생한다() {
+        // given
+        String uid = "uid";
+        String email = "will.seungho@gmail.com";
+        String name = "무야호";
+        String profileUrl = "https://profile.com";
+        MemberProvider provider = MemberProvider.APPLE;
+
+        memberRepository.save(MemberCreator.create(uid, "name1", profileUrl, provider));
+
+        CreateMemberRequest request = CreateMemberRequest.builder()
+            .uid(uid)
+            .email(email)
+            .name(name)
+            .profileUrl(profileUrl)
+            .provider(provider)
+            .build();
+
+        // when & then
+        assertThatThrownBy(() -> memberService.createMember(request)).isInstanceOf(ConflictException.class);
+    }
+
+    @Test
+    void 회원가입시_닉네임이_중복되면_에러가_발생한다() {
+        // given
+        String uid = "uid";
+        String email = "will.seungho@gmail.com";
+        String name = "무야호";
+        String profileUrl = "https://profile.com";
+        MemberProvider provider = MemberProvider.APPLE;
+
+        memberRepository.save(MemberCreator.create("another uuid", name, profileUrl, provider));
+
+        CreateMemberRequest request = CreateMemberRequest.builder()
+            .uid(uid)
+            .email(email)
+            .name(name)
+            .profileUrl(profileUrl)
+            .provider(provider)
+            .build();
+
+        // when & then
+        assertThatThrownBy(() -> memberService.createMember(request)).isInstanceOf(ConflictException.class);
+    }
+
+    @Test
+    void 닉네임_중복체크_이미_존재하는_닉네임일_경우_에러가_발생한다() {
+        // given
+        String name = "무야호";
+        String profileUrl = "https://profile.com";
+        MemberProvider provider = MemberProvider.APPLE;
+
+        memberRepository.save(MemberCreator.create("another uuid", name, profileUrl, provider));
+
+        // when & then
+        assertThatThrownBy(() -> memberService.checkIsDuplicateName(name)).isInstanceOf(ConflictException.class);
+    }
+
+    @Test
     void 회원의_정보를_조회한다() {
         // given
         String name = "강승호";
-        String profileUrl = "http://profile.com";
+        String profileUrl = "https://profile.com";
         Member member = memberRepository.save(MemberCreator.create("uid", name, profileUrl, MemberProvider.APPLE));
 
         // when
@@ -61,7 +148,7 @@ class MemberServiceTest {
         memberRepository.save(member);
 
         String name = "승호강";
-        String profileUrl = "http://seungho.com";
+        String profileUrl = "https://seungho.com";
 
         UpdateMemberRequest request = UpdateMemberRequest.testInstance(name, profileUrl);
 
@@ -70,7 +157,21 @@ class MemberServiceTest {
 
         // then
         List<Member> memberList = memberRepository.findAll();
-        assertMember(memberList.get(0), uid, name, profileUrl, MemberProvider.KAKAO);
+        assertMember(memberList.get(0), uid, null, name, profileUrl, MemberProvider.KAKAO);
+    }
+
+    @Test
+    void 회원정보_수정시_닉네임이_중복되면_에러가_발생한다() {
+        // given
+        String name = "강승호";
+        Member member1 = MemberCreator.create("uid1", "승호강", null, MemberProvider.KAKAO);
+        Member member2 = MemberCreator.create("uid2", name, null, MemberProvider.KAKAO);
+        memberRepository.saveAll(Arrays.asList(member1, member2));
+
+        UpdateMemberRequest request = UpdateMemberRequest.testInstance(name, null);
+
+        // when & then
+        assertThatThrownBy(() -> memberService.updateMemberInfo(request, member1.getId())).isInstanceOf(ConflictException.class);
     }
 
     @Test
@@ -114,7 +215,7 @@ class MemberServiceTest {
     @Test
     void 존재하지_않는_유저를_삭제할_수없다() {
         // when & then
-        assertThatThrownBy(() ->  memberService.deleteMemberInfo(999L)).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> memberService.deleteMemberInfo(999L)).isInstanceOf(NotFoundException.class);
     }
 
     private void assertDeleteMember(DeleteMember deleteMember, Long id, String uid, String name, String profileUrl, MemberProvider provider) {
@@ -125,8 +226,9 @@ class MemberServiceTest {
         assertThat(deleteMember.getProvider()).isEqualTo(provider);
     }
 
-    private void assertMember(Member member, String uid, String name, String profileUrl, MemberProvider provider) {
+    private void assertMember(Member member, String uid, String email, String name, String profileUrl, MemberProvider provider) {
         assertThat(member.getUid()).isEqualTo(uid);
+        assertThat(member.getEmail()).isEqualTo(email);
         assertThat(member.getName()).isEqualTo(name);
         assertThat(member.getProfileUrl()).isEqualTo(profileUrl);
         assertThat(member.getProvider()).isEqualTo(provider);

@@ -1,6 +1,5 @@
 package com.depromeet.muyaho.service.auth;
 
-import com.depromeet.muyaho.exception.ConflictException;
 import com.depromeet.muyaho.exception.NotFoundException;
 import com.depromeet.muyaho.domain.member.Member;
 import com.depromeet.muyaho.domain.member.MemberCreator;
@@ -12,6 +11,7 @@ import com.depromeet.muyaho.external.kakao.KaKaoApiCaller;
 import com.depromeet.muyaho.external.kakao.dto.response.KaKaoUserInfoResponse;
 import com.depromeet.muyaho.service.auth.dto.request.AuthRequest;
 import com.depromeet.muyaho.service.auth.dto.request.SignupMemberRequest;
+import com.depromeet.muyaho.service.member.MemberService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,12 +31,15 @@ class AuthServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private MemberService memberService;
+
     private static final String uid = "uid";
     private static final String email = "muyaho@gmail.com";
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService(new StubAppleTokenDecoder(), new StubKaKaoApiCaller(), memberRepository);
+        authService = new AuthService(new StubAppleTokenDecoder(), new StubKaKaoApiCaller(), memberRepository, memberService);
     }
 
     @AfterEach
@@ -112,58 +115,6 @@ class AuthServiceTest {
         List<Member> memberList = memberRepository.findAll();
         assertThat(memberList).hasSize(1);
         assertMember(memberList.get(0), uid, email, name, profileUrl, provider);
-    }
-
-    @Test
-    void 회원가입시_이미_존재하는_애플_멤버의경우_에러가_발생한다() {
-        // given
-        String profileUrl = "http://profile.com";
-        MemberProvider provider = MemberProvider.APPLE;
-
-        memberRepository.save(MemberCreator.create(uid, "name1", profileUrl, provider));
-
-        SignupMemberRequest request = SignupMemberRequest.testBuilder()
-            .token("token")
-            .name("name2")
-            .profileUrl(profileUrl)
-            .provider(provider)
-            .build();
-
-        // when & then
-        assertThatThrownBy(() -> authService.signUpMember(request)).isInstanceOf(ConflictException.class);
-    }
-
-    @Test
-    void 회원가입시_닉네임이_중복되면_에러가_발생한다() {
-        // given
-        String name = "무야호";
-        String profileUrl = "http://profile.com";
-        MemberProvider provider = MemberProvider.APPLE;
-
-        memberRepository.save(MemberCreator.create("another uuid", name, profileUrl, provider));
-
-        SignupMemberRequest request = SignupMemberRequest.testBuilder()
-            .token("token")
-            .name(name)
-            .profileUrl(profileUrl)
-            .provider(provider)
-            .build();
-
-        // when & then
-        assertThatThrownBy(() -> authService.signUpMember(request)).isInstanceOf(ConflictException.class);
-    }
-
-    @Test
-    void 닉네임_중복체크_이미_존재하는_닉네임일_경우_에러가_발생한다() {
-        // given
-        String name = "무야호";
-        String profileUrl = "http://profile.com";
-        MemberProvider provider = MemberProvider.APPLE;
-
-        memberRepository.save(MemberCreator.create("another uuid", name, profileUrl, provider));
-
-        // when & then
-        assertThatThrownBy(() -> authService.checkNotExistNickName(name)).isInstanceOf(ConflictException.class);
     }
 
     private void assertMember(Member member, String uid, String email, String name, String profileUrl, MemberProvider provider) {

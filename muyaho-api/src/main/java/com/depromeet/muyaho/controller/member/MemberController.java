@@ -3,6 +3,7 @@ package com.depromeet.muyaho.controller.member;
 import com.depromeet.muyaho.config.interceptor.Auth;
 import com.depromeet.muyaho.config.resolver.MemberId;
 import com.depromeet.muyaho.controller.ApiResponse;
+import com.depromeet.muyaho.service.auth.dto.request.CheckNotExistNameRequest;
 import com.depromeet.muyaho.service.member.MemberService;
 import com.depromeet.muyaho.service.member.dto.request.UpdateMemberRequest;
 import com.depromeet.muyaho.service.member.dto.response.MemberInfoResponse;
@@ -21,6 +22,12 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @Operation(summary = "중복된 이름이 있는지 검증하는 API")
+    @GetMapping("/api/v1/check/name")
+    public ApiResponse<String> checkNotExistName(@Valid CheckNotExistNameRequest request) {
+        memberService.checkIsDuplicateName(request.getName());
+        return ApiResponse.SUCCESS;
+    }
 
     @Operation(summary = "나의 회원 정보를 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
