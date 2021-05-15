@@ -27,28 +27,28 @@ public class MemberStockController {
     private final MemberStockService memberStockService;
     private final MemberStockRetrieveService memberStockRetrieveService;
 
-    @Operation(summary = "내가 소유한 주식을 새롭게 등록하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization", description = "Bearer Token"))
+    @Operation(summary = "내가 보유한 주식을 등록하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization", description = "Bearer Token"))
     @Auth
     @PostMapping("/api/v1/member/stock")
     public ApiResponse<MemberStockInfoResponse> addMemberStock(@Valid @RequestBody AddMemberStockRequest request, @MemberId Long memberId) {
         return ApiResponse.success(memberStockService.addMemberStock(request, memberId));
     }
 
-    @Operation(summary = "내가 소유한 주식들을 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Operation(summary = "내가 보유한 주식들을 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
-    @GetMapping("/api/v1/member/stock/bitcoin")
+    @GetMapping("/api/v1/member/stock")
     public ApiResponse<List<MemberStockCurrentInfoResponse>> getStocksInfo(@RequestParam StockMarketType type, @MemberId Long memberId) {
         return ApiResponse.success(memberStockRetrieveService.getStocksInfo(type, memberId));
     }
 
-    @Operation(summary = "내가 소유한 주식들을 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Operation(summary = "내가 보유한 주식을 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
     @PutMapping("/api/v1/member/stock")
     public ApiResponse<MemberStockInfoResponse> updateMemberStock(@Valid @RequestBody UpdateMemberStockRequest request, @MemberId Long memberId) {
         return ApiResponse.success(memberStockService.updateMemberStock(request, memberId));
     }
 
-    @Operation(summary = "내가 소유한 주식들을 삭제하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Operation(summary = "내가 보유한 주식을 삭제하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
     @DeleteMapping("/api/v1/member/stock")
     public ApiResponse<String> deleteMemberStock(@Valid DeleteMemberStockRequest request, @MemberId Long memberId) {
