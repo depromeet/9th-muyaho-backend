@@ -7,3 +7,5 @@ bitcoin:
   bithumb:
     trade:
       url: https://api.bithumb.com/public/ticker
+stock:
+  url: http://muyaho-api-alb-302156047.ap-northeast-2.elb.amazonaws.com:5000/api/v1/stock/code
