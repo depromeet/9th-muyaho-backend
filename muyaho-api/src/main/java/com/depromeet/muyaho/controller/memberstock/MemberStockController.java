@@ -38,7 +38,7 @@ public class MemberStockController {
     @Auth
     @GetMapping("/api/v1/member/stock")
     public ApiResponse<List<MemberStockCurrentInfoResponse>> getStocksInfo(@RequestParam StockMarketType type, @MemberId Long memberId) {
-        return ApiResponse.success(memberStockRetrieveService.getStocksInfo(type, memberId));
+        return ApiResponse.success(memberStockRetrieveService.getMemberCurrentStocks(type, memberId));
     }
 
     @Operation(summary = "내가 보유한 주식을 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))

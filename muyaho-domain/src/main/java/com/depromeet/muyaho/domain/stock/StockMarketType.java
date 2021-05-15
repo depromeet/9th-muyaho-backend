@@ -10,11 +10,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public enum StockMarketType {
 
-    DOMESTIC_STOCK(Collections.emptyList()),
-    OVERSEAS_STOCK(Collections.emptyList()),
-    BITCOIN(Collections.singletonList("KRW-"));
-
-    private final List<String> allowedCurrencies;
+    DOMESTIC_STOCK(StockType.STOCK, Collections.emptyList()),
+    OVERSEAS_STOCK(StockType.STOCK, Collections.emptyList()),
+    BITCOIN(StockType.BITCOIN, Collections.singletonList("KRW-"));
 
     public boolean isAllowedCode(String code) {
         if (allowedCurrencies.isEmpty()) {
@@ -22,6 +20,18 @@ public enum StockMarketType {
         }
         return allowedCurrencies.stream()
             .anyMatch(code::startsWith);
+    }
+
+    public boolean isStockType() {
+        return this.type.equals(StockType.STOCK);
+    }
+
+    private final StockType type;
+    private final List<String> allowedCurrencies;
+
+    private enum StockType {
+        STOCK,
+        BITCOIN
     }
 
 }

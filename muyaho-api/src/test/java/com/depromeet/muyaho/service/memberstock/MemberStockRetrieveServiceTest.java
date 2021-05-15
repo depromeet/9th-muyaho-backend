@@ -90,7 +90,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
         memberStockRepository.save(memberStock);
 
         // when
-        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getStocksInfo(StockMarketType.BITCOIN, memberId);
+        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(StockMarketType.BITCOIN, memberId);
 
         // then
         assertThat(responses).hasSize(1);
@@ -112,7 +112,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
         memberStockRepository.save(MemberStockCreator.create(999L, stock, 10000, 10));
 
         // when
-        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getStocksInfo(StockMarketType.BITCOIN, memberId);
+        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(StockMarketType.BITCOIN, memberId);
 
         // then
         assertThat(responses).isEmpty();
@@ -121,7 +121,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
     @Test
     void 아무_주식도_소유하고_있지않을때_조회하면_빈_리스트가_반환된다() {
         // when
-        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getStocksInfo(StockMarketType.BITCOIN, memberId);
+        List<MemberStockCurrentInfoResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(StockMarketType.BITCOIN, memberId);
 
         // then
         assertThat(responses).isEmpty();
