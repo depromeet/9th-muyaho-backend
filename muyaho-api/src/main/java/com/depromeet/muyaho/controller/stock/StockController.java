@@ -18,7 +18,7 @@ public class StockController {
 
     private final StockService stockService;
 
-    @Operation(summary = "비트코인 종목 코드/명을 조회하는 API")
+    @Operation(summary = "주식 종목 코드와 종목명을 조회하는 API", description = "DOMESTIC_STOCK, OVERSEAS_STOCK, BITCOIN")
     @GetMapping("/api/v1/stock/list")
     public ApiResponse<List<StockInfoResponse>> retrieveStocks(@RequestParam StockMarketType type) {
         return ApiResponse.success(stockService.retrieveStockInfo(type));
