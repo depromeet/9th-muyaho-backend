@@ -1,7 +1,6 @@
 package com.depromeet.muyaho.domain.memberstock;
 
 import com.depromeet.muyaho.domain.BaseTimeEntity;
-import com.depromeet.muyaho.domain.stock.Stock;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

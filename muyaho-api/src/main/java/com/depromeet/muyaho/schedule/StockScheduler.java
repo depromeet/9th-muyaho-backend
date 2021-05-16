@@ -4,7 +4,7 @@ import com.depromeet.muyaho.domain.stock.StockMarketType;
 import com.depromeet.muyaho.event.stock.RequestedRenewEvent;
 import com.depromeet.muyaho.external.stock.StockApiCaller;
 import com.depromeet.muyaho.external.stock.StockType;
-import com.depromeet.muyaho.external.upbit.UpBitApiCaller;
+import com.depromeet.muyaho.external.bitcoin.upbit.UpBitApiCaller;
 import com.depromeet.muyaho.service.stock.dto.request.StockInfoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

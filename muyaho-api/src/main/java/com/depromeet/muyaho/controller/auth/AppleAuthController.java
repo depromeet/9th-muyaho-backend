@@ -3,7 +3,7 @@ package com.depromeet.muyaho.controller.auth;
 import com.depromeet.muyaho.config.session.MemberSession;
 import com.depromeet.muyaho.config.session.SessionConstants;
 import com.depromeet.muyaho.controller.ApiResponse;
-import com.depromeet.muyaho.service.auth.AppleAuthService;
+import com.depromeet.muyaho.service.auth.AuthService;
 import com.depromeet.muyaho.service.auth.dto.request.LoginRequest;
 import com.depromeet.muyaho.service.auth.dto.request.SignUpRequest;
 import com.depromeet.muyaho.service.auth.dto.response.AuthResponse;
@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @RestController
 public class AppleAuthController {
 
-    private final AppleAuthService appleAuthService;
+    private final AuthService appleAuthService;
     private final HttpSession httpSession;
 
     @Operation(summary = "애플 로그인 요청 API")

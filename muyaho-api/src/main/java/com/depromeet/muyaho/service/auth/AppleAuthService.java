@@ -2,8 +2,8 @@ package com.depromeet.muyaho.service.auth;
 
 import com.depromeet.muyaho.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.member.MemberRepository;
-import com.depromeet.muyaho.external.apple.AppleTokenDecoder;
-import com.depromeet.muyaho.external.apple.dto.response.IdTokenPayload;
+import com.depromeet.muyaho.external.auth.apple.AppleTokenDecoder;
+import com.depromeet.muyaho.external.auth.apple.dto.response.IdTokenPayload;
 import com.depromeet.muyaho.service.auth.dto.request.LoginRequest;
 import com.depromeet.muyaho.service.auth.dto.request.SignUpRequest;
 import com.depromeet.muyaho.service.member.MemberService;

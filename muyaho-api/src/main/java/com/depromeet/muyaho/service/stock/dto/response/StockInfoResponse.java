@@ -5,7 +5,9 @@ import com.depromeet.muyaho.domain.stock.StockMarketType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class StockInfoResponse {

@@ -9,7 +9,7 @@ import com.depromeet.muyaho.service.memberstock.MemberStockService;
 import com.depromeet.muyaho.service.memberstock.dto.request.AddMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.service.memberstock.dto.request.UpdateMemberStockRequest;
-import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockCurrentInfoResponse;
+import com.depromeet.muyaho.service.stockcalculator.dto.response.StockCalculateResponse;
 import com.depromeet.muyaho.service.memberstock.dto.response.MemberStockInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,7 +37,7 @@ public class MemberStockController {
     @Operation(summary = "내가 보유한 주식들을 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
     @GetMapping("/api/v1/member/stock")
-    public ApiResponse<List<MemberStockCurrentInfoResponse>> getStocksInfo(@RequestParam StockMarketType type, @MemberId Long memberId) {
+    public ApiResponse<List<StockCalculateResponse>> getStocksInfo(@RequestParam StockMarketType type, @MemberId Long memberId) {
         return ApiResponse.success(memberStockRetrieveService.getMemberCurrentStocks(type, memberId));
     }
 

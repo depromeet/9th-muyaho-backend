@@ -26,9 +26,7 @@ class EmailTest {
         String email = "will.seungho";
 
         // when & then
-        assertThatThrownBy(() -> {
-            Email.of(email);
-        }).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> Email.of(email)).isInstanceOf(ValidationException.class);
     }
 
     @Test
@@ -37,9 +35,7 @@ class EmailTest {
         String email = "will.seungho@gmail";
 
         // when & then
-        assertThatThrownBy(() -> {
-            Email.of(email);
-        }).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> Email.of(email)).isInstanceOf(ValidationException.class);
     }
 
     @Test
@@ -48,9 +44,7 @@ class EmailTest {
         String email = "@gmail.com";
 
         // when & then
-        assertThatThrownBy(() -> {
-            Email.of(email);
-        }).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> Email.of(email)).isInstanceOf(ValidationException.class);
     }
 
     @Test
