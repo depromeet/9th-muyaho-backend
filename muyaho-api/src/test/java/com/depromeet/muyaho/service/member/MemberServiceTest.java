@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.depromeet.muyaho.service.member.MemberServiceTestUtils.assertMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -238,14 +239,6 @@ class MemberServiceTest {
         assertThat(deleteMember.getName()).isEqualTo(name);
         assertThat(deleteMember.getProfileUrl()).isEqualTo(profileUrl);
         assertThat(deleteMember.getProvider()).isEqualTo(provider);
-    }
-
-    private void assertMember(Member member, String uid, String email, String name, String profileUrl, MemberProvider provider) {
-        assertThat(member.getUid()).isEqualTo(uid);
-        assertThat(member.getEmail()).isEqualTo(email);
-        assertThat(member.getName()).isEqualTo(name);
-        assertThat(member.getProfileUrl()).isEqualTo(profileUrl);
-        assertThat(member.getProvider()).isEqualTo(provider);
     }
 
 }
