@@ -15,25 +15,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class KaKaoAuthService implements AuthService {
 
+    private static final MemberProvider provider = MemberProvider.KAKAO;
+
     private final KaKaoApiCaller kaKaoApiCaller;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
     @Override
-    public MemberProvider getProvider() {
-        return MemberProvider.KAKAO;
-    }
-
-    @Override
     public Long login(LoginRequest request) {
         KaKaoUserInfoResponse response = kaKaoApiCaller.getKaKaoUserProfileInfo(request.getToken());
-        return MemberServiceUtils.findMemberByUidAndProvider(memberRepository, response.getId(), getProvider()).getId();
+        return MemberServiceUtils.findMemberByUidAndProvider(memberRepository, response.getId(), provider).getId();
     }
 
     @Override
     public Long signUp(SignUpRequest request) {
         KaKaoUserInfoResponse response = kaKaoApiCaller.getKaKaoUserProfileInfo(request.getToken());
-        return memberService.createMember(request.toCreateMemberRequest(response.getId(), response.getEmail(), getProvider()));
+        return memberService.createMember(request.toCreateMemberRequest(response.getId(), response.getEmail(), provider));
     }
 
 }

@@ -15,25 +15,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppleAuthService implements AuthService {
 
+    private static final MemberProvider provider = MemberProvider.APPLE;
+
     private final AppleTokenDecoder appleTokenDecoder;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
     @Override
-    public MemberProvider getProvider() {
-        return MemberProvider.APPLE;
-    }
-
-    @Override
     public Long login(LoginRequest request) {
         IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
-        return MemberServiceUtils.findMemberByUidAndProvider(memberRepository, payload.getSub(), getProvider()).getId();
+        return MemberServiceUtils.findMemberByUidAndProvider(memberRepository, payload.getSub(), provider).getId();
     }
 
     @Override
     public Long signUp(SignUpRequest request) {
         IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
-        return memberService.createMember(request.toCreateMemberRequest(payload.getSub(), payload.getEmail(), getProvider()));
+        return memberService.createMember(request.toCreateMemberRequest(payload.getSub(), payload.getEmail(), provider));
     }
 
 }

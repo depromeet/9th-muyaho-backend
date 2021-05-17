@@ -1,13 +1,14 @@
 package com.depromeet.muyaho.config.interceptor;
 
+import com.depromeet.muyaho.config.session.SessionConstants;
 import com.depromeet.muyaho.exception.UnAuthorizedException;
 import com.depromeet.muyaho.config.session.MemberSession;
-import com.depromeet.muyaho.config.session.SessionConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.session.Session;
 import org.springframework.session.SessionRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,25 +26,19 @@ public class LoginSessionComponent {
 
     private MemberSession getMemberSession(HttpServletRequest request) {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        validateHasAuthorizationHeader(header);
-        return getSession(header);
+        Session session = getSession(header);
+        return session.getAttribute(SessionConstants.AUTH_SESSION);
     }
 
-    private void validateHasAuthorizationHeader(String header) {
-        if (header == null) {
-            throw new UnAuthorizedException("세션이 존재하지 않습니다");
-        }
-        if (!header.startsWith(BEARER_TOKEN)) {
+    private Session getSession(String header) {
+        if (!(StringUtils.hasText(header) && header.startsWith(BEARER_TOKEN))) {
             throw new UnAuthorizedException(String.format("잘못된 세션 (%s) 입니다", header));
         }
-    }
-
-    private MemberSession getSession(String header) {
         Session session = sessionRepository.getSession(header.split(BEARER_TOKEN)[1]);
         if (session == null) {
             throw new UnAuthorizedException(String.format("잘못된 세션 (%s) 입니다", header));
         }
-        return session.getAttribute(SessionConstants.AUTH_SESSION);
+        return session;
     }
 
 }
