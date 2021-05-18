@@ -1,11 +1,11 @@
 package com.depromeet.muyaho.api.schedule;
 
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
-import com.depromeet.muyaho.domain.event.stock.RequestedRenewEvent;
-import com.depromeet.muyaho.domain.external.stock.StockApiCaller;
-import com.depromeet.muyaho.domain.external.stock.StockType;
-import com.depromeet.muyaho.domain.external.bitcoin.upbit.UpBitApiCaller;
-import com.depromeet.muyaho.domain.service.stock.dto.request.StockInfoRequest;
+import com.depromeet.muyaho.api.event.stock.RequestedRenewEvent;
+import com.depromeet.muyaho.api.service.stock.dto.request.StockInfoRequest;
+import com.depromeet.muyaho.external.client.bitcoin.upbit.UpBitApiCaller;
+import com.depromeet.muyaho.external.client.stock.StockApiCaller;
+import com.depromeet.muyaho.external.client.stock.StockType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;

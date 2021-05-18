@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.api.controller.stock;
 
-import com.depromeet.muyaho.domain.event.stock.RequestedRenewEvent;
-import com.depromeet.muyaho.domain.service.stock.StockService;
+import com.depromeet.muyaho.api.event.stock.RequestedRenewEvent;
+import com.depromeet.muyaho.api.service.stock.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

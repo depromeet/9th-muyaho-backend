@@ -1,6 +1,7 @@
 package com.depromeet.muyaho.domain.domain.common;
 
 import com.depromeet.muyaho.common.exception.ValidationException;
+import com.depromeet.muyaho.domain.domain.common.Quantity;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

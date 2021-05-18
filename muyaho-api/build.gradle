@@ -1,5 +1,6 @@
 dependencies {
     implementation project(':muyaho-domain')
+    implementation project(':muyaho-external')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
