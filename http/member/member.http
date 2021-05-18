@@ -21,12 +21,7 @@ Authorization: Bearer {{AUTHORIZATION}}
 }
 
 ### 닉네임 체크
-PUT {{api}}/api/v1/check/name
-Content-Type: application/json
-
-{
-    "name": "테스트 계정"
-}
+GET {{api}}/api/v1/check/name?name=테스트 계정
 
 ### 회원탈퇴
 DELETE {{api}}/api/v1/member
