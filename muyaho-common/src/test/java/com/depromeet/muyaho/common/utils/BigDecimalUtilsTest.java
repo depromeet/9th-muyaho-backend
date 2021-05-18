@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.domain.utils;
+package com.depromeet.muyaho.common.utils;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

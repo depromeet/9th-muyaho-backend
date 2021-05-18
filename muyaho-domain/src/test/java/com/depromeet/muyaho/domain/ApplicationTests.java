@@ -1,4 +1,4 @@
-package com.depromeet.muyaho;
+package com.depromeet.muyaho.domain;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

@@ -6,7 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-import static com.depromeet.muyaho.domain.utils.BigDecimalUtils.*;
+import static com.depromeet.muyaho.common.utils.BigDecimalUtils.*;
 
 @ToString
 @Getter
