@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.domain.domain.common;
 
+import com.depromeet.muyaho.domain.domain.common.Money;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

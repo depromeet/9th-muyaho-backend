@@ -2,8 +2,8 @@ package com.depromeet.muyaho.api.controller.stock;
 
 import com.depromeet.muyaho.api.controller.ApiResponse;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
-import com.depromeet.muyaho.domain.service.stock.StockService;
-import com.depromeet.muyaho.domain.service.stock.dto.response.StockInfoResponse;
+import com.depromeet.muyaho.api.service.stock.StockService;
+import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
