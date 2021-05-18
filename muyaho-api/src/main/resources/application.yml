@@ -4,8 +4,6 @@ server:
     encoding:
       charset: UTF-8
 spring:
-  session:
-    store-type: jdbc
   profiles:
     active: local
     include:
@@ -14,3 +12,5 @@ spring:
       - market
       - rds
       - oauth
+  session:
+    store-type: jdbc

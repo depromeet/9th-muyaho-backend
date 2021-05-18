@@ -6,5 +6,5 @@ RUN ./gradlew clean build
 
 FROM adoptopenjdk/openjdk11:alpine-jre
 ENV HOME=/usr/app
-COPY --from=BUILD  $HOME/muyaho-api/build/libs/muyaho-api-0.0.1-SNAPSHOT.jar /muyaho.jar
+COPY --from=BUILD  $HOME/muyaho-api/build/libs/muyaho-api.jar /muyaho.jar
 EXPOSE 9090

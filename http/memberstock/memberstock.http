@@ -10,7 +10,7 @@ Authorization: Bearer {{AUTHORIZATION}}
 }
 
 ### 내가 소유한 주식 리스트를 조회한다
-GET {{api}}/api/v1/member/stock/bitcoin
+GET {{api}}/api/v1/member/stock?type=DOMESTIC_STOCK
 Authorization: Bearer {{AUTHORIZATION}}
 
 ### 내가 소유한 주식을 수정한다
