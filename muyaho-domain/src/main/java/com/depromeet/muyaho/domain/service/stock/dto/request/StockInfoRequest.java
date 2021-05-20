@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.api.service.stock.dto.request;
+package com.depromeet.muyaho.domain.service.stock.dto.request;
 
 import com.depromeet.muyaho.domain.domain.stock.Stock;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;

@@ -3,4 +3,5 @@ include 'muyaho-domain'
 include 'muyaho-api'
 include 'muyaho-common'
 include 'muyaho-external'
+include 'muyaho-batch'
 

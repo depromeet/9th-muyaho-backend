@@ -1,0 +1,11 @@
+FROM adoptopenjdk/openjdk11:alpine-slim AS BUILD
+ENV APP_HOME=/usr/app
+WORKDIR $APP_HOME
+COPY . $APP_HOME
+RUN ./gradlew clean bootJar
+
+FROM adoptopenjdk/openjdk11:alpine-jre
+ENV APP_HOME=/usr/app
+COPY --from=BUILD  $APP_HOME/muyaho-batch/build/libs/muyaho-batch.jar /app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

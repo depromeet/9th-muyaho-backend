@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(':muyaho-external')
+    implementation project(':muyaho-domain')
+
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+}
