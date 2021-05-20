@@ -1,6 +1,7 @@
 package com.depromeet.muyaho.domain.domain.memberstock;
 
 import com.depromeet.muyaho.domain.domain.BaseTimeEntity;
+import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.stock.Stock;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,18 +32,18 @@ public class MemberStock extends BaseTimeEntity {
     @Embedded
     private MemberStockAmount stockAmount;
 
-    private MemberStock(Long memberId, Stock stock, double purchasePrice, double quantity) {
+    private MemberStock(Long memberId, Stock stock, double purchasePrice, double quantity, CurrencyType currencyType) {
         this.memberId = memberId;
         this.stock = stock;
-        this.stockAmount = MemberStockAmount.of(purchasePrice, quantity);
+        this.stockAmount = MemberStockAmount.of(purchasePrice, quantity, currencyType);
     }
 
-    public static MemberStock of(Long memberId, Stock stock, double purchasePrice, double quantity) {
-        return new MemberStock(memberId, stock, purchasePrice, quantity);
+    public static MemberStock of(Long memberId, Stock stock, double purchasePrice, double quantity, CurrencyType currencyType) {
+        return new MemberStock(memberId, stock, purchasePrice, quantity, currencyType);
     }
 
-    public void updateAmount(double purchasePrice, double quantity) {
-        this.stockAmount = MemberStockAmount.of(purchasePrice, quantity);
+    public void updateAmount(double purchasePrice, double quantity, CurrencyType currencyType) {
+        this.stockAmount = MemberStockAmount.of(purchasePrice, quantity, currencyType);
     }
 
     public DeletedMemberStock delete() {

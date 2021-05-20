@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.api.service.memberstock.dto.request;
 
+import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.stock.Stock;
 import lombok.AccessLevel;
@@ -23,12 +24,15 @@ public class AddMemberStockRequest {
     @NotNull
     private double quantity;
 
+    @NotNull
+    private CurrencyType currencyType;
+
     public MemberStock toEntity(Long memberId, Stock stock) {
-        return MemberStock.of(memberId, stock, purchasePrice, quantity);
+        return MemberStock.of(memberId, stock, purchasePrice, quantity, currencyType);
     }
 
-    public static AddMemberStockRequest testInstance(Long stockId, double purchasePrice, double quantity) {
-        return new AddMemberStockRequest(stockId, purchasePrice, quantity);
+    public static AddMemberStockRequest testInstance(Long stockId, double purchasePrice, double quantity, CurrencyType currencyType) {
+        return new AddMemberStockRequest(stockId, purchasePrice, quantity, currencyType);
     }
 
 }

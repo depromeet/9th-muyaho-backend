@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.api.service.memberstock.dto.request;
 
+import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +22,11 @@ public class UpdateMemberStockRequest {
     @NotNull
     private double quantity;
 
-    public static UpdateMemberStockRequest testInstance(Long memberStockId, double purchasePrice, double quantity) {
-        return new UpdateMemberStockRequest(memberStockId, purchasePrice, quantity);
+    @NotNull
+    private CurrencyType currencyType;
+
+    public static UpdateMemberStockRequest testInstance(Long memberStockId, double purchasePrice, double quantity, CurrencyType currencyType) {
+        return new UpdateMemberStockRequest(memberStockId, purchasePrice, quantity, currencyType);
     }
 
 }

@@ -5,6 +5,7 @@ import com.depromeet.muyaho.api.service.memberstock.dto.request.DeleteMemberStoc
 import com.depromeet.muyaho.api.service.memberstock.dto.request.UpdateMemberStockRequest;
 import com.depromeet.muyaho.common.exception.ConflictException;
 import com.depromeet.muyaho.common.exception.NotFoundException;
+import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.*;
 import com.depromeet.muyaho.domain.domain.stock.Stock;
 import com.depromeet.muyaho.domain.domain.stock.StockCreator;
@@ -58,7 +59,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         double purchasePrice = 10000;
         double quantity = 5;
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), purchasePrice, quantity);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), purchasePrice, quantity, CurrencyType.WON);
 
         // when
         memberStockService.addMemberStock(request, memberId);
@@ -74,7 +75,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         // given
         Long notExistStockId = 999L;
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(notExistStockId, 10000, 10);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(notExistStockId, 10000, 10, CurrencyType.WON);
 
         // when & then
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
@@ -85,7 +86,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         // given
         memberStockRepository.save(MemberStockCreator.create(memberId, stock, 10000, 10));
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), 1000, 1);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), 1000, 1, CurrencyType.WON);
 
         // when & then
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(ConflictException.class);
@@ -95,7 +96,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     void 비활성화된_주식을_등록하려는_경우_404_에러가_발생한다() {
         // given
         Stock disActiveStock = stockRepository.save(StockCreator.createDisable("Disable", "비활성화", StockMarketType.BITCOIN));
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(disActiveStock.getId(), 1000, 10);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(disActiveStock.getId(), 1000, 10, CurrencyType.WON);
 
         // when
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
@@ -110,7 +111,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         double purchasePrice = 30000;
         double quantity = 999999;
 
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.WON);
 
         // when
         memberStockService.updateMemberStock(request, memberId);
@@ -130,7 +131,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         double purchasePrice = 30000;
         double quantity = 999999;
 
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.WON);
 
         // when
         assertThatThrownBy(() -> memberStockService.updateMemberStock(request, 999L)).isInstanceOf(NotFoundException.class);
@@ -139,7 +140,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 회원이_보유하지_않은_주식에대해서_수정할_수없다() {
         // given
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(999L, 10000, 10);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(999L, 10000, 10, CurrencyType.WON);
 
         // when
         assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
