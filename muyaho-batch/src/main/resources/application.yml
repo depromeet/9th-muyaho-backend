@@ -4,6 +4,7 @@ spring:
     include:
       - domain
       - market
+      - rds
   batch:
     job:
       names: ${job.name:NONE}
