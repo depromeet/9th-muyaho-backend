@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(name = "uni_stock_1", columnNames = {"type", "code"}))
+@Table(indexes = @Index(name = "idx_stock_1", columnList = "type,code"))
 public class Stock extends BaseTimeEntity {
 
     @Id

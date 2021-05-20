@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.api.event.stock;
 
-import com.depromeet.muyaho.api.service.stock.dto.request.StockInfoRequest;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
+import com.depromeet.muyaho.domain.service.stock.dto.request.StockInfoRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
