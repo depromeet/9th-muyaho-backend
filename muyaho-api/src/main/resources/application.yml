@@ -12,5 +12,6 @@ spring:
       - market
       - rds
       - oauth
+      - currency
   session:
     store-type: jdbc

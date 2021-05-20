@@ -39,6 +39,7 @@ public class MemberStock extends BaseTimeEntity {
     }
 
     public static MemberStock of(Long memberId, Stock stock, double purchasePrice, double quantity, CurrencyType currencyType) {
+        stock.validateAllowCurrency(currencyType);
         return new MemberStock(memberId, stock, purchasePrice, quantity, currencyType);
     }
 

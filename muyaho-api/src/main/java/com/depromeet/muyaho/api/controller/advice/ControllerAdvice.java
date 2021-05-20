@@ -75,6 +75,16 @@ public class ControllerAdvice {
     }
 
     /**
+     * 허용하지 않는 경우 발생하는 Exception
+     */
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(ForbiddenException.class)
+    protected ApiResponse<Object> handleNotFoundException(final ForbiddenException exception) {
+        log.error(exception.getMessage(), exception);
+        return ApiResponse.error(getValueOrDefault(exception.getErrorCode(), ErrorCode.FORBIDDEN_EXCEPTION));
+    }
+
+    /**
      * 존재하지 않는 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
