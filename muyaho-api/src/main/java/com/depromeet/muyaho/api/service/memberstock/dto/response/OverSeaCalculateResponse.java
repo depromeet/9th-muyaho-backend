@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.api.service.investstatus.dto.response;
+package com.depromeet.muyaho.api.service.memberstock.dto.response;
 
 import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
 import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockCalculateResponse;
@@ -14,19 +14,14 @@ import java.math.BigDecimal;
 public class OverSeaCalculateResponse {
 
     private final Long memberStockId;
-
     private final StockInfoResponse stock;
 
     private final StockPurchaseResponse purchase;
-
     private final StockCurrentResponse currentInDollar;
-
     private final StockCurrentResponse currentInWon;
 
     private final CurrencyType currencyType;
-
     private final String quantity;
-
     private final String earningRate;
 
     @Builder

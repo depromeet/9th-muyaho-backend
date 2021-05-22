@@ -6,7 +6,6 @@ import com.depromeet.muyaho.domain.domain.member.Member;
 import com.depromeet.muyaho.domain.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.domain.member.MemberRepository;
 import com.depromeet.muyaho.api.schedule.StockScheduler;
-import com.depromeet.muyaho.external.client.currency.CurrencyRateApiCaller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +27,6 @@ public class LocalTestController {
     private final MemberRepository memberRepository;
     private final HttpSession httpSession;
     private final StockScheduler scheduler;
-    private final CurrencyRateApiCaller currencyRateApiCaller;
 
     @GetMapping("/test-session")
     public ApiResponse<String> testSession() {
@@ -46,11 +44,6 @@ public class LocalTestController {
         scheduler.renewBitCoinStocksCode();
         scheduler.renewOverseasStocksCode();
         return "OK";
-    }
-
-    @GetMapping("/test")
-    public Object get() {
-        return currencyRateApiCaller.getCurrencyRate();
     }
 
 }

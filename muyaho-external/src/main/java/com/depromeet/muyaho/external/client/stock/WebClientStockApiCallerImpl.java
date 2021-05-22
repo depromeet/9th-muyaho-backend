@@ -36,6 +36,7 @@ public class WebClientStockApiCallerImpl implements StockApiCaller {
     }
 
     public List<StockPriceResponse> getStockPrice(String codes) {
+        log.info("{} 주식 햔재가 요청 API 사용", codes);
         return webClient.get()
             .uri(String.format("%s?codes=%s", stockPriceComponent.getUrl(), codes))
             .retrieve()
