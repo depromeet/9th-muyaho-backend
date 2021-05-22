@@ -16,6 +16,9 @@ import static com.depromeet.muyaho.common.utils.BigDecimalUtils.roundFloor;
 @Getter
 public class InvestStatusResponse {
 
+    // TODO 오늘의 수익금
+    private final String todayEarnings = "99999999999";
+
     private final BigDecimal finalAsset;
     private final BigDecimal seedAmount;
     private final String finalEarningRate;
