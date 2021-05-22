@@ -4,14 +4,14 @@ Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
 
 {
-    "stockId": 5859,
+    "stockId": 1,
     "purchasePrice": 10000,
     "quantity": 10,
-    "currencyType": "DOLLAR"
+    "currencyType": "WON"
 }
 
 ### 내가 소유한 주식 리스트를 조회한다
-GET {{api}}/api/v1/member/stock?type=DOMESTIC_STOCK
+GET {{api}}/api/v1/member/stock?type=BITCOIN
 Authorization: Bearer {{AUTHORIZATION}}
 
 ### 내가 소유한 주식을 수정한다
@@ -20,9 +20,10 @@ Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
 
 {
-    "memberStockId": 3,
+    "memberStockId": 1,
     "purchasePrice": 1000,
-    "quantity": 300
+    "quantity": 300,
+    "currencyType": "DOLLAR"
 }
 
 ### 내가 소유한 주식을 삭제한다

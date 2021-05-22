@@ -4,6 +4,7 @@ import com.depromeet.muyaho.api.service.memberstock.dto.request.AddMemberStockRe
 import com.depromeet.muyaho.api.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.api.service.memberstock.dto.request.UpdateMemberStockRequest;
 import com.depromeet.muyaho.common.exception.ConflictException;
+import com.depromeet.muyaho.common.exception.ForbiddenException;
 import com.depromeet.muyaho.common.exception.NotFoundException;
 import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.*;
@@ -120,6 +121,21 @@ class MemberStockServiceTest extends MemberSetupTest {
         List<MemberStock> memberStockList = memberStockRepository.findAll();
         assertThat(memberStockList).hasSize(1);
         assertMemberStock(memberStockList.get(0), memberId, stock.getId(), purchasePrice, quantity);
+    }
+
+    @Test
+    void 보유_주식을_수정할때_허용되지_않은_통화를_입력하면_에러가_발생한다() {
+        // given
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        memberStockRepository.save(memberStock);
+
+        double purchasePrice = 30000;
+        double quantity = 999999;
+
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.DOLLAR);
+
+        // when & then
+        assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(ForbiddenException.class);
     }
 
     @Test

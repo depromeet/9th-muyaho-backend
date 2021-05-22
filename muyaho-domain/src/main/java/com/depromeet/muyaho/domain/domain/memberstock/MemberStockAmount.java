@@ -45,4 +45,8 @@ public class MemberStockAmount {
         return quantity.getQuantity();
     }
 
+    public CurrencyType getCurrencyType() {
+        return purchasePrice.getCurrencyType();
+    }
+
 }

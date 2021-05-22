@@ -44,6 +44,7 @@ public class MemberStock extends BaseTimeEntity {
     }
 
     public void updateAmount(double purchasePrice, double quantity, CurrencyType currencyType) {
+        this.stock.validateAllowCurrency(currencyType);
         this.stockAmount = MemberStockAmount.of(purchasePrice, quantity, currencyType);
     }
 
@@ -61,6 +62,10 @@ public class MemberStock extends BaseTimeEntity {
 
     public String getStockCode() {
         return this.stock.getCode();
+    }
+
+    public CurrencyType getCurrencyType() {
+        return this.stockAmount.getCurrencyType();
     }
 
 }

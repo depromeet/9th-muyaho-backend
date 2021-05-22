@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.api.service.stockcalculator.dto.response;
 
+import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
 import lombok.*;
@@ -14,6 +15,7 @@ public class StockCalculateResponse {
 
     private final Long memberStockId;
     private final StockInfoResponse stock;
+    private final CurrencyType currencyType;
     private final String quantity;
     private final String purchasePrice;
     private final String purchaseAmount;
@@ -22,9 +24,10 @@ public class StockCalculateResponse {
     private final String earningRate;
 
     @Builder
-    private StockCalculateResponse(Long memberStockId, StockInfoResponse stock, BigDecimal quantity, BigDecimal purchasePrice, BigDecimal currentPrice) {
+    private StockCalculateResponse(Long memberStockId, StockInfoResponse stock, CurrencyType currencyType, BigDecimal quantity, BigDecimal purchasePrice, BigDecimal currentPrice) {
         this.memberStockId = memberStockId;
         this.stock = stock;
+        this.currencyType = currencyType;
         this.quantity = roundFloor(quantity);
         this.purchasePrice = roundFloor(purchasePrice);
         this.purchaseAmount = roundFloor(quantity.multiply(purchasePrice));
@@ -37,6 +40,7 @@ public class StockCalculateResponse {
         return StockCalculateResponse.builder()
             .memberStockId(memberStock.getId())
             .stock(StockInfoResponse.of(memberStock.getStock()))
+            .currencyType(memberStock.getCurrencyType())
             .quantity(memberStock.getQuantity())
             .purchasePrice(memberStock.getPurchasePrice())
             .currentPrice(currentPrice)
