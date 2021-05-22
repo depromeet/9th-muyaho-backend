@@ -32,7 +32,7 @@ public class MemberStockService {
     @Transactional
     public MemberStockInfoResponse updateMemberStock(UpdateMemberStockRequest request, Long memberId) {
         MemberStock memberStock = MemberStockServiceUtils.findMemberStockByIdAndMemberId(memberStockRepository, request.getMemberStockId(), memberId);
-        memberStock.updateAmount(request.getPurchasePrice(), request.getQuantity());
+        memberStock.updateAmount(request.getPurchasePrice(), request.getQuantity(), request.getCurrencyType());
         return MemberStockInfoResponse.of(memberStock, memberStock.getStock());
     }
 

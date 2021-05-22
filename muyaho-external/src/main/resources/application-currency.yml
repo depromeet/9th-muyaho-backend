@@ -1,0 +1,3 @@
+currency:
+  exchange:
+    url: https://earthquake.kr:23490/query/KRWUSD,USDKRW
