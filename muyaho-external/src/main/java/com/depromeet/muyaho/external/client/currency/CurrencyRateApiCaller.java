@@ -1,9 +1,9 @@
 package com.depromeet.muyaho.external.client.currency;
 
-import com.depromeet.muyaho.external.client.currency.dto.response.CurrencyRateResponse;
+import java.math.BigDecimal;
 
 public interface CurrencyRateApiCaller {
 
-    CurrencyRateResponse getCurrencyRate();
+    BigDecimal getCurrentRate();
 
 }

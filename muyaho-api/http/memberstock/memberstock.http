@@ -4,11 +4,17 @@ Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
 
 {
-    "stockId": 1,
+    "stockId": 6200,
     "purchasePrice": 10000000,
     "quantity": 3,
-    "currencyType": "WON"
+    "currencyType": "DOLLAR",
+    "purchaseTotalPrice": 130000
 }
+
+### 내 주식 정보를 가져오는 API
+GET {{api}}/api/v1/stock/status
+Authorization: Bearer {{AUTHORIZATION}}
+
 
 ### 내가 소유한 주식 리스트를 조회한다
 GET {{api}}/api/v1/member/stock?type=OVERSEAS_STOCK

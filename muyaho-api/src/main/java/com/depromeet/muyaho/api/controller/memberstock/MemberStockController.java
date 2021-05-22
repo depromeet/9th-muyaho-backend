@@ -3,6 +3,7 @@ package com.depromeet.muyaho.api.controller.memberstock;
 import com.depromeet.muyaho.api.config.interceptor.Auth;
 import com.depromeet.muyaho.api.config.resolver.MemberId;
 import com.depromeet.muyaho.api.controller.ApiResponse;
+import com.depromeet.muyaho.api.service.memberstock.dto.response.InvestStatusResponse;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.api.service.memberstock.MemberStockRetrieveService;
 import com.depromeet.muyaho.api.service.memberstock.MemberStockService;
@@ -39,6 +40,13 @@ public class MemberStockController {
     @GetMapping("/api/v1/member/stock")
     public ApiResponse<List<StockCalculateResponse>> getStocksInfo(@RequestParam StockMarketType type, @MemberId Long memberId) {
         return ApiResponse.success(memberStockRetrieveService.getMemberCurrentStocks(type, memberId));
+    }
+
+    @Operation(summary = "내가 보유한 주식 전체를 조회 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Auth
+    @GetMapping("/api/v1/stock/status")
+    public ApiResponse<InvestStatusResponse> getAllStocksStatus(@MemberId Long memberId) {
+        return ApiResponse.success(memberStockRetrieveService.getAllStockStatus(memberId));
     }
 
     @Operation(summary = "내가 보유한 주식을 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))

@@ -60,4 +60,16 @@ public class StockCalculateResponse {
             .build();
     }
 
+    public BigDecimal takeCurrentUnitPrice() {
+        return new BigDecimal(current.getUnitPrice());
+    }
+
+    public BigDecimal takePurchaseAmountPrice() {
+        return new BigDecimal(purchase.getAmount());
+    }
+
+    public BigDecimal takeCurrentAmountPrice() {
+        return new BigDecimal(current.getAmount());
+    }
+
 }

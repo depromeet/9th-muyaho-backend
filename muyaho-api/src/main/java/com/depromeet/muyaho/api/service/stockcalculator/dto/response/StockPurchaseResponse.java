@@ -2,11 +2,13 @@ package com.depromeet.muyaho.api.service.stockcalculator.dto.response;
 
 
 import lombok.Getter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
 import static com.depromeet.muyaho.common.utils.BigDecimalUtils.roundFloor;
 
+@ToString
 @Getter
 public class StockPurchaseResponse {
 

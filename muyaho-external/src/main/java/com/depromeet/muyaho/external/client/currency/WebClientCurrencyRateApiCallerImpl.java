@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor
 @Component
 public class WebClientCurrencyRateApiCallerImpl implements CurrencyRateApiCaller {
@@ -18,7 +20,11 @@ public class WebClientCurrencyRateApiCallerImpl implements CurrencyRateApiCaller
     private final CurrencyRateComponent currencyRateComponent;
 
     @Override
-    public CurrencyRateResponse getCurrencyRate() {
+    public BigDecimal getCurrentRate() {
+        return getCurrencyRate().getUSDToKRWExchangeRate();
+    }
+
+    private CurrencyRateResponse getCurrencyRate() {
         return webclient.get()
             .uri(currencyRateComponent.getUrl())
             .retrieve()
