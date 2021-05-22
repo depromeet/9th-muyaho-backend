@@ -43,7 +43,7 @@ public class MemberStockRetrieveService {
     private List<OverSeaCalculateResponse> exchangeDollarsToWon(List<StockCalculateResponse> stockCalculateResponses) {
         final BigDecimal rate = currencyRateApiCaller.getCurrentRate();
         return stockCalculateResponses.stream()
-            .map(dollar -> OverSeaCalculateResponse.of(dollar, dollar.getCurrentUnitPrice().multiply(rate)))
+            .map(dollar -> OverSeaCalculateResponse.of(dollar, dollar.takeCurrentUnitPrice().multiply(rate)))
             .collect(Collectors.toList());
     }
 

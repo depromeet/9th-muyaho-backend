@@ -43,22 +43,22 @@ public class InvestStatusResponse {
     private BigDecimal calculateSeed(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<OverSeaCalculateResponse> overSeasCurrentInfo) {
         return sum(Stream.concat(Stream.concat(
             bitCoinCurrentInfo.stream()
-                .map(StockCalculateResponse::getPurchaseAmountPrice),
+                .map(StockCalculateResponse::takePurchaseAmountPrice),
             domesticCurrentInfo.stream()
-                .map(StockCalculateResponse::getPurchaseAmountPrice)),
+                .map(StockCalculateResponse::takePurchaseAmountPrice)),
             overSeasCurrentInfo.stream()
-                .map(OverSeaCalculateResponse::getPurchaseAmountPriceInWon)
+                .map(OverSeaCalculateResponse::takePurchaseAmountPriceInWon)
         ));
     }
 
     private BigDecimal calculateFinalAsset(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<OverSeaCalculateResponse> overSeasCurrentInfo) {
         return sum(Stream.concat(Stream.concat(
             bitCoinCurrentInfo.stream()
-                .map(StockCalculateResponse::getCurrentAmountPrice),
+                .map(StockCalculateResponse::takeCurrentAmountPrice),
             domesticCurrentInfo.stream()
-                .map(StockCalculateResponse::getCurrentAmountPrice)),
+                .map(StockCalculateResponse::takeCurrentAmountPrice)),
             overSeasCurrentInfo.stream()
-                .map(OverSeaCalculateResponse::getCurrentAmountPriceInWon)
+                .map(OverSeaCalculateResponse::takeCurrentAmountPriceInWon)
         ));
     }
 

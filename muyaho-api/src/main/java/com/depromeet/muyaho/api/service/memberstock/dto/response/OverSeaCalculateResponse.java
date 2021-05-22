@@ -51,11 +51,11 @@ public class OverSeaCalculateResponse {
             .build();
     }
 
-    public BigDecimal getPurchaseAmountPriceInWon() {
+    public BigDecimal takePurchaseAmountPriceInWon() {
         return new BigDecimal(purchase.getAmountInWon());
     }
 
-    public BigDecimal getCurrentAmountPriceInWon() {
+    public BigDecimal takeCurrentAmountPriceInWon() {
         return new BigDecimal(currentInWon.getAmount());
     }
 
