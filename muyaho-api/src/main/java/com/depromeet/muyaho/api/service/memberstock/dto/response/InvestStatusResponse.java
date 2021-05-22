@@ -23,14 +23,14 @@ public class InvestStatusResponse {
     private final BigDecimal seedAmount;
     private final String finalEarningRate;
 
-    private final List<StockCalculateResponse> bitCoin = new ArrayList<>();
-    private final List<StockCalculateResponse> domesticStock = new ArrayList<>();
-    private final List<OverSeaCalculateResponse> overSeasStock = new ArrayList<>();
+    private final List<StockCalculateResponse> bitCoins = new ArrayList<>();
+    private final List<StockCalculateResponse> domesticStocks = new ArrayList<>();
+    private final List<OverSeaCalculateResponse> overSeasStocks = new ArrayList<>();
 
     private InvestStatusResponse(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<OverSeaCalculateResponse> overSeasCurrentInfo) {
-        this.bitCoin.addAll(bitCoinCurrentInfo);
-        this.domesticStock.addAll(domesticCurrentInfo);
-        this.overSeasStock.addAll(overSeasCurrentInfo);
+        this.bitCoins.addAll(bitCoinCurrentInfo);
+        this.domesticStocks.addAll(domesticCurrentInfo);
+        this.overSeasStocks.addAll(overSeasCurrentInfo);
         this.seedAmount = calculateSeed(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
         this.finalAsset = calculateFinalAsset(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
         this.finalEarningRate = roundFloor(calculateDifferencePercent(finalAsset, seedAmount));

@@ -26,7 +26,7 @@ public class MemberStockSeedPrice {
     private MemberStockSeedPrice(Stock stock, BigDecimal totalPurchasePriceInWon) {
         validateTotalPurchasePrice(stock, totalPurchasePriceInWon);
         validateAvailablePrice(totalPurchasePriceInWon);
-        this.totalPurchasePriceInWon = totalPurchasePriceInWon;
+        this.totalPurchasePriceInWon = stock.isTradeByDollars() ? totalPurchasePriceInWon : null;
     }
 
     private void validateAvailablePrice(BigDecimal totalPurchasePrice) {
@@ -35,14 +35,14 @@ public class MemberStockSeedPrice {
         }
     }
 
-    public static MemberStockSeedPrice of(Stock stock, BigDecimal totalPurchasePrice) {
-        return new MemberStockSeedPrice(stock, totalPurchasePrice);
-    }
-
     private void validateTotalPurchasePrice(Stock stock, BigDecimal totalPurchasePrice) {
         if (stock.isTradeByDollars() && totalPurchasePrice == null) {
             throw new ValidationException(String.format("주식 타입: (%s)은 매입금이 필수로 입력되어야 합니다", stock.getType()), ErrorCode.VALIDATION_ESSENTIAL_TOTAL_PURCHASE_PRICE_EXCEPTION);
         }
+    }
+
+    public static MemberStockSeedPrice of(Stock stock, BigDecimal totalPurchasePrice) {
+        return new MemberStockSeedPrice(stock, totalPurchasePrice);
     }
 
 }

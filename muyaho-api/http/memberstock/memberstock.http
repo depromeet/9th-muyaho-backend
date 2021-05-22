@@ -11,6 +11,11 @@ Authorization: Bearer {{AUTHORIZATION}}
     "purchaseTotalPrice": 130000
 }
 
+### 내 주식 정보를 가져오는 API
+GET {{api}}/api/v1/stock/status
+Authorization: Bearer {{AUTHORIZATION}}
+
+
 ### 내가 소유한 주식 리스트를 조회한다
 GET {{api}}/api/v1/member/stock?type=OVERSEAS_STOCK
 Authorization: Bearer {{AUTHORIZATION}}

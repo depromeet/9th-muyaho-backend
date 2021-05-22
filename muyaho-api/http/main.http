@@ -1,4 +1,5 @@
+### Ping
 GET {{api}}/ping
 
-### 비트코인 종목 갱신
+### 종목 갱신
 GET {{api}}/renew/stock
