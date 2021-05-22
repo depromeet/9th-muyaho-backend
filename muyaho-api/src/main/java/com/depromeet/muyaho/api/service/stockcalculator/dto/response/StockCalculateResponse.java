@@ -14,26 +14,29 @@ import static com.depromeet.muyaho.common.utils.BigDecimalUtils.*;
 public class StockCalculateResponse {
 
     private final Long memberStockId;
+
     private final StockInfoResponse stock;
+
+    private final StockPurchaseResponse purchase;
+
+    private final StockCurrentResponse current;
+
     private final CurrencyType currencyType;
+
     private final String quantity;
-    private final String purchasePrice;
-    private final String purchaseAmount;
-    private final String currentPrice;
-    private final String currentAmount;
+
     private final String earningRate;
 
     @Builder
-    private StockCalculateResponse(Long memberStockId, StockInfoResponse stock, CurrencyType currencyType, BigDecimal quantity, BigDecimal purchasePrice, BigDecimal currentPrice) {
+    private StockCalculateResponse(Long memberStockId, StockInfoResponse stock, CurrencyType currencyType,
+                                   BigDecimal purchaseQuantity, BigDecimal purchaseUnitPrice, BigDecimal currentUnitPrice, BigDecimal purchaseAmountInWon) {
         this.memberStockId = memberStockId;
         this.stock = stock;
         this.currencyType = currencyType;
-        this.quantity = roundFloor(quantity);
-        this.purchasePrice = roundFloor(purchasePrice);
-        this.purchaseAmount = roundFloor(quantity.multiply(purchasePrice));
-        this.currentPrice = roundFloor(currentPrice);
-        this.currentAmount = roundFloor(quantity.multiply(currentPrice));
-        this.earningRate = roundFloor(calculateDifferencePercent(currentPrice, purchasePrice));
+        this.quantity = roundFloor(purchaseQuantity);
+        this.purchase = StockPurchaseResponse.of(purchaseUnitPrice, purchaseQuantity, purchaseAmountInWon);
+        this.current = StockCurrentResponse.of(currentUnitPrice, purchaseQuantity);
+        this.earningRate = roundFloor(calculateDifferencePercent(currentUnitPrice, purchaseUnitPrice));
     }
 
     public static StockCalculateResponse of(MemberStock memberStock, BigDecimal currentPrice) {
@@ -41,18 +44,19 @@ public class StockCalculateResponse {
             .memberStockId(memberStock.getId())
             .stock(StockInfoResponse.of(memberStock.getStock()))
             .currencyType(memberStock.getCurrencyType())
-            .quantity(memberStock.getQuantity())
-            .purchasePrice(memberStock.getPurchasePrice())
-            .currentPrice(currentPrice)
+            .purchaseQuantity(memberStock.getQuantity())
+            .purchaseUnitPrice(memberStock.getPurchaseUnitPrice())
+            .currentUnitPrice(currentPrice)
+            .purchaseAmountInWon(memberStock.getPurchaseTotalPriceInWon())
             .build();
     }
 
     public static StockCalculateResponse testInstance(Long memberStockId, BigDecimal quantity, BigDecimal purchasePrice, BigDecimal currentPrice) {
         return StockCalculateResponse.builder()
             .memberStockId(memberStockId)
-            .quantity(quantity)
-            .purchasePrice(purchasePrice)
-            .currentPrice(currentPrice)
+            .purchaseQuantity(quantity)
+            .purchaseUnitPrice(purchasePrice)
+            .currentUnitPrice(currentPrice)
             .build();
     }
 

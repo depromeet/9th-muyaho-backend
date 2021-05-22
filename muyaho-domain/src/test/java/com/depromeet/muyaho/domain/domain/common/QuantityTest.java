@@ -14,19 +14,19 @@ public class QuantityTest {
     @Test
     void Quantity_는_보유수량을_나타내는_객체이며_소수도_가능하다() {
         // given
-        double count = 3;
+        BigDecimal count = new BigDecimal(3);
 
         // when
         Quantity quantity = Quantity.of(count);
 
         // then
-        assertThat(quantity.getQuantity()).isEqualByComparingTo(new BigDecimal(count));
+        assertThat(quantity.getQuantity()).isEqualByComparingTo(count);
     }
 
     @Test
     void 보유수량이_0일경우_에러가_발생한다() {
         // given
-        double count = 0;
+        BigDecimal count = new BigDecimal(0);
 
         // when & then
         assertThatThrownBy(() -> Quantity.of(count)).isInstanceOf(ValidationException.class);

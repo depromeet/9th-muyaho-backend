@@ -12,19 +12,19 @@ class MoneyTest {
     @Test
     void Money_클래스는_돈을_나타내는_객체이며_소수도_가능하다() {
         // given
-        double price = 1.5;
+        BigDecimal price = new BigDecimal("1.5");
 
         // when
         Money money = Money.of(price, CurrencyType.DOLLAR);
 
         // then
-        assertThat(money.getMoney()).isEqualByComparingTo(new BigDecimal(price));
+        assertThat(money.getMoney()).isEqualByComparingTo(price);
     }
 
     @Test
     void 돈이_0_보다_작은경우_VALIDATION_EXCEPTION_이_발생한다() {
         // given
-        double price = -1.5;
+        BigDecimal price = new BigDecimal("-1.5");
 
         // when & then
         assertThatThrownBy(() -> Money.of(price, CurrencyType.DOLLAR));
@@ -33,7 +33,7 @@ class MoneyTest {
     @Test
     void 동등성_테스트_같은_통화_같은_금액일경우_같은_값이다() {
         // given
-        double price = 1.5;
+        BigDecimal price = new BigDecimal("1.5");
         CurrencyType type = CurrencyType.WON;
 
         Money target = Money.of(price, type);
@@ -48,7 +48,7 @@ class MoneyTest {
     @Test
     void 동등성_테스트_같은_금액이더라더_통화가_다르면_다른_값이다() {
         // given
-        double price = 1.5;
+        BigDecimal price = new BigDecimal("1.5");
         Money target = Money.of(price, CurrencyType.DOLLAR);
 
         // when

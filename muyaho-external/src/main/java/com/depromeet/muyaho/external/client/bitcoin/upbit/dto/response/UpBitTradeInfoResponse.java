@@ -30,8 +30,8 @@ public class UpBitTradeInfoResponse {
         this.tradePrice = tradePrice;
     }
 
-    public static UpBitTradeInfoResponse testInstance(String market, double tradePrice) {
-        return new UpBitTradeInfoResponse(market, new BigDecimal(tradePrice));
+    public static UpBitTradeInfoResponse testInstance(String market, BigDecimal tradePrice) {
+        return new UpBitTradeInfoResponse(market, tradePrice);
     }
 
 }

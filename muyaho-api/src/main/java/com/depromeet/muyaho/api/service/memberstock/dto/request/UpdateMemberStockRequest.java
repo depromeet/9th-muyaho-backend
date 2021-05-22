@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -17,16 +18,18 @@ public class UpdateMemberStockRequest {
     private Long memberStockId;
 
     @NotNull
-    private double purchasePrice;
+    private BigDecimal purchasePrice;
 
     @NotNull
-    private double quantity;
+    private BigDecimal quantity;
 
     @NotNull
     private CurrencyType currencyType;
 
-    public static UpdateMemberStockRequest testInstance(Long memberStockId, double purchasePrice, double quantity, CurrencyType currencyType) {
-        return new UpdateMemberStockRequest(memberStockId, purchasePrice, quantity, currencyType);
+    private BigDecimal purchaseTotalPrice;
+
+    public static UpdateMemberStockRequest testInstance(Long memberStockId, BigDecimal purchasePrice, BigDecimal quantity, CurrencyType currencyType, BigDecimal totalPurchasePrice) {
+        return new UpdateMemberStockRequest(memberStockId, purchasePrice, quantity, currencyType, totalPurchasePrice);
     }
 
 }

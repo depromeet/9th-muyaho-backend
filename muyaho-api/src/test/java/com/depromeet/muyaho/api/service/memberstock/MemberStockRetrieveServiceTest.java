@@ -55,7 +55,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
         // given
         StockMarketType type = StockMarketType.DOMESTIC_STOCK;
         Stock stock = stockRepository.save(StockCreator.createActive("code", "name", type));
-        memberStockRepository.save(MemberStockCreator.create(memberId, stock, 2000, 10));
+        memberStockRepository.save(MemberStockCreator.create(memberId, stock, new BigDecimal(2000), new BigDecimal(10)));
 
         // when
         List<StockCalculateResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(type, memberId);
@@ -68,7 +68,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
     void 요청한_주식_타입만_조회된다() {
         // given
         Stock stock = stockRepository.save(StockCreator.createActive("code", "name", StockMarketType.DOMESTIC_STOCK));
-        memberStockRepository.save(MemberStockCreator.create(memberId, stock, 2000, 10));
+        memberStockRepository.save(MemberStockCreator.create(memberId, stock, new BigDecimal(2000), new BigDecimal(10)));
 
         // when
         List<StockCalculateResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(StockMarketType.BITCOIN, memberId);
@@ -82,7 +82,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
         // given
         Stock stock = StockCreator.createActive("code", "name", StockMarketType.DOMESTIC_STOCK);
         stockRepository.save(stock);
-        memberStockRepository.save(MemberStockCreator.create(999L, stock, 10000, 10));
+        memberStockRepository.save(MemberStockCreator.create(999L, stock, new BigDecimal(1000), new BigDecimal(10)));
 
         // when
         List<StockCalculateResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(StockMarketType.BITCOIN, memberId);

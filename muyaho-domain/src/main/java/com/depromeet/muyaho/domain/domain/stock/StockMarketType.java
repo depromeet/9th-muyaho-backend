@@ -11,7 +11,7 @@ import java.util.*;
 public enum StockMarketType {
 
     DOMESTIC_STOCK(StockType.STOCK, Collections.singletonList(CurrencyType.WON), Collections.emptyList()),
-    OVERSEAS_STOCK(StockType.STOCK, Arrays.asList(CurrencyType.WON, CurrencyType.DOLLAR), Collections.emptyList()),
+    OVERSEAS_STOCK(StockType.STOCK, Collections.singletonList(CurrencyType.DOLLAR), Collections.emptyList()),
     BITCOIN(StockType.BITCOIN, Collections.singletonList(CurrencyType.WON), Collections.singletonList("KRW-"));
 
     public boolean isAllowedCode(String code) {
@@ -29,6 +29,11 @@ public enum StockMarketType {
     public boolean isAllowCurrencyType(CurrencyType currencyType) {
         return this.allowedCurrencyType.stream()
             .anyMatch(type -> type.equals(currencyType));
+    }
+
+    public boolean isTradeByDollars() {
+        return this.allowedCurrencyType.stream()
+            .anyMatch(type -> type.equals(CurrencyType.DOLLAR));
     }
 
     private final StockType type;

@@ -57,10 +57,10 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 멤버가_새롭게_보유한_주식을_등록한다() {
         // given
-        double purchasePrice = 10000;
-        double quantity = 5;
+        BigDecimal purchasePrice = new BigDecimal(10000);
+        BigDecimal quantity = new BigDecimal(5);
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), purchasePrice, quantity, CurrencyType.WON);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), purchasePrice, quantity, CurrencyType.WON, null);
 
         // when
         memberStockService.addMemberStock(request, memberId);
@@ -76,7 +76,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         // given
         Long notExistStockId = 999L;
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(notExistStockId, 10000, 10, CurrencyType.WON);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(notExistStockId, new BigDecimal(1000), new BigDecimal(10), CurrencyType.WON, null);
 
         // when & then
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
@@ -85,9 +85,9 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 이미_소유한_주식으로_등록한_주식을_다시_등록하려하면_409_에러가_발생한다() {
         // given
-        memberStockRepository.save(MemberStockCreator.create(memberId, stock, 10000, 10));
+        memberStockRepository.save(MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10)));
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), 1000, 1, CurrencyType.WON);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), new BigDecimal(1000), new BigDecimal(1), CurrencyType.WON, null);
 
         // when & then
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(ConflictException.class);
@@ -97,7 +97,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     void 비활성화된_주식을_등록하려는_경우_404_에러가_발생한다() {
         // given
         Stock disActiveStock = stockRepository.save(StockCreator.createDisable("Disable", "비활성화", StockMarketType.BITCOIN));
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(disActiveStock.getId(), 1000, 10, CurrencyType.WON);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(disActiveStock.getId(), new BigDecimal(1000), new BigDecimal(10), CurrencyType.WON, null);
 
         // when
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
@@ -106,13 +106,13 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 보유한_주식의_보유량과_평단가를_수정하면_DB_에_반영된다() {
         // given
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
         memberStockRepository.save(memberStock);
 
-        double purchasePrice = 30000;
-        double quantity = 999999;
+        BigDecimal purchasePrice = new BigDecimal(30000);
+        BigDecimal quantity = new BigDecimal(999999);
 
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.WON);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.WON, null);
 
         // when
         memberStockService.updateMemberStock(request, memberId);
@@ -126,13 +126,13 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 보유_주식을_수정할때_허용되지_않은_통화를_입력하면_에러가_발생한다() {
         // given
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
         memberStockRepository.save(memberStock);
 
-        double purchasePrice = 30000;
-        double quantity = 999999;
+        BigDecimal purchasePrice = new BigDecimal(300000);
+        BigDecimal quantity = new BigDecimal(10);
 
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.DOLLAR);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.DOLLAR, new BigDecimal(1500));
 
         // when & then
         assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(ForbiddenException.class);
@@ -141,13 +141,13 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 다른_사람이_소유한_주식에_대해서_수정할_수_없다() {
         // given
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
         memberStockRepository.save(memberStock);
 
-        double purchasePrice = 30000;
-        double quantity = 999999;
+        BigDecimal purchasePrice = new BigDecimal(300000);
+        BigDecimal quantity = new BigDecimal(10);
 
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.WON);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.WON, null);
 
         // when
         assertThatThrownBy(() -> memberStockService.updateMemberStock(request, 999L)).isInstanceOf(NotFoundException.class);
@@ -156,7 +156,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 회원이_보유하지_않은_주식에대해서_수정할_수없다() {
         // given
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(999L, 10000, 10, CurrencyType.WON);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(999L, new BigDecimal(10000), new BigDecimal(10), CurrencyType.WON, null);
 
         // when
         assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
@@ -165,7 +165,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 내가_등록한_보유_주식을_등록_해제하면_기존의_DB_테이블에서_삭제된다() {
         // given
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
         memberStockRepository.save(memberStock);
 
         DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(memberStock.getId());
@@ -181,8 +181,8 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 내가_등록한_보유_주식을_삭제하면_기존의_id와_해당_정보들이_백업_테이블로_자동으로_백업된다() {
         // given
-        double purchasePrice = 33333;
-        double quantity = 55;
+        BigDecimal purchasePrice = new BigDecimal(33333);
+        BigDecimal quantity = new BigDecimal(55);
         MemberStock memberStock = MemberStockCreator.create(memberId, stock, purchasePrice, quantity);
         memberStockRepository.save(memberStock);
 
@@ -200,7 +200,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 다른사람이_소유한_보유_주식을_삭제할수없다() {
         // given
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, 10000, 10);
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
         memberStockRepository.save(memberStock);
 
         DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(memberStock.getId());
@@ -218,20 +218,19 @@ class MemberStockServiceTest extends MemberSetupTest {
         assertThatThrownBy(() -> memberStockService.deleteMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
     }
 
-    private void assertDeletedMemberStack(DeletedMemberStock deletedMemberStock, Long memberStockId, Long stockId, Long memberId, double purchasePrice, double quantity) {
+    private void assertDeletedMemberStack(DeletedMemberStock deletedMemberStock, Long memberStockId, Long stockId, Long memberId, BigDecimal purchasePrice, BigDecimal quantity) {
         assertThat(deletedMemberStock.getBackupId()).isEqualTo(memberStockId);
         assertThat(deletedMemberStock.getStockId()).isEqualTo(stockId);
         assertThat(deletedMemberStock.getMemberId()).isEqualTo(memberId);
-        assertThat(deletedMemberStock.getStockAmount().getPurchasePrice()).isEqualByComparingTo(new BigDecimal(purchasePrice));
-        assertThat(deletedMemberStock.getStockAmount().getQuantity()).isEqualByComparingTo(new BigDecimal(quantity));
+        assertThat(deletedMemberStock.getStockAmount().getPurchaseUnitPrice()).isEqualByComparingTo(purchasePrice);
+        assertThat(deletedMemberStock.getStockAmount().getQuantity()).isEqualByComparingTo(quantity);
     }
 
-    private void assertMemberStock(MemberStock memberStock, Long memberId, Long stockId, double purchasePrice, double quantity) {
+    private void assertMemberStock(MemberStock memberStock, Long memberId, Long stockId, BigDecimal purchasePrice, BigDecimal quantity) {
         assertThat(memberStock.getMemberId()).isEqualTo(memberId);
         assertThat(memberStock.getStock().getId()).isEqualTo(stockId);
-        assertThat(memberStock.getPurchasePrice()).isEqualByComparingTo(new BigDecimal(purchasePrice));
-        assertThat(memberStock.getPurchasePrice()).isEqualByComparingTo(new BigDecimal(purchasePrice));
-        assertThat(memberStock.getQuantity()).isEqualByComparingTo(new BigDecimal(quantity));
+        assertThat(memberStock.getPurchaseUnitPrice()).isEqualByComparingTo(purchasePrice);
+        assertThat(memberStock.getQuantity()).isEqualByComparingTo(quantity);
     }
 
 }

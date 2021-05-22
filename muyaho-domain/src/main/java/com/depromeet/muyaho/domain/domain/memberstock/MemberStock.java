@@ -32,28 +32,31 @@ public class MemberStock extends BaseTimeEntity {
     @Embedded
     private MemberStockAmount stockAmount;
 
-    private MemberStock(Long memberId, Stock stock, double purchasePrice, double quantity, CurrencyType currencyType) {
+    @Embedded
+    private MemberStockSeedPrice purchaseTotalPriceInWon; // 총 매입금 (원화): 환율의 변동사항을 고려해서 구입 당시의 원화 가격(시드)를 보유.
+
+    private MemberStock(Long memberId, Stock stock, BigDecimal purchasePrice, BigDecimal quantity, CurrencyType currencyType, BigDecimal purchaseTotalPriceInWon) {
         this.memberId = memberId;
         this.stock = stock;
-        this.stockAmount = MemberStockAmount.of(purchasePrice, quantity, currencyType);
+        this.stockAmount = MemberStockAmount.of(stock, purchasePrice, quantity, currencyType);
+        this.purchaseTotalPriceInWon = MemberStockSeedPrice.of(stock, purchaseTotalPriceInWon);
     }
 
-    public static MemberStock of(Long memberId, Stock stock, double purchasePrice, double quantity, CurrencyType currencyType) {
-        stock.validateAllowCurrency(currencyType);
-        return new MemberStock(memberId, stock, purchasePrice, quantity, currencyType);
+    public static MemberStock of(Long memberId, Stock stock, BigDecimal purchasePrice, BigDecimal quantity, CurrencyType currencyType, BigDecimal purchaseTotalPrice) {
+        return new MemberStock(memberId, stock, purchasePrice, quantity, currencyType, purchaseTotalPrice);
     }
 
-    public void updateAmount(double purchasePrice, double quantity, CurrencyType currencyType) {
-        this.stock.validateAllowCurrency(currencyType);
-        this.stockAmount = MemberStockAmount.of(purchasePrice, quantity, currencyType);
+    public void updateAmount(BigDecimal purchasePrice, BigDecimal quantity, CurrencyType currencyType, BigDecimal totalPurchasePrice) {
+        this.stockAmount = MemberStockAmount.of(stock, purchasePrice, quantity, currencyType);
+        this.purchaseTotalPriceInWon = MemberStockSeedPrice.of(this.stock, totalPurchasePrice);
     }
 
     public DeletedMemberStock delete() {
-        return DeletedMemberStock.of(id, memberId, stock.getId(), getPurchasePrice().doubleValue(), getQuantity().doubleValue());
+        return DeletedMemberStock.of(id, memberId, stock, getPurchaseUnitPrice(), getQuantity(), getCurrencyType(), purchaseTotalPriceInWon == null ? null : purchaseTotalPriceInWon.getTotalPurchasePriceInWon());
     }
 
-    public BigDecimal getPurchasePrice() {
-        return this.stockAmount.getPurchasePrice();
+    public BigDecimal getPurchaseUnitPrice() {
+        return this.stockAmount.getPurchaseUnitPrice();
     }
 
     public BigDecimal getQuantity() {
@@ -66,6 +69,13 @@ public class MemberStock extends BaseTimeEntity {
 
     public CurrencyType getCurrencyType() {
         return this.stockAmount.getCurrencyType();
+    }
+
+    public BigDecimal getPurchaseTotalPriceInWon() {
+        if (purchaseTotalPriceInWon == null) {
+            return null;
+        }
+        return purchaseTotalPriceInWon.getTotalPurchasePriceInWon();
     }
 
 }

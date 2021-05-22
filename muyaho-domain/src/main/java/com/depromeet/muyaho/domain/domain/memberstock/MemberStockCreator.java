@@ -5,11 +5,17 @@ import com.depromeet.muyaho.domain.domain.stock.Stock;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberStockCreator {
 
-    public static MemberStock create(Long memberId, Stock stock, double purchasePrice, double quantity) {
-        return MemberStock.of(memberId, stock, purchasePrice, quantity, CurrencyType.WON);
+    public static MemberStock create(Long memberId, Stock stock, BigDecimal purchasePrice, BigDecimal quantity) {
+        return MemberStock.of(memberId, stock, purchasePrice, quantity, CurrencyType.WON, null);
+    }
+
+    public static MemberStock createDollar(Long memberId, Stock stock, BigDecimal purchasePrice, BigDecimal quantity) {
+        return MemberStock.of(memberId, stock, purchasePrice, quantity, CurrencyType.DOLLAR, BigDecimal.TEN);
     }
 
 }

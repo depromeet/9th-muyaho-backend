@@ -22,6 +22,7 @@ public enum ErrorCode {
     VALIDATION_INVALID_EMAIL_EXCEPTION("V003", "이메일 포맷에 어긋납니다"),
     VALIDATION_INVALID_MONEY_EXCEPTION("V004", "잘못된 돈을 입력하셨습니다"),
     VALIDATION_INVALID_QUANTITY_EXCEPTION("V005", "잘못된 보유 수량입니다"),
+    VALIDATION_ESSENTIAL_TOTAL_PURCHASE_PRICE_EXCEPTION("V006", "해당하는 주식은 매입금을 필수로 입력해야합니다"),
 
     FORBIDDEN_STOCK_CURRENCY_EXCEPTION("F001", "해당하는 주식이 허용하지 않는 화폐 통화입니다");
 

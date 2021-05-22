@@ -1,5 +1,7 @@
 package com.depromeet.muyaho.api.service.stockcalculator;
 
+import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockCurrentResponse;
+import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockPurchaseResponse;
 import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockCalculateResponse;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStockCollection;
@@ -23,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,7 +62,7 @@ public class StockCalculatorTest extends MemberSetupTest {
 
         @Override
         public List<UpBitTradeInfoResponse> retrieveTrades(String marketCode) {
-            return Collections.singletonList(UpBitTradeInfoResponse.testInstance(marketCode, 2000));
+            return Collections.singletonList(UpBitTradeInfoResponse.testInstance(marketCode, new BigDecimal(2000)));
         }
     }
 
@@ -71,15 +74,15 @@ public class StockCalculatorTest extends MemberSetupTest {
 
         @Override
         public List<StockPriceResponse> getStockPrice(String code) {
-            return Collections.singletonList(StockPriceResponse.testInstance(code, 300));
+            return Collections.singletonList(StockPriceResponse.testInstance(code, new BigDecimal(300)));
         }
     }
 
     @Test
     void 보유한_비트코인의_현재가를_가져와서_수익률을_계산한다() {
         // given
-        int purchasePrice = 1000;
-        int quantity = 10;
+        BigDecimal purchasePrice = new BigDecimal(1000);
+        BigDecimal quantity = new BigDecimal(10);
 
         Stock bitCoin = stockRepository.save(StockCreator.createActive("KRW-code", "비트코인", StockMarketType.BITCOIN));
         MemberStock memberStock = memberStockRepository.save((MemberStockCreator.create(memberId, bitCoin, purchasePrice, quantity)));
@@ -96,8 +99,8 @@ public class StockCalculatorTest extends MemberSetupTest {
     @Test
     void 보유한_국내주식의_현재가를_가져와서_수익률을_계산한다() {
         // given
-        int purchasePrice = 100;
-        int quantity = 20;
+        BigDecimal purchasePrice = new BigDecimal(100);
+        BigDecimal quantity = new BigDecimal(20);
 
         Stock bitCoin = stockRepository.save(StockCreator.createActive("NC", "국내주식-NC", StockMarketType.DOMESTIC_STOCK));
         MemberStock memberStock = memberStockRepository.save((MemberStockCreator.create(memberId, bitCoin, purchasePrice, quantity)));
@@ -114,11 +117,11 @@ public class StockCalculatorTest extends MemberSetupTest {
     @Test
     void 보유한_해외주식의_현재가를_가져와서_수익률을_계산한다() {
         // given
-        int purchasePrice = 100;
-        int quantity = 20;
+        BigDecimal purchasePrice = new BigDecimal(100);
+        BigDecimal quantity = new BigDecimal(20);
 
         Stock bitCoin = stockRepository.save(StockCreator.createActive("APPLE", "해외주식-APPLE", StockMarketType.OVERSEAS_STOCK));
-        MemberStock memberStock = memberStockRepository.save((MemberStockCreator.create(memberId, bitCoin, purchasePrice, quantity)));
+        MemberStock memberStock = memberStockRepository.save((MemberStockCreator.createDollar(memberId, bitCoin, purchasePrice, quantity)));
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
@@ -133,11 +136,19 @@ public class StockCalculatorTest extends MemberSetupTest {
                                               String purchaseAmount, String currentPrice, String currentAmount, String earningRate) {
         assertThat(response.getMemberStockId()).isEqualTo(memberStockId);
         assertThat(response.getQuantity()).isEqualTo(quantity);
-        assertThat(response.getPurchasePrice()).isEqualTo(purchasePrice);
-        assertThat(response.getPurchaseAmount()).isEqualTo(purchaseAmount);
-        assertThat(response.getCurrentPrice()).isEqualTo(currentPrice);
-        assertThat(response.getCurrentAmount()).isEqualTo(currentAmount);
+        assertStockPurchaseResponse(response.getPurchase(), purchasePrice, purchaseAmount);
+        assertStockCurrentResponse(response.getCurrent(), currentPrice, currentAmount);
         assertThat(response.getEarningRate()).isEqualTo(earningRate);
+    }
+
+    private void assertStockPurchaseResponse(StockPurchaseResponse response, String unitPrice, String amount) {
+        assertThat(response.getUnitPrice()).isEqualTo(unitPrice);
+        assertThat(response.getAmount()).isEqualTo(amount);
+    }
+
+    private void assertStockCurrentResponse(StockCurrentResponse response, String unitPrice, String amount) {
+        assertThat(response.getUnitPrice()).isEqualTo(unitPrice);
+        assertThat(response.getAmount()).isEqualTo(amount);
     }
 
 }

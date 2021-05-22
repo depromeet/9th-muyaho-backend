@@ -24,19 +24,19 @@ public class Money {
     @Enumerated(EnumType.STRING)
     private CurrencyType currencyType;
 
-    private Money(double money, CurrencyType currencyType) {
+    private Money(BigDecimal money, CurrencyType currencyType) {
         validateValidMoney(money);
-        this.money = new BigDecimal(money);
+        this.money = money;
         this.currencyType = currencyType;
     }
 
-    private void validateValidMoney(double money) {
-        if (money < 0) {
+    private void validateValidMoney(BigDecimal money) {
+        if (money.compareTo(BigDecimal.ZERO) < 0) {
             throw new ValidationException(String.format("Money(%s) 은 0보다 커야합니다", money));
         }
     }
 
-    public static Money of(double money, CurrencyType currencyType) {
+    public static Money of(BigDecimal money, CurrencyType currencyType) {
         return new Money(money, currencyType);
     }
 

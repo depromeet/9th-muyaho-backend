@@ -2,7 +2,6 @@ package com.depromeet.muyaho.domain.domain.stock;
 
 import com.depromeet.muyaho.common.exception.ErrorCode;
 import com.depromeet.muyaho.common.exception.ForbiddenException;
-import com.depromeet.muyaho.common.exception.ValidationException;
 import com.depromeet.muyaho.domain.domain.BaseTimeEntity;
 import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import lombok.AccessLevel;
@@ -65,6 +64,10 @@ public class Stock extends BaseTimeEntity {
         if (!type.isAllowCurrencyType(currencyType)) {
             throw new ForbiddenException(String.format("주식 (%s)은 통화 (%s)를 허용하지 않습니다", type, currencyType), ErrorCode.FORBIDDEN_STOCK_CURRENCY_EXCEPTION);
         }
+    }
+
+    public boolean isTradeByDollars() {
+        return this.type.isTradeByDollars();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.api.service.memberstock.dto.response;
 
+import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockPurchaseResponse;
 import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.stock.Stock;
@@ -8,8 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-
-import static com.depromeet.muyaho.common.utils.BigDecimalUtils.*;
 
 @Getter
 public class MemberStockInfoResponse {
@@ -20,25 +19,19 @@ public class MemberStockInfoResponse {
 
     private final CurrencyType currencyType;
 
-    private final String purchasePrice;
-
-    private final String quantity;
-
-    private final String purchaseAmount;
+    private final StockPurchaseResponse purchase;
 
     @Builder
-    private MemberStockInfoResponse(Long memberStockId, StockInfoResponse stock, CurrencyType currencyType, BigDecimal purchasePrice, BigDecimal quantity) {
+    private MemberStockInfoResponse(Long memberStockId, StockInfoResponse stock, CurrencyType currencyType, BigDecimal purchasePrice, BigDecimal quantity, BigDecimal totalPurchaseWon) {
         this.memberStockId = memberStockId;
         this.stock = stock;
         this.currencyType = currencyType;
-        this.purchasePrice = roundFloor(purchasePrice);
-        this.quantity = roundFloor(quantity);
-        this.purchaseAmount = roundFloor(purchasePrice.multiply(quantity));
+        this.purchase = StockPurchaseResponse.of(purchasePrice, quantity, totalPurchaseWon);
     }
 
     public static MemberStockInfoResponse of(MemberStock memberStock, Stock stock) {
         return new MemberStockInfoResponse(memberStock.getId(), StockInfoResponse.of(stock), memberStock.getCurrencyType(),
-            memberStock.getPurchasePrice(), memberStock.getQuantity());
+            memberStock.getPurchaseUnitPrice(), memberStock.getQuantity(), memberStock.getPurchaseTotalPriceInWon());
     }
 
 }
