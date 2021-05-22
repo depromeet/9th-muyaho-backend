@@ -33,7 +33,7 @@ public class MemberStock extends BaseTimeEntity {
     private MemberStockAmount stockAmount;
 
     @Embedded
-    private MemberStockSeedPrice purchaseTotalPriceInWon; // 총 매입금 (원화): 환율의 변동사항을 고려해서 구입 당시의 원화 가격(시드)를 보유.
+    private MemberStockSeedPrice purchaseTotalPriceInWon;
 
     private MemberStock(Long memberId, Stock stock, BigDecimal purchasePrice, BigDecimal quantity, CurrencyType currencyType, BigDecimal purchaseTotalPriceInWon) {
         this.memberId = memberId;

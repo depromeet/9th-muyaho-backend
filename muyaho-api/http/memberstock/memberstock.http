@@ -4,10 +4,11 @@ Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
 
 {
-    "stockId": 1,
+    "stockId": 2589,
     "purchasePrice": 10000000,
     "quantity": 3,
-    "currencyType": "WON"
+    "currencyType": "WON",
+    "purchaseTotalPrice": 130000
 }
 
 ### 내가 소유한 주식 리스트를 조회한다

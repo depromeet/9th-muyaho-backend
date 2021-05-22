@@ -21,21 +21,11 @@ public class CurrencyRateResponse {
     @JsonProperty("USDKRW")
     private List<BigDecimal> usdKrwRate;
 
-    @JsonProperty("KRWUSD")
-    private List<BigDecimal> krwUsdRate;
-
     public BigDecimal getUSDToKRWExchangeRate() {
         if (usdKrwRate.size() <= 0) {
             throw new BadGatewayException("USD -> KRW로의 환율을 불러오는 도중 에러가 발생하였습니다.");
         }
         return usdKrwRate.get(0);
-    }
-
-    public BigDecimal getKRWToUSDExchangeRate() {
-        if (krwUsdRate.size() <= 0) {
-            throw new BadGatewayException("KRW -> USD로의 환율을 불러오는 도중 에러가 발생하였습니다.");
-        }
-        return krwUsdRate.get(0);
     }
 
 }

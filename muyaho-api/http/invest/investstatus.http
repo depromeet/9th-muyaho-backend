@@ -1,0 +1,3 @@
+### 내 주식 정보를 가져오는 API
+GET {{api}}/api/v1/invest
+Authorization: Bearer {{AUTHORIZATION}}
