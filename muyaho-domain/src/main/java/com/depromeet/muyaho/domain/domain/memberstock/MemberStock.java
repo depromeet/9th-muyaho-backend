@@ -46,8 +46,8 @@ public class MemberStock extends BaseTimeEntity {
         return new MemberStock(memberId, stock, purchasePrice, quantity, currencyType, purchaseTotalPrice);
     }
 
-    public void updateAmount(BigDecimal purchasePrice, BigDecimal quantity, CurrencyType currencyType, BigDecimal totalPurchasePrice) {
-        this.stockAmount = MemberStockAmount.of(stock, purchasePrice, quantity, currencyType);
+    public void updateAmount(BigDecimal purchasePrice, BigDecimal quantity, BigDecimal totalPurchasePrice) {
+        this.stockAmount = MemberStockAmount.of(stock, purchasePrice, quantity, getCurrencyType());
         this.purchaseTotalPriceInWon = MemberStockSeedPrice.of(this.stock, totalPurchasePrice);
     }
 

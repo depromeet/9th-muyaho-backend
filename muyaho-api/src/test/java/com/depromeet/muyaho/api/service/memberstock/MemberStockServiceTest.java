@@ -4,7 +4,6 @@ import com.depromeet.muyaho.api.service.memberstock.dto.request.AddMemberStockRe
 import com.depromeet.muyaho.api.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.api.service.memberstock.dto.request.UpdateMemberStockRequest;
 import com.depromeet.muyaho.common.exception.ConflictException;
-import com.depromeet.muyaho.common.exception.ForbiddenException;
 import com.depromeet.muyaho.common.exception.NotFoundException;
 import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.*;
@@ -112,7 +111,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         BigDecimal purchasePrice = new BigDecimal(30000);
         BigDecimal quantity = new BigDecimal(999999);
 
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.WON, null);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, null);
 
         // when
         memberStockService.updateMemberStock(request, memberId);
@@ -124,21 +123,6 @@ class MemberStockServiceTest extends MemberSetupTest {
     }
 
     @Test
-    void 보유_주식을_수정할때_허용되지_않은_통화를_입력하면_에러가_발생한다() {
-        // given
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
-        memberStockRepository.save(memberStock);
-
-        BigDecimal purchasePrice = new BigDecimal(300000);
-        BigDecimal quantity = new BigDecimal(10);
-
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.DOLLAR, new BigDecimal(1500));
-
-        // when & then
-        assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(ForbiddenException.class);
-    }
-
-    @Test
     void 다른_사람이_소유한_주식에_대해서_수정할_수_없다() {
         // given
         MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
@@ -147,7 +131,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         BigDecimal purchasePrice = new BigDecimal(300000);
         BigDecimal quantity = new BigDecimal(10);
 
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, CurrencyType.WON, null);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, null);
 
         // when
         assertThatThrownBy(() -> memberStockService.updateMemberStock(request, 999L)).isInstanceOf(NotFoundException.class);
@@ -156,7 +140,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 회원이_보유하지_않은_주식에대해서_수정할_수없다() {
         // given
-        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(999L, new BigDecimal(10000), new BigDecimal(10), CurrencyType.WON, null);
+        UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(999L, new BigDecimal(10000), new BigDecimal(10), null);
 
         // when
         assertThatThrownBy(() -> memberStockService.updateMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);

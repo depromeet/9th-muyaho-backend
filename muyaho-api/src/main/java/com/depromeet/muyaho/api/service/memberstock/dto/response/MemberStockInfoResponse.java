@@ -1,6 +1,5 @@
 package com.depromeet.muyaho.api.service.memberstock.dto.response;
 
-import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockPurchaseResponse;
 import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.stock.Stock;
@@ -9,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+
+import static com.depromeet.muyaho.common.utils.BigDecimalUtils.roundFloor;
 
 @Getter
 public class MemberStockInfoResponse {
@@ -19,14 +20,23 @@ public class MemberStockInfoResponse {
 
     private final CurrencyType currencyType;
 
-    private final StockPurchaseResponse purchase;
+    private final String purchasePrice;
+
+    private final String quantity;
+
+    private final String purchaseAmount;
+
+    private final String purchaseAmountInWon;
 
     @Builder
-    private MemberStockInfoResponse(Long memberStockId, StockInfoResponse stock, CurrencyType currencyType, BigDecimal purchasePrice, BigDecimal quantity, BigDecimal totalPurchaseWon) {
+    private MemberStockInfoResponse(Long memberStockId, StockInfoResponse stock, CurrencyType currencyType, BigDecimal purchasePrice, BigDecimal quantity, BigDecimal purchaseAmountInWon) {
         this.memberStockId = memberStockId;
         this.stock = stock;
         this.currencyType = currencyType;
-        this.purchase = StockPurchaseResponse.of(purchasePrice, quantity, totalPurchaseWon);
+        this.purchasePrice = roundFloor(purchasePrice);
+        this.quantity = roundFloor(quantity);
+        this.purchaseAmount = roundFloor(quantity.multiply(purchasePrice));
+        this.purchaseAmountInWon = purchaseAmountInWon == null ? null : roundFloor(purchaseAmountInWon);
     }
 
     public static MemberStockInfoResponse of(MemberStock memberStock, Stock stock) {
