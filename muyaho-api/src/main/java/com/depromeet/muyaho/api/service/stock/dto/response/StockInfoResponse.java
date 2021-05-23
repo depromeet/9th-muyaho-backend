@@ -2,23 +2,21 @@ package com.depromeet.muyaho.api.service.stock.dto.response;
 
 import com.depromeet.muyaho.domain.domain.stock.Stock;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @ToString
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StockInfoResponse {
 
-    private final Long id;
+    private Long id;
 
-    private final String code;
+    private String code;
 
-    private final String name;
+    private String name;
 
-    private final StockMarketType type;
+    private StockMarketType type;
 
     public static StockInfoResponse of(Stock stock) {
         return new StockInfoResponse(stock.getId(), stock.getCode(), stock.getName(), stock.getType());

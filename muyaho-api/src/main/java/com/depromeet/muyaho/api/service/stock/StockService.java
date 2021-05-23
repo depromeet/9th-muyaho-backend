@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.api.service.stock;
 
+import com.depromeet.muyaho.api.service.stock.dto.request.RetrieveStocksRequest;
 import com.depromeet.muyaho.domain.domain.stock.*;
 import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,9 @@ public class StockService {
     private final StockRepository stockRepository;
 
     @Transactional(readOnly = true)
-    public List<StockInfoResponse> retrieveStockInfo(StockMarketType type) {
-        return stockRepository.findAllActiveStockByType(type).stream()
+    public List<StockInfoResponse> retrieveStocks(RetrieveStocksRequest request) {
+        List<Stock> stocks = stockRepository.findAllActiveStockByType(request.getType());
+        return stocks.stream()
             .map(StockInfoResponse::of)
             .collect(Collectors.toList());
     }

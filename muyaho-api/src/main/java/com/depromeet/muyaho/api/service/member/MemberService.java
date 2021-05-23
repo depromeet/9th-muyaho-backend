@@ -26,7 +26,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public void checkIsDuplicateName(CheckDuplicateNameRequest request) {
+    public void checkDuplicateName(CheckDuplicateNameRequest request) {
         MemberServiceUtils.validateNotExistName(memberRepository, request.getName());
     }
 

@@ -24,7 +24,7 @@ public class MemberController {
     @Operation(summary = "닉네임 중복 체크 API")
     @GetMapping("/api/v1/check/name")
     public ApiResponse<String> checkDuplicateName(@Valid CheckDuplicateNameRequest request) {
-        memberService.checkIsDuplicateName(request);
+        memberService.checkDuplicateName(request);
         return ApiResponse.SUCCESS;
     }
 
