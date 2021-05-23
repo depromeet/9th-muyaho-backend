@@ -39,18 +39,12 @@ class MemberServiceTest {
     @Test
     void 회원가입_요청시_DB_에_회원정보가_추가된다() {
         // given
-        String uid = "uid";
-        String email = "will.seungho@gmail.com";
-        String name = "무야호";
-        String profileUrl = "https://profile.com";
-        MemberProvider provider = MemberProvider.APPLE;
-
         CreateMemberRequest request = CreateMemberRequest.builder()
-            .uid(uid)
-            .email(email)
-            .name(name)
-            .profileUrl(profileUrl)
-            .provider(provider)
+            .uid("uid")
+            .email("will.seungho@gmail.com")
+            .name("무야호")
+            .profileUrl("https://profile.com")
+            .provider(MemberProvider.APPLE)
             .build();
 
         memberService.createMember(request);
@@ -58,25 +52,23 @@ class MemberServiceTest {
         // then
         List<Member> memberList = memberRepository.findAll();
         assertThat(memberList).hasSize(1);
-        MemberServiceTestUtils.assertMember(memberList.get(0), uid, email, name, profileUrl, provider);
+        MemberServiceTestUtils.assertMember(memberList.get(0), request.getUid(), request.getEmail(),
+            request.getName(), request.getProfileUrl(), request.getProvider());
     }
 
     @Test
     void 회원가입시_이미_존재하는_애플_멤버의경우_409_에러가_발생한다() {
         // given
         String uid = "uid";
-        String email = "will.seungho@gmail.com";
-        String name = "무야호";
-        String profileUrl = "https://profile.com";
         MemberProvider provider = MemberProvider.APPLE;
 
-        memberRepository.save(MemberCreator.create(uid, "name1", profileUrl, provider));
+        memberRepository.save(MemberCreator.create(uid, "name1", null, provider));
 
         CreateMemberRequest request = CreateMemberRequest.builder()
             .uid(uid)
-            .email(email)
-            .name(name)
-            .profileUrl(profileUrl)
+            .email("will.seungho@gmail.com")
+            .name("무야호")
+            .profileUrl("https://profile.com")
             .provider(provider)
             .build();
 
@@ -87,20 +79,15 @@ class MemberServiceTest {
     @Test
     void 회원가입시_닉네임이_중복되면_409_에러가_발생한다() {
         // given
-        String uid = "uid";
-        String email = "will.seungho@gmail.com";
         String name = "무야호";
-        String profileUrl = "https://profile.com";
-        MemberProvider provider = MemberProvider.APPLE;
-
-        memberRepository.save(MemberCreator.create("another uuid", name, profileUrl, provider));
+        memberRepository.save(MemberCreator.create("another uuid", name, null, MemberProvider.KAKAO));
 
         CreateMemberRequest request = CreateMemberRequest.builder()
-            .uid(uid)
-            .email(email)
+            .uid("uid")
+            .email("will.seungho@gmail.com")
             .name(name)
-            .profileUrl(profileUrl)
-            .provider(provider)
+            .profileUrl(null)
+            .provider(MemberProvider.APPLE)
             .build();
 
         // when & then
@@ -157,13 +144,10 @@ class MemberServiceTest {
     @Test
     void 회원_정보를_수정하면_DB_에_수정된_회원정보가_저장된다() {
         // given
-        String uid = "uid";
-        Member member = MemberCreator.create(uid, "강승호", null, MemberProvider.KAKAO);
-        memberRepository.save(member);
+        Member member = memberRepository.save(MemberCreator.create("uid", "강승호", null, MemberProvider.KAKAO));
 
         String name = "승호강";
         String profileUrl = "https://seungho.com";
-
         UpdateMemberRequest request = UpdateMemberRequest.testInstance(name, profileUrl);
 
         // when
@@ -171,21 +155,21 @@ class MemberServiceTest {
 
         // then
         List<Member> memberList = memberRepository.findAll();
-        MemberServiceTestUtils.assertMember(memberList.get(0), uid, null, name, profileUrl, MemberProvider.KAKAO);
+        MemberServiceTestUtils.assertMember(memberList.get(0), member.getUid(), null, name, profileUrl, MemberProvider.KAKAO);
     }
 
     @Test
     void 회원정보_수정시_닉네임이_중복되면_409_에러가_발생한다() {
         // given
         String name = "강승호";
-        Member member1 = MemberCreator.create("uid1", "승호강", null, MemberProvider.KAKAO);
-        Member member2 = MemberCreator.create("uid2", name, null, MemberProvider.KAKAO);
-        memberRepository.saveAll(Arrays.asList(member1, member2));
+        Member member = MemberCreator.create("uid1", "승호강", null, MemberProvider.KAKAO);
+        Member targetMember = MemberCreator.create("uid2", name, null, MemberProvider.APPLE);
+        memberRepository.saveAll(Arrays.asList(member, targetMember));
 
         UpdateMemberRequest request = UpdateMemberRequest.testInstance(name, null);
 
         // when & then
-        assertThatThrownBy(() -> memberService.updateMemberInfo(request, member1.getId())).isInstanceOf(ConflictException.class);
+        assertThatThrownBy(() -> memberService.updateMemberInfo(request, member.getId())).isInstanceOf(ConflictException.class);
     }
 
     @Test
@@ -200,8 +184,7 @@ class MemberServiceTest {
     @Test
     void 회원탈퇴시_MEMBER_테이블에서_해당_데이터가_삭제된다() {
         // given
-        Member member = MemberCreator.create("uid", "강승호", null, MemberProvider.KAKAO);
-        memberRepository.save(member);
+        Member member = memberRepository.save(MemberCreator.create("uid", "강승호", null, MemberProvider.KAKAO));
 
         // when
         memberService.deleteMemberInfo(member.getId());

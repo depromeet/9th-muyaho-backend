@@ -4,29 +4,27 @@ import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.stock.Stock;
 import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 import static com.depromeet.muyaho.common.utils.BigDecimalUtils.roundFloor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberStockInfoResponse {
 
-    private final Long memberStockId;
+    private Long memberStockId;
+    private StockInfoResponse stock;
 
-    private final StockInfoResponse stock;
-
-    private final CurrencyType currencyType;
-
-    private final String purchasePrice;
-
-    private final String quantity;
-
-    private final String purchaseAmount;
-
-    private final String purchaseAmountInWon;
+    private CurrencyType currencyType;
+    private String quantity;
+    private String purchasePrice;
+    private String purchaseAmount;
+    private String purchaseAmountInWon;
 
     @Builder
     private MemberStockInfoResponse(Long memberStockId, StockInfoResponse stock, CurrencyType currencyType, BigDecimal purchasePrice, BigDecimal quantity, BigDecimal purchaseAmountInWon) {

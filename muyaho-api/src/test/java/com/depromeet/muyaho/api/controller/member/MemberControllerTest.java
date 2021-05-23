@@ -58,7 +58,10 @@ public class MemberControllerTest extends ControllerTest {
         CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance("사용하지 않는 닉네임");
 
         // when
-        memberMockApiCaller.checkDuplicateNam(request, 200);
+        ApiResponse<String> response = memberMockApiCaller.checkDuplicateNam(request, 200);
+
+        // then
+        assertThat(response.getCode()).isEmpty();
     }
 
     @DisplayName("GET /api/v1/check/name 중복된 닉네임이면 409 Conflict")
@@ -96,7 +99,11 @@ public class MemberControllerTest extends ControllerTest {
     @Test
     void 멤버정보를_삭제한다() throws Exception {
         // when
-        memberMockApiCaller.deleteMemberInfo(token, 200);
+        ApiResponse<String> response = memberMockApiCaller.deleteMemberInfo(token, 200);
+
+        // then
+        assertThat(response.getCode()).isEmpty();
+
     }
 
     @DisplayName("DELETE /api/v1/member 잘못된 세션ID 401")

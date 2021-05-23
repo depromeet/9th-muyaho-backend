@@ -18,4 +18,8 @@ public class MemberStockCreator {
         return MemberStock.of(memberId, stock, purchasePrice, quantity, CurrencyType.DOLLAR, BigDecimal.TEN);
     }
 
+    public static MemberStock createWon(Long memberId, Stock stock, BigDecimal purchasePrice, BigDecimal quantity) {
+        return MemberStock.of(memberId, stock, purchasePrice, quantity, CurrencyType.WON, null);
+    }
+
 }
