@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface StockCalculator {
 
-    List<StockCalculateResponse> calculateCurrentStocks(StockMarketType type, MemberStockCollection collection);
+    List<StockCalculateResponse> calculateCurrentMemberStocks(StockMarketType type, MemberStockCollection collection);
 
 }

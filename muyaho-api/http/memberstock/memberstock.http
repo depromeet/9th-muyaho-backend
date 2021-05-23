@@ -4,11 +4,11 @@ Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
 
 {
-    "stockId": 6400,
+    "stockId": 2590,
     "purchasePrice": 10000000,
     "quantity": 3,
-    "currencyType": "DOLLAR",
-    "purchaseTotalPrice": 130000
+    "currencyType": "WON",
+    "purchaseTotalPrice": 1000
 }
 
 ### 내 주식 정보를 가져오는 API

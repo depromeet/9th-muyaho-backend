@@ -25,42 +25,42 @@ public class InvestStatusResponse {
 
     private final List<StockCalculateResponse> bitCoins = new ArrayList<>();
     private final List<StockCalculateResponse> domesticStocks = new ArrayList<>();
-    private final List<OverSeaCalculateResponse> overSeasStocks = new ArrayList<>();
+    private final List<StockCalculateResponse> overSeasStocks = new ArrayList<>();
 
-    private InvestStatusResponse(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<OverSeaCalculateResponse> overSeasCurrentInfo) {
+    private InvestStatusResponse(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {
         this.bitCoins.addAll(bitCoinCurrentInfo);
         this.domesticStocks.addAll(domesticCurrentInfo);
         this.overSeasStocks.addAll(overSeasCurrentInfo);
-        BigDecimal seedAmount = calculateSeed(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
-        BigDecimal finalAsset = calculateFinalAsset(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
+        final BigDecimal seedAmount = calculateSeed(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
+        final BigDecimal finalAsset = calculateFinalAsset(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
         this.finalAsset = roundFloor(finalAsset);
         this.seedAmount = roundFloor(seedAmount);
         this.finalEarningRate = roundFloor(calculateDifferencePercent(finalAsset, seedAmount));
     }
 
-    public static InvestStatusResponse of(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<OverSeaCalculateResponse> overSeasCurrentInfo) {
+    public static InvestStatusResponse of(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {
         return new InvestStatusResponse(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
     }
 
-    private BigDecimal calculateSeed(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<OverSeaCalculateResponse> overSeasCurrentInfo) {
+    private BigDecimal calculateSeed(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {
         return sum(Stream.concat(Stream.concat(
             bitCoinCurrentInfo.stream()
                 .map(StockCalculateResponse::takePurchaseAmountPrice),
             domesticCurrentInfo.stream()
                 .map(StockCalculateResponse::takePurchaseAmountPrice)),
             overSeasCurrentInfo.stream()
-                .map(OverSeaCalculateResponse::takePurchaseAmountPriceInWon)
+                .map(StockCalculateResponse::takePurchaseAmountInWon)
         ));
     }
 
-    private BigDecimal calculateFinalAsset(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<OverSeaCalculateResponse> overSeasCurrentInfo) {
+    private BigDecimal calculateFinalAsset(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {
         return sum(Stream.concat(Stream.concat(
             bitCoinCurrentInfo.stream()
                 .map(StockCalculateResponse::takeCurrentAmountPrice),
             domesticCurrentInfo.stream()
                 .map(StockCalculateResponse::takeCurrentAmountPrice)),
             overSeasCurrentInfo.stream()
-                .map(OverSeaCalculateResponse::takeCurrentAmountPriceInWon)
+                .map(StockCalculateResponse::takeCurrentAmountPrice)
         ));
     }
 

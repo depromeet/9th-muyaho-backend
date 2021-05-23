@@ -10,39 +10,37 @@ import java.util.*;
 @RequiredArgsConstructor
 public enum StockMarketType {
 
-    DOMESTIC_STOCK(StockType.STOCK, Collections.singletonList(CurrencyType.WON), Collections.emptyList()),
-    OVERSEAS_STOCK(StockType.STOCK, Collections.singletonList(CurrencyType.DOLLAR), Collections.emptyList()),
-    BITCOIN(StockType.BITCOIN, Collections.singletonList(CurrencyType.WON), Collections.singletonList("KRW-"));
+	DOMESTIC_STOCK(StockType.STOCK, CurrencyType.WON, Collections.emptyList()),
+	OVERSEAS_STOCK(StockType.STOCK, CurrencyType.DOLLAR, Collections.emptyList()),
+	BITCOIN(StockType.BITCOIN, CurrencyType.WON, Collections.singletonList("KRW-"));
 
-    public boolean isAllowedCode(String code) {
-        if (allowedCodes.isEmpty()) {
-            return true;
-        }
-        return allowedCodes.stream()
-            .anyMatch(code::startsWith);
-    }
+	public boolean isAllowedCode(String code) {
+		if (allowedCodes.isEmpty()) {
+			return true;
+		}
+		return allowedCodes.stream()
+				.anyMatch(code::startsWith);
+	}
 
-    public boolean isStockType() {
-        return this.type.equals(StockType.STOCK);
-    }
+	public boolean isStockType() {
+		return this.type.equals(StockType.STOCK);
+	}
 
-    public boolean isAllowCurrencyType(CurrencyType currencyType) {
-        return this.allowedCurrencyType.stream()
-            .anyMatch(type -> type.equals(currencyType));
-    }
+	public boolean isAllowCurrencyType(CurrencyType currencyType) {
+		return this.allowedCurrencyType.equals(currencyType);
+	}
 
-    public boolean isTradeByDollars() {
-        return this.allowedCurrencyType.stream()
-            .anyMatch(type -> type.equals(CurrencyType.DOLLAR));
-    }
+	public boolean isTradeByDollars() {
+		return this.allowedCurrencyType.equals(CurrencyType.DOLLAR);
+	}
 
-    private final StockType type;
-    private final List<CurrencyType> allowedCurrencyType;
-    private final List<String> allowedCodes;
+	private final StockType type;
+	private final CurrencyType allowedCurrencyType;
+	private final List<String> allowedCodes;
 
-    private enum StockType {
-        STOCK,
-        BITCOIN
-    }
+	private enum StockType {
+		STOCK,
+		BITCOIN
+	}
 
 }
