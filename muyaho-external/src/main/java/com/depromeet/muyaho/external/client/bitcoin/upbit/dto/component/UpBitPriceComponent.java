@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.external.client.currency.dto.component;
+package com.depromeet.muyaho.external.client.bitcoin.upbit.dto.component;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "currency.exchange")
-public class CurrencyRateComponent {
+@ConfigurationProperties(prefix = "bitcoin.upbit.trade")
+public class UpBitPriceComponent {
 
     private String url;
 

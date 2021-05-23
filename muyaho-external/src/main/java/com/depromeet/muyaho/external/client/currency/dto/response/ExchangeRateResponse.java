@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CurrencyRateResponse {
+public class ExchangeRateResponse {
 
     @JsonProperty("update")
     private long timestamp;

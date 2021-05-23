@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.external.client.bitcoin.bithumb.dto.component;
+package com.depromeet.muyaho.external.client.auth.kakao.dto.component;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "bitcoin.bithumb.trade")
-public class BithumbTradeComponent {
+@ConfigurationProperties(prefix = "kakao.profile")
+public class KaKaoProfileComponent {
 
     private String url;
 

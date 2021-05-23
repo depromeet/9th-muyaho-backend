@@ -10,7 +10,7 @@ import com.depromeet.muyaho.domain.domain.member.MemberRepository;
 import com.depromeet.muyaho.common.exception.NotFoundException;
 import com.depromeet.muyaho.api.service.member.MemberServiceTestUtils;
 import com.depromeet.muyaho.external.client.auth.kakao.KaKaoApiCaller;
-import com.depromeet.muyaho.external.client.auth.kakao.dto.response.KaKaoUserInfoResponse;
+import com.depromeet.muyaho.external.client.auth.kakao.dto.response.KaKaoProfileResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -93,8 +93,8 @@ public class KaKaoAuthServiceTest {
 
     private static class StubKaKaoApiCaller implements KaKaoApiCaller {
         @Override
-        public KaKaoUserInfoResponse getKaKaoUserProfileInfo(String accessToken) {
-            return KaKaoUserInfoResponse.testInstance(uid, email);
+        public KaKaoProfileResponse getProfileInfo(String accessToken) {
+            return KaKaoProfileResponse.testInstance(uid, email);
         }
     }
 

@@ -7,7 +7,7 @@ import com.depromeet.muyaho.domain.domain.member.MemberRepository;
 import com.depromeet.muyaho.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.muyaho.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.muyaho.external.client.auth.kakao.KaKaoApiCaller;
-import com.depromeet.muyaho.external.client.auth.kakao.dto.response.KaKaoUserInfoResponse;
+import com.depromeet.muyaho.external.client.auth.kakao.dto.response.KaKaoProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +23,13 @@ public class KaKaoAuthService implements AuthService {
 
     @Override
     public Long login(LoginRequest request) {
-        KaKaoUserInfoResponse response = kaKaoApiCaller.getKaKaoUserProfileInfo(request.getToken());
+        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
         return MemberServiceUtils.findMemberByUidAndProvider(memberRepository, response.getId(), provider).getId();
     }
 
     @Override
     public Long signUp(SignUpRequest request) {
-        KaKaoUserInfoResponse response = kaKaoApiCaller.getKaKaoUserProfileInfo(request.getToken());
+        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
         return memberService.createMember(request.toCreateMemberRequest(response.getId(), response.getEmail(), provider));
     }
 

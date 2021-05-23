@@ -5,7 +5,7 @@ import com.depromeet.muyaho.domain.domain.memberstock.MemberStockCollection;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockCalculateResponse;
 import com.depromeet.muyaho.external.client.bitcoin.upbit.UpBitApiCaller;
-import com.depromeet.muyaho.external.client.bitcoin.upbit.dto.response.UpBitTradeInfoResponse;
+import com.depromeet.muyaho.external.client.bitcoin.upbit.dto.response.UpBitPriceResponse;
 import com.depromeet.muyaho.external.client.stock.StockApiCaller;
 import com.depromeet.muyaho.external.client.stock.dto.response.StockPriceResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class StockCalculatorImpl implements StockCalculator {
 
     private List<StockCalculateResponse> getStockCurrentInfo(MemberStockCollection collection) {
         final Map<String, MemberStock> memberStockMap = collection.newMemberStockMap();
-        List<StockPriceResponse> stockPrices = stockApiCaller.getStockPrice(collection.extractCodesWithDelimiter(DELIMITER));
+        List<StockPriceResponse> stockPrices = stockApiCaller.fetchCurrentStockPrice(collection.extractCodesWithDelimiter(DELIMITER));
         return stockPrices.stream()
             .map(tradeInfoResponse -> StockCalculateResponse.of(memberStockMap.get(tradeInfoResponse.getCode()), tradeInfoResponse.getPrice()))
             .collect(Collectors.toList());
@@ -42,7 +42,7 @@ public class StockCalculatorImpl implements StockCalculator {
 
     private List<StockCalculateResponse> getBitCoinCurrentInfo(MemberStockCollection collection) {
         final Map<String, MemberStock> memberStockMap = collection.newMemberStockMap();
-        List<UpBitTradeInfoResponse> tradeInfoResponses = upBitApiCaller.retrieveTrades(collection.extractCodesWithDelimiter(DELIMITER));
+        List<UpBitPriceResponse> tradeInfoResponses = upBitApiCaller.fetchCurrentBitcoinPrice(collection.extractCodesWithDelimiter(DELIMITER));
         return tradeInfoResponses.stream()
             .map(tradeInfoResponse -> StockCalculateResponse.of(memberStockMap.get(tradeInfoResponse.getMarket()), tradeInfoResponse.getTradePrice()))
             .collect(Collectors.toList());

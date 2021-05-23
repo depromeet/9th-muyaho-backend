@@ -48,7 +48,7 @@ public class StockRenewJobConfiguration {
             .tasklet((contribution, chunkContext) -> {
                 log.info("상장된 비트코인 종목 현황을 갱신합니다");
 
-                List<StockInfoRequest> bitCoinStocks = upBitApiCaller.retrieveMarkets().stream()
+                List<StockInfoRequest> bitCoinStocks = upBitApiCaller.fetchListedBitcoins().stream()
                     .map(market -> StockInfoRequest.of(market.getMarket(), market.getKoreanName()))
                     .collect(Collectors.toList());
                 stockRenewService.renewStock(StockMarketType.BITCOIN, bitCoinStocks);
@@ -63,7 +63,7 @@ public class StockRenewJobConfiguration {
             .tasklet((contribution, chunkContext) -> {
                 log.info("상장된 국내주식 종목 현황을 갱신합니다");
 
-                List<StockInfoRequest> domesticStocks = stockApiCaller.getStockCodes(StockType.DOMESTIC_STOCK).stream()
+                List<StockInfoRequest> domesticStocks = stockApiCaller.fetchListedStocksCodes(StockType.DOMESTIC_STOCK).stream()
                     .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
                     .collect(Collectors.toList());
                 stockRenewService.renewStock(StockMarketType.DOMESTIC_STOCK, domesticStocks);
@@ -78,7 +78,7 @@ public class StockRenewJobConfiguration {
             .tasklet((contribution, chunkContext) -> {
                 log.info("상장된 해외주식 종목 현황을 갱신합니다");
 
-                List<StockInfoRequest> overSeasStocks = stockApiCaller.getStockCodes(StockType.OVERSEAS_STOCK).stream()
+                List<StockInfoRequest> overSeasStocks = stockApiCaller.fetchListedStocksCodes(StockType.OVERSEAS_STOCK).stream()
                     .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
                     .collect(Collectors.toList());
                 stockRenewService.renewStock(StockMarketType.OVERSEAS_STOCK, overSeasStocks);

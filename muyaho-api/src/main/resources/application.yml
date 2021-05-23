@@ -9,9 +9,8 @@ spring:
     include:
       - domain
       - swagger
-      - market
+      - stock
       - rds
       - oauth
-      - currency
   session:
     store-type: jdbc

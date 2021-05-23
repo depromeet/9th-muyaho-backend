@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StockCodeResponse {
+public class StockCodesResponse {
 
     @JsonProperty("Symbol")
     private String code;

@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.external.client.auth.kakao.dto.component;
+package com.depromeet.muyaho.external.client.currency.dto.component;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "kakao.profile")
-public class KaKaoUserInfoComponent {
+@ConfigurationProperties(prefix = "currency.exchange")
+public class ExchangeRateComponent {
 
     private String url;
 

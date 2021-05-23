@@ -1,8 +1,8 @@
 package com.depromeet.muyaho.external.client.currency;
 
 import com.depromeet.muyaho.common.exception.BadGatewayException;
-import com.depromeet.muyaho.external.client.currency.dto.component.CurrencyRateComponent;
-import com.depromeet.muyaho.external.client.currency.dto.response.CurrencyRateResponse;
+import com.depromeet.muyaho.external.client.currency.dto.component.ExchangeRateComponent;
+import com.depromeet.muyaho.external.client.currency.dto.response.ExchangeRateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -14,22 +14,22 @@ import java.math.BigDecimal;
 
 @RequiredArgsConstructor
 @Component
-public class WebClientCurrencyRateApiCallerImpl implements CurrencyRateApiCaller {
+public class WebClientExchangeRateApiCaller implements ExchangeRateApiCaller {
 
     private final WebClient webclient;
-    private final CurrencyRateComponent currencyRateComponent;
+    private final ExchangeRateComponent exchangeRateComponent;
 
     @Override
-    public BigDecimal getCurrentRate() {
-        return getCurrencyRate().getUSDToKRWExchangeRate();
+    public BigDecimal fetchExchangeRate() {
+        return fetchCurrentExchangeRate().getUSDToKRWExchangeRate();
     }
 
-    private CurrencyRateResponse getCurrencyRate() {
+    private ExchangeRateResponse fetchCurrentExchangeRate() {
         return webclient.get()
-            .uri(currencyRateComponent.getUrl())
+            .uri(exchangeRateComponent.getUrl())
             .retrieve()
             .onStatus(HttpStatus::isError, errorResponse -> Mono.error(new BadGatewayException("업비트 외부 API 연동 중 에러가 발생하였습니다")))
-            .bodyToMono(new ParameterizedTypeReference<CurrencyRateResponse>() {
+            .bodyToMono(new ParameterizedTypeReference<ExchangeRateResponse>() {
             })
             .block();
     }

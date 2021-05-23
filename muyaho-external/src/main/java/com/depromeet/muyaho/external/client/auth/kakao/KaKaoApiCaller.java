@@ -1,9 +1,9 @@
 package com.depromeet.muyaho.external.client.auth.kakao;
 
-import com.depromeet.muyaho.external.client.auth.kakao.dto.response.KaKaoUserInfoResponse;
+import com.depromeet.muyaho.external.client.auth.kakao.dto.response.KaKaoProfileResponse;
 
 public interface KaKaoApiCaller {
 
-    KaKaoUserInfoResponse getKaKaoUserProfileInfo(String accessToken);
+    KaKaoProfileResponse getProfileInfo(String accessToken);
 
 }

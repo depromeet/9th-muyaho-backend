@@ -10,18 +10,18 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class KaKaoUserInfoResponse {
+public class KaKaoProfileResponse {
 
     private String id;
     private KaKaoAccountResponse kakaoAccount;
 
-    public KaKaoUserInfoResponse(String id, KaKaoAccountResponse kakaoAccount) {
+    public KaKaoProfileResponse(String id, KaKaoAccountResponse kakaoAccount) {
         this.id = id;
         this.kakaoAccount = kakaoAccount;
     }
 
-    public static KaKaoUserInfoResponse testInstance(String id, String email) {
-        return new KaKaoUserInfoResponse(id, new KaKaoAccountResponse(email));
+    public static KaKaoProfileResponse testInstance(String id, String email) {
+        return new KaKaoProfileResponse(id, new KaKaoAccountResponse(email));
     }
 
     public String getEmail() {

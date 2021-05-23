@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
 
 {
-    "stockId": 6200,
+    "stockId": 6400,
     "purchasePrice": 10000000,
     "quantity": 3,
     "currencyType": "DOLLAR",

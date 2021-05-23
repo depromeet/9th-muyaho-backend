@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.external.client.stock.dto.component;
+package com.depromeet.muyaho.external.client.bitcoin.upbit.dto.component;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "stock.markets")
-public class StockCodeComponent {
+@ConfigurationProperties(prefix = "bitcoin.upbit.markets")
+public class UpBitCodesComponent {
 
     private String url;
 

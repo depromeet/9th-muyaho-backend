@@ -7,7 +7,7 @@ import com.depromeet.muyaho.domain.domain.memberstock.MemberStockRepository;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.api.service.stockcalculator.StockCalculator;
 import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockCalculateResponse;
-import com.depromeet.muyaho.external.client.currency.CurrencyRateApiCaller;
+import com.depromeet.muyaho.external.client.currency.ExchangeRateApiCaller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class MemberStockRetrieveService {
 
-    private final CurrencyRateApiCaller currencyRateApiCaller;
+    private final ExchangeRateApiCaller exchangeRateApicaller;
     private final MemberStockRepository memberStockRepository;
     private final StockCalculator stockCalculator;
 
@@ -41,7 +41,7 @@ public class MemberStockRetrieveService {
     }
 
     private List<OverSeaCalculateResponse> exchangeDollarsToWon(List<StockCalculateResponse> stockCalculateResponses) {
-        final BigDecimal rate = currencyRateApiCaller.getCurrentRate();
+        final BigDecimal rate = exchangeRateApicaller.fetchExchangeRate();
         return stockCalculateResponses.stream()
             .map(dollar -> OverSeaCalculateResponse.of(dollar, dollar.takeCurrentUnitPrice().multiply(rate)))
             .collect(Collectors.toList());

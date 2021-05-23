@@ -13,11 +13,11 @@ import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.domain.stock.StockRepository;
 import com.depromeet.muyaho.api.service.MemberSetupTest;
 import com.depromeet.muyaho.external.client.bitcoin.upbit.UpBitApiCaller;
-import com.depromeet.muyaho.external.client.bitcoin.upbit.dto.response.UpBitMarketResponse;
-import com.depromeet.muyaho.external.client.bitcoin.upbit.dto.response.UpBitTradeInfoResponse;
+import com.depromeet.muyaho.external.client.bitcoin.upbit.dto.response.UpBitCodesResponse;
+import com.depromeet.muyaho.external.client.bitcoin.upbit.dto.response.UpBitPriceResponse;
 import com.depromeet.muyaho.external.client.stock.StockApiCaller;
 import com.depromeet.muyaho.external.client.stock.StockType;
-import com.depromeet.muyaho.external.client.stock.dto.response.StockCodeResponse;
+import com.depromeet.muyaho.external.client.stock.dto.response.StockCodesResponse;
 import com.depromeet.muyaho.external.client.stock.dto.response.StockPriceResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,25 +56,25 @@ public class StockCalculatorTest extends MemberSetupTest {
 
     private static class StubUpBitApiCaller implements UpBitApiCaller {
         @Override
-        public List<UpBitMarketResponse> retrieveMarkets() {
+        public List<UpBitCodesResponse> fetchListedBitcoins() {
             return null;
         }
 
         @Override
-        public List<UpBitTradeInfoResponse> retrieveTrades(String marketCode) {
-            return Collections.singletonList(UpBitTradeInfoResponse.testInstance(marketCode, new BigDecimal(2000)));
+        public List<UpBitPriceResponse> fetchCurrentBitcoinPrice(String codes) {
+            return Collections.singletonList(UpBitPriceResponse.testInstance(codes, new BigDecimal(2000)));
         }
     }
 
     private static class StubStockApiCaller implements StockApiCaller {
         @Override
-        public List<StockCodeResponse> getStockCodes(StockType type) {
+        public List<StockCodesResponse> fetchListedStocksCodes(StockType type) {
             return null;
         }
 
         @Override
-        public List<StockPriceResponse> getStockPrice(String code) {
-            return Collections.singletonList(StockPriceResponse.testInstance(code, new BigDecimal(300)));
+        public List<StockPriceResponse> fetchCurrentStockPrice(String codes) {
+            return Collections.singletonList(StockPriceResponse.testInstance(codes, new BigDecimal(300)));
         }
     }
 

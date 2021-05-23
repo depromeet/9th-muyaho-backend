@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class UpBitMarketResponse {
+public class UpBitCodesResponse {
 
     private String market;
 
@@ -16,14 +16,14 @@ public class UpBitMarketResponse {
 
     private String englishName;
 
-    private UpBitMarketResponse(String market, String koreanName, String englishName) {
+    private UpBitCodesResponse(String market, String koreanName, String englishName) {
         this.market = market;
         this.koreanName = koreanName;
         this.englishName = englishName;
     }
 
-    public static UpBitMarketResponse testInstance(String market, String name) {
-        return new UpBitMarketResponse(market, name, "영어 이름");
+    public static UpBitCodesResponse testInstance(String market, String name) {
+        return new UpBitCodesResponse(market, name, "영어 이름");
     }
 
 }

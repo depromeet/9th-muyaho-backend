@@ -8,7 +8,7 @@ import com.depromeet.muyaho.domain.domain.stock.StockCreator;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.domain.stock.StockRepository;
 import com.depromeet.muyaho.api.service.MemberSetupTest;
-import com.depromeet.muyaho.external.client.currency.CurrencyRateApiCaller;
+import com.depromeet.muyaho.external.client.currency.ExchangeRateApiCaller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
 
     @BeforeEach
     void setUp() {
-        memberStockRetrieveService = new MemberStockRetrieveService(new StubCurrencyRateApiCaller(), memberStockRepository, new StubStockCalculator());
+        memberStockRetrieveService = new MemberStockRetrieveService(new StubExchangeRateApiCaller(), memberStockRepository, new StubStockCalculator());
     }
 
     @AfterEach
@@ -51,9 +51,9 @@ public class MemberStockRetrieveServiceTest extends MemberSetupTest {
         }
     }
 
-    private static class StubCurrencyRateApiCaller implements CurrencyRateApiCaller {
+    private static class StubExchangeRateApiCaller implements ExchangeRateApiCaller {
         @Override
-        public BigDecimal getCurrentRate() {
+        public BigDecimal fetchExchangeRate() {
             return new BigDecimal(1000);
         }
     }

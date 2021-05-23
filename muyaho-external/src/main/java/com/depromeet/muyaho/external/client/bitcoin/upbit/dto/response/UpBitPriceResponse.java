@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class UpBitTradeInfoResponse {
+public class UpBitPriceResponse {
 
     private String market;
 
@@ -25,13 +25,13 @@ public class UpBitTradeInfoResponse {
 
     private BigDecimal prevClosingPrice;
 
-    private UpBitTradeInfoResponse(String market, BigDecimal tradePrice) {
+    private UpBitPriceResponse(String market, BigDecimal tradePrice) {
         this.market = market;
         this.tradePrice = tradePrice;
     }
 
-    public static UpBitTradeInfoResponse testInstance(String market, BigDecimal tradePrice) {
-        return new UpBitTradeInfoResponse(market, tradePrice);
+    public static UpBitPriceResponse testInstance(String market, BigDecimal tradePrice) {
+        return new UpBitPriceResponse(market, tradePrice);
     }
 
 }
