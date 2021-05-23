@@ -6,9 +6,6 @@ bitcoin:
       url: https://api.upbit.com/v1/market/all
     trade:
       url: https://api.upbit.com/v1/ticker
-  bithumb:
-    trade:
-      url: https://api.bithumb.com/public/ticker
 stock:
   markets:
     url: http://muyaho-api-alb-302156047.ap-northeast-2.elb.amazonaws.com:5000/api/v1/stock/code
@@ -17,6 +14,7 @@ stock:
 currency:
   exchange:
     url: https://earthquake.kr:23490/query/USDKRW
+
 ---
 spring:
   profiles:

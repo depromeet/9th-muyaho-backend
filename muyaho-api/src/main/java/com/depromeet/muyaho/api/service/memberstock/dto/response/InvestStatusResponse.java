@@ -17,10 +17,10 @@ import static com.depromeet.muyaho.common.utils.BigDecimalUtils.roundFloor;
 public class InvestStatusResponse {
 
     // TODO 오늘의 수익금
-    private final String todayEarnings = "99999999999";
+    private final String todayEarnings = "-1";
 
-    private final BigDecimal finalAsset;
-    private final BigDecimal seedAmount;
+    private final String finalAsset;
+    private final String seedAmount;
     private final String finalEarningRate;
 
     private final List<StockCalculateResponse> bitCoins = new ArrayList<>();
@@ -31,8 +31,10 @@ public class InvestStatusResponse {
         this.bitCoins.addAll(bitCoinCurrentInfo);
         this.domesticStocks.addAll(domesticCurrentInfo);
         this.overSeasStocks.addAll(overSeasCurrentInfo);
-        this.seedAmount = calculateSeed(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
-        this.finalAsset = calculateFinalAsset(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
+        BigDecimal seedAmount = calculateSeed(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
+        BigDecimal finalAsset = calculateFinalAsset(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
+        this.finalAsset = roundFloor(finalAsset);
+        this.seedAmount = roundFloor(seedAmount);
         this.finalEarningRate = roundFloor(calculateDifferencePercent(finalAsset, seedAmount));
     }
 

@@ -15,6 +15,33 @@ public class StockCreator {
             .build();
     }
 
+    public static Stock createActiveOverseas(String code, String name) {
+        return Stock.builder()
+            .code(code)
+            .name(name)
+            .type(StockMarketType.OVERSEAS_STOCK)
+            .status(StockStatus.ACTIVE)
+            .build();
+    }
+
+    public static Stock createActiveDomestic(String code, String name) {
+        return Stock.builder()
+            .code(code)
+            .name(name)
+            .type(StockMarketType.DOMESTIC_STOCK)
+            .status(StockStatus.ACTIVE)
+            .build();
+    }
+
+    public static Stock createActiveBitCoin(String code, String name) {
+        return Stock.builder()
+            .code(code)
+            .name(name)
+            .type(StockMarketType.BITCOIN)
+            .status(StockStatus.ACTIVE)
+            .build();
+    }
+
     public static Stock createDisable(String code, String name, StockMarketType type) {
         return Stock.builder()
             .type(type)

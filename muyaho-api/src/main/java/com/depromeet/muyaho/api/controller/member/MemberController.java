@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +25,7 @@ public class MemberController {
     @Operation(summary = "닉네임 중복 체크 API")
     @GetMapping("/api/v1/check/name")
     public ApiResponse<String> checkDuplicateName(@Valid CheckDuplicateNameRequest request) {
-        memberService.checkIsDuplicateName(request);
+        memberService.checkDuplicateName(request);
         return ApiResponse.SUCCESS;
     }
 
@@ -42,7 +43,8 @@ public class MemberController {
         return ApiResponse.success(memberService.updateMemberInfo(request, memberId));
     }
 
-    @Operation(summary = "회원탈퇴 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Profile({"local", "dev"})
+    @Operation(summary = "회원탈퇴 API (개발용)", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
     @DeleteMapping("/api/v1/member")
     public ApiResponse<String> deleteMemberInfo(@MemberId Long memberId) {

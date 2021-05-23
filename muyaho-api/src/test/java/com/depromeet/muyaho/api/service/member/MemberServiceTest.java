@@ -113,7 +113,7 @@ class MemberServiceTest {
         CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance("무야호");
 
         // when
-        memberService.checkIsDuplicateName(request);
+        memberService.checkDuplicateName(request);
     }
 
     @Test
@@ -128,7 +128,7 @@ class MemberServiceTest {
         CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance(name);
 
         // when & then
-        assertThatThrownBy(() -> memberService.checkIsDuplicateName(request)).isInstanceOf(ConflictException.class);
+        assertThatThrownBy(() -> memberService.checkDuplicateName(request)).isInstanceOf(ConflictException.class);
     }
 
     @Test
