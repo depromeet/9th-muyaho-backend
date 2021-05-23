@@ -5,23 +5,23 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 
-import static com.depromeet.muyaho.common.utils.BigDecimalUtils.roundFloor;
-
 @ToString
 @Getter
 public class StockCurrentResponse {
 
-    private final String unitPrice;
+    private final StockCurrentPriceResponse won;
+    private final StockCurrentPriceResponse dollar;
 
-    private final String amount;
-
-    private StockCurrentResponse(BigDecimal unitPrice, BigDecimal quantity) {
-        this.unitPrice = roundFloor(unitPrice);
-        this.amount = roundFloor(quantity.multiply(unitPrice));
+    private StockCurrentResponse(StockCurrentPriceResponse won, StockCurrentPriceResponse dollar) {
+        this.won = won;
+        this.dollar = dollar;
     }
 
-    public static StockCurrentResponse of(BigDecimal unitPrice, BigDecimal quantity) {
-        return new StockCurrentResponse(unitPrice, quantity);
+    public static StockCurrentResponse of(BigDecimal quantity, BigDecimal unitPriceInWon, BigDecimal unitPriceInDollar) {
+        return new StockCurrentResponse(
+            StockCurrentPriceResponse.of(quantity, unitPriceInWon),
+            StockCurrentPriceResponse.of(quantity, unitPriceInDollar)
+        );
     }
 
 }

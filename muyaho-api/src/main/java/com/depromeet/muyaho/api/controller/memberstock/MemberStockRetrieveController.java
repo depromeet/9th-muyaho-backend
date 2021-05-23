@@ -32,9 +32,9 @@ public class MemberStockRetrieveController {
 
     @Operation(summary = "내가 보유한 주식 전체를 조회 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
-    @GetMapping("/api/v1/stock/status")
-    public ApiResponse<InvestStatusResponse> getAllStocksStatus(@MemberId Long memberId) {
-        return ApiResponse.success(memberStockRetrieveService.getAllStockStatus(memberId));
+    @GetMapping("/api/v1/member/stock/status")
+    public ApiResponse<InvestStatusResponse> getMemberInvestStatus(@MemberId Long memberId) {
+        return ApiResponse.success(memberStockRetrieveService.getMemberInvestStatus(memberId));
     }
 
 }
