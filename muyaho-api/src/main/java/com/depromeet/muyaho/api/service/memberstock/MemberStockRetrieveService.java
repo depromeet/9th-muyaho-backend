@@ -27,7 +27,7 @@ public class MemberStockRetrieveService {
         return stockCalculator.calculateCurrentMemberStocks(type, collection);
     }
 
-    public InvestStatusResponse getAllStockStatus(Long memberId) {
+    public InvestStatusResponse getMemberInvestStatus(Long memberId) {
         return InvestStatusResponse.of(
             getMemberCurrentStocks(StockMarketType.BITCOIN, memberId),
             getMemberCurrentStocks(StockMarketType.DOMESTIC_STOCK, memberId),

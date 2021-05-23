@@ -21,21 +21,21 @@ public class StockCalculateResponse {
 
     private final String quantity;
     private final CurrencyType currencyType;
-    private final String earningRate;
+    private final String profitOrLoseRate;
 
     @Builder
     public StockCalculateResponse(Long memberStockId, StockInfoResponse stock, StockPurchaseResponse purchase,
-                                  StockCurrentResponse current, String quantity, CurrencyType currencyType, String earningRate) {
+                                  StockCurrentResponse current, String quantity, CurrencyType currencyType, String profitOrLoseRate) {
         this.memberStockId = memberStockId;
         this.stock = stock;
         this.purchase = purchase;
         this.current = current;
         this.quantity = quantity;
         this.currencyType = currencyType;
-        this.earningRate = earningRate;
+        this.profitOrLoseRate = profitOrLoseRate;
     }
 
-    public static StockCalculateResponse of(MemberStock memberStock, BigDecimal currentPriceInWon, BigDecimal currentPriceInDollar, BigDecimal earningRate) {
+    public static StockCalculateResponse of(MemberStock memberStock, BigDecimal currentPriceInWon, BigDecimal currentPriceInDollar, BigDecimal profitOrLoseRate) {
         return StockCalculateResponse.builder()
             .memberStockId(memberStock.getId())
             .stock(StockInfoResponse.of(memberStock.getStock()))
@@ -43,7 +43,7 @@ public class StockCalculateResponse {
             .current(StockCurrentResponse.of(memberStock.getQuantity(), currentPriceInWon, currentPriceInDollar))
             .quantity(roundFloor(memberStock.getQuantity()))
             .currencyType(memberStock.getCurrencyType())
-            .earningRate(roundFloor(earningRate))
+            .profitOrLoseRate(roundFloor(profitOrLoseRate))
             .build();
     }
 
