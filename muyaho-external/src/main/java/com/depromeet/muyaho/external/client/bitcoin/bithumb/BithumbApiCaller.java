@@ -2,8 +2,8 @@ package com.depromeet.muyaho.external.client.bitcoin.bithumb;
 
 import com.depromeet.muyaho.external.client.bitcoin.bithumb.dto.response.BithumbTradeInfoResponse;
 
-public interface BitHumbApiCaller {
+public interface BithumbApiCaller {
 
-    BithumbTradeInfoResponse fetchCurrentPrice(String marketCode);
+    BithumbTradeInfoResponse fetchCurrentPrice(String codes);
 
 }
