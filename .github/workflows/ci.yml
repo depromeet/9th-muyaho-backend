@@ -3,11 +3,11 @@ name: CI Testing and Coverage
 on:
   pull_request:
     branches:
-      - master
+      - main
       - develop
   push:
     branches:
-      - master
+      - main
       - develop
 jobs:
   testing:
