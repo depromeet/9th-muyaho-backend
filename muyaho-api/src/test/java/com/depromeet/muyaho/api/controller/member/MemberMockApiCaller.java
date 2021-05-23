@@ -14,8 +14,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.nio.charset.StandardCharsets;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class MemberMockApiCaller extends MockApiCaller {
@@ -69,6 +68,20 @@ public class MemberMockApiCaller extends MockApiCaller {
             .header(HttpHeaders.AUTHORIZATION, "Bearer ".concat(token))
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request));
+
+        return objectMapper.readValue(
+            mockMvc.perform(builder)
+                .andExpect(status().is(expectedStatus))
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+            }
+        );
+    }
+
+    public ApiResponse<String> deleteMemberInfo(String token, int expectedStatus) throws Exception {
+        MockHttpServletRequestBuilder builder = delete("/api/v1/member")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer ".concat(token));
 
         return objectMapper.readValue(
             mockMvc.perform(builder)

@@ -92,6 +92,23 @@ public class MemberControllerTest extends ControllerTest {
         assertMemberInfoResponse(response.getData(), name, profileUrl, testMember.getProvider());
     }
 
+    @DisplayName("DELETE /api/v1/member 200 OK")
+    @Test
+    void 멤버정보를_삭제한다() throws Exception {
+        // when
+        memberMockApiCaller.deleteMemberInfo(token, 200);
+    }
+
+    @DisplayName("DELETE /api/v1/member 잘못된 세션ID 401")
+    @Test
+    void 멤버정보를_잘못된_토큰이면_401_에러가_발생() throws Exception {
+        // when
+        ApiResponse<String> response = memberMockApiCaller.deleteMemberInfo("Wrong Token", 401);
+
+        // then
+        assertThat(response.getCode()).isEqualTo(ErrorCode.UNAUTHORIZED_EXCEPTION.getCode());
+    }
+
     private void assertMemberInfoResponse(MemberInfoResponse response, String name, String profileUrl, MemberProvider provider) {
         assertThat(response.getName()).isEqualTo(name);
         assertThat(response.getProfileUrl()).isEqualTo(profileUrl);
