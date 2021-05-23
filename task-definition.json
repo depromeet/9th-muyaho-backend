@@ -23,7 +23,7 @@
                 }
             ],
             "command": [
-                "java -jar muyaho.jar --spring.profiles.active=dev"
+                "--spring.profiles.active=dev"
             ],
             "linuxParameters": null,
             "cpu": 0,

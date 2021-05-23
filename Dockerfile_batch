@@ -6,6 +6,6 @@ RUN ./gradlew clean bootJar
 
 FROM adoptopenjdk/openjdk11:alpine-jre
 ENV APP_HOME=/usr/app
-COPY --from=BUILD  $APP_HOME/muyaho-batch/build/libs/muyaho-batch.jar /app.jar
+COPY --from=BUILD  $APP_HOME/muyaho-batch/build/libs/muyaho-batch.jar /muyaho-batch.jar
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "muyaho-batch.jar"]
