@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.api.controller.stock;
 
-import com.depromeet.muyaho.api.MockApiCaller;
+import com.depromeet.muyaho.api.controller.MockApiCaller;
 import com.depromeet.muyaho.api.controller.ApiResponse;
 import com.depromeet.muyaho.api.service.stock.dto.request.RetrieveStocksRequest;
 import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;

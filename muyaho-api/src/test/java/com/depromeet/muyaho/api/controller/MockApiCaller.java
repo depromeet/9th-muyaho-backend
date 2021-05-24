@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.api;
+package com.depromeet.muyaho.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.test.web.servlet.MockMvc;

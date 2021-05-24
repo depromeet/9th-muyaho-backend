@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.api.controller.member;
 
-import com.depromeet.muyaho.api.MockApiCaller;
+import com.depromeet.muyaho.api.controller.MockApiCaller;
 import com.depromeet.muyaho.api.controller.ApiResponse;
 import com.depromeet.muyaho.api.service.member.dto.request.CheckDuplicateNameRequest;
 import com.depromeet.muyaho.api.service.member.dto.request.UpdateMemberRequest;
