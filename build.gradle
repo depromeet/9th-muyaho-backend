@@ -41,6 +41,9 @@ subprojects {
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
+
+        implementation('org.springframework.boot:spring-boot-starter-cache')
+        implementation group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.3'
     }
 
     jacoco {

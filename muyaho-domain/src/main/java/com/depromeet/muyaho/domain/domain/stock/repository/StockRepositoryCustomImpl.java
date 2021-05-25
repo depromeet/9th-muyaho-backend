@@ -5,6 +5,8 @@ import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.domain.stock.StockStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class StockRepositoryCustomImpl implements StockRepositoryCustom {
             ).fetch();
     }
 
+    @Cacheable(value = "findAllActiveStockByType", key = "#type")
     @Override
     public List<Stock> findAllActiveStockByType(StockMarketType type) {
         return queryFactory.selectFrom(stock)
@@ -32,6 +35,11 @@ public class StockRepositoryCustomImpl implements StockRepositoryCustom {
             )
             .orderBy(stock.name.asc())
             .fetch();
+    }
+
+    @CacheEvict(value = "findAllActiveStockByType", key = "#type")
+    @Override
+    public void refreshCache(StockMarketType type) {
     }
 
     @Override

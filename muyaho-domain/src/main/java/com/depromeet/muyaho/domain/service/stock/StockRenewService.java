@@ -23,6 +23,7 @@ public class StockRenewService {
     public void renewStock(StockMarketType type, List<StockInfoRequest> stockInfos) {
         StockCollection collection = StockCollection.of(stockRepository.findAllByType(type));
         stockRepository.saveAll(activateListedStocks(collection, type, stockInfos));
+        stockRepository.refreshCache(type);
     }
 
     private List<Stock> activateListedStocks(StockCollection collection, StockMarketType type, List<StockInfoRequest> stockInfos) {

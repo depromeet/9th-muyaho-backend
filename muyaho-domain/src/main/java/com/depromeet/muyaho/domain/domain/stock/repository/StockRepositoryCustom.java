@@ -11,6 +11,8 @@ public interface StockRepositoryCustom {
 
     List<Stock> findAllActiveStockByType(StockMarketType type);
 
+    void refreshCache(StockMarketType type);
+
     Stock findActiveStockById(Long stockId);
 
 }
