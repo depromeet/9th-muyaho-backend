@@ -4,6 +4,7 @@ import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
 import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockCurrentPriceResponse;
 import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockPurchaseResponse;
 import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockCalculateResponse;
+import com.depromeet.muyaho.api.service.stockhistory.StockHistoryService;
 import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStockCollection;
@@ -14,6 +15,7 @@ import com.depromeet.muyaho.domain.domain.stock.StockCreator;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.domain.stock.StockRepository;
 import com.depromeet.muyaho.api.service.MemberSetupTest;
+import com.depromeet.muyaho.domain.domain.stockhistory.StockHistoryRepository;
 import com.depromeet.muyaho.external.client.bitcoin.upbit.UpBitApiCaller;
 import com.depromeet.muyaho.external.client.bitcoin.upbit.dto.response.UpBitCodesResponse;
 import com.depromeet.muyaho.external.client.bitcoin.upbit.dto.response.UpBitPriceResponse;
@@ -51,6 +53,12 @@ class StockCalculatorTest extends MemberSetupTest {
     @Autowired
     private MemberStockRepository memberStockRepository;
 
+    @Autowired
+    private StockHistoryService stockHistoryService;
+
+    @Autowired
+    private StockHistoryRepository stockHistoryRepository;
+
     private static final BigDecimal bitCoinCurrentPrice = new BigDecimal(1000);
     private static final BigDecimal stockCurrentPrice = new BigDecimal(3000);
     private static final BigDecimal currencyChangeRate = new BigDecimal(1000);
@@ -58,12 +66,13 @@ class StockCalculatorTest extends MemberSetupTest {
 
     @BeforeEach
     void setUpStock() {
-        stockCalculator = new StockCalculatorImpl(new StubUpBitApiCaller(), new StubStockApiCaller(), new StubExchangeAPiCaller());
+        stockCalculator = new StockCalculatorImpl(new StubUpBitApiCaller(), new StubStockApiCaller(), new StubExchangeAPiCaller(), stockHistoryService);
     }
 
     @AfterEach
     void cleanUp() {
         super.cleanup();
+        stockHistoryRepository.deleteAllInBatch();
         memberStockRepository.deleteAllInBatch();
         stockRepository.deleteAllInBatch();
     }
@@ -111,7 +120,7 @@ class StockCalculatorTest extends MemberSetupTest {
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
-        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(type, collection);
+        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(memberId, type, collection);
 
         // then
         assertThat(responses).hasSize(1);
@@ -130,7 +139,7 @@ class StockCalculatorTest extends MemberSetupTest {
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
-        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(type, collection);
+        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(memberId, type, collection);
 
         // then
         assertThat(responses).hasSize(1);
@@ -157,7 +166,7 @@ class StockCalculatorTest extends MemberSetupTest {
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
-        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(StockMarketType.BITCOIN, collection);
+        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(memberId, StockMarketType.BITCOIN, collection);
 
         // then
         assertThat(responses).hasSize(1);
@@ -176,7 +185,7 @@ class StockCalculatorTest extends MemberSetupTest {
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
-        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(StockMarketType.BITCOIN, collection);
+        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(memberId, StockMarketType.BITCOIN, collection);
 
         // then
         assertThat(responses).hasSize(1);
@@ -196,7 +205,7 @@ class StockCalculatorTest extends MemberSetupTest {
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
-        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(StockMarketType.DOMESTIC_STOCK, collection);
+        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(memberId, StockMarketType.DOMESTIC_STOCK, collection);
 
         // then
         assertThat(responses).hasSize(1);
@@ -215,7 +224,7 @@ class StockCalculatorTest extends MemberSetupTest {
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
-        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(StockMarketType.DOMESTIC_STOCK, collection);
+        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(memberId, StockMarketType.DOMESTIC_STOCK, collection);
 
         // then
         assertThat(responses).hasSize(1);
@@ -235,7 +244,7 @@ class StockCalculatorTest extends MemberSetupTest {
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
-        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(StockMarketType.OVERSEAS_STOCK, collection);
+        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(memberId, StockMarketType.OVERSEAS_STOCK, collection);
 
         // then
         assertThat(responses).hasSize(1);
@@ -255,7 +264,7 @@ class StockCalculatorTest extends MemberSetupTest {
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
-        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(StockMarketType.OVERSEAS_STOCK, collection);
+        List<StockCalculateResponse> responses = stockCalculator.calculateCurrentMemberStocks(memberId, StockMarketType.OVERSEAS_STOCK, collection);
 
         // then
         assertThat(responses).hasSize(1);

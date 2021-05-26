@@ -3,6 +3,7 @@ package com.depromeet.muyaho.api.service.stockcalculator.dto.response;
 import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
+import com.depromeet.muyaho.domain.domain.stockhistory.StockHistory;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -44,6 +45,19 @@ public class StockCalculateResponse {
             .quantity(roundFloor(memberStock.getQuantity()))
             .currencyType(memberStock.getCurrencyType())
             .profitOrLoseRate(roundFloor(profitOrLoseRate))
+            .build();
+    }
+
+    public static StockCalculateResponse of(StockHistory history) {
+        final MemberStock memberStock = history.getMemberStock();
+        return StockCalculateResponse.builder()
+            .memberStockId(memberStock.getId())
+            .stock(StockInfoResponse.of(memberStock.getStock()))
+            .purchase(StockPurchaseResponse.of(memberStock.getPurchaseUnitPrice(), memberStock.getQuantity(), memberStock.getPurchaseTotalPriceInWon()))
+            .current(StockCurrentResponse.of(memberStock.getQuantity(), history.getCurrentPriceInWon(), history.getCurrentPriceInDollar()))
+            .quantity(roundFloor(memberStock.getQuantity()))
+            .currencyType(memberStock.getCurrencyType())
+            .profitOrLoseRate(roundFloor(history.getProfitOrLoseRate()))
             .build();
     }
 

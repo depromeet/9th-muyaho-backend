@@ -15,6 +15,9 @@ public class BigDecimalUtils {
     }
 
     public static BigDecimal calculateDifferencePercent(BigDecimal benchMark, BigDecimal target) {
+        if (target.compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimal.ZERO;
+        }
         if (benchMark.compareTo(target) >= 0) {
             return benchMark.subtract(target)
                 .divide(target, new MathContext(2))

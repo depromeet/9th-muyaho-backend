@@ -1,5 +1,7 @@
 package com.depromeet.muyaho.api.service.stockcalculator;
 
+import com.depromeet.muyaho.api.service.stockhistory.StockHistoryService;
+import com.depromeet.muyaho.api.service.stockhistory.dto.request.RenewMemberStockHistoryRequest;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStockCollection;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
@@ -29,38 +31,45 @@ public class StockCalculatorImpl implements StockCalculator {
     private final UpBitApiCaller upBitApiCaller;
     private final StockApiCaller stockApiCaller;
     private final ExchangeRateApiCaller exchangeRateApiCaller;
+    private final StockHistoryService stockHistoryService;
 
     @Override
-    public List<StockCalculateResponse> calculateCurrentMemberStocks(StockMarketType type, MemberStockCollection collection) {
+    public List<StockCalculateResponse> calculateCurrentMemberStocks(Long memberId, StockMarketType type, MemberStockCollection collection) {
         BigDecimal rate = exchangeRateApiCaller.fetchExchangeRate();
         if (type.isStockType()) {
-            return getStockCurrentInfo(type, collection, rate);
+            return getStockCurrentInfo(memberId, type, collection, rate);
         }
-        return getBitCoinCurrentInfo(type, collection, rate);
+        return getBitCoinCurrentInfo(memberId, type, collection, rate);
     }
 
-    private List<StockCalculateResponse> getStockCurrentInfo(StockMarketType type, MemberStockCollection collection, BigDecimal rate) {
+    private List<StockCalculateResponse> getStockCurrentInfo(Long memberId, StockMarketType type, MemberStockCollection collection, BigDecimal rate) {
         final Map<String, MemberStock> memberStockMap = collection.newMemberStockMap();
         List<StockPriceResponse> currentStockPrices = stockApiCaller.fetchCurrentStockPrice(collection.extractCodesWithDelimiter(DELIMITER));
-        return currentStockPrices.stream()
-            .map(currentPrice -> StockCalculateResponse.of(
+
+        List<RenewMemberStockHistoryRequest> renewMemberStockHistoryRequests = currentStockPrices.stream()
+            .map(currentPrice -> RenewMemberStockHistoryRequest.of(
                 memberStockMap.get(currentPrice.getCode()),
                 calculateCurrentWon(type, currentPrice.getPrice(), rate),
                 calculateCurrentDollar(type, currentPrice.getPrice(), rate),
-                calculateDifferencePercent(currentPrice.getPrice(), memberStockMap.get(currentPrice.getCode()).getPurchaseUnitPrice())))
-            .collect(Collectors.toList());
+                calculateDifferencePercent(currentPrice.getPrice(), memberStockMap.get(currentPrice.getCode()).getPurchaseUnitPrice()))
+            ).collect(Collectors.toList());
+
+        return stockHistoryService.renewMemberStockHistory(memberId, type, renewMemberStockHistoryRequests);
     }
 
-    private List<StockCalculateResponse> getBitCoinCurrentInfo(StockMarketType type, MemberStockCollection collection, BigDecimal rate) {
+    private List<StockCalculateResponse> getBitCoinCurrentInfo(Long memberId, StockMarketType type, MemberStockCollection collection, BigDecimal rate) {
         final Map<String, MemberStock> memberStockMap = collection.newMemberStockMap();
         List<UpBitPriceResponse> currentBitcoinPrices = upBitApiCaller.fetchCurrentBitcoinPrice(collection.extractCodesWithDelimiter(DELIMITER));
-        return currentBitcoinPrices.stream()
-            .map(currentPrice -> StockCalculateResponse.of(
+
+        List<RenewMemberStockHistoryRequest> renewMemberStockHistoryRequests = currentBitcoinPrices.stream()
+            .map(currentPrice -> RenewMemberStockHistoryRequest.of(
                 memberStockMap.get(currentPrice.getMarket()),
                 calculateCurrentWon(type, currentPrice.getTradePrice(), rate),
                 calculateCurrentDollar(type, currentPrice.getTradePrice(), rate),
                 calculateDifferencePercent(currentPrice.getTradePrice(), memberStockMap.get(currentPrice.getMarket()).getPurchaseUnitPrice())))
             .collect(Collectors.toList());
+
+        return stockHistoryService.renewMemberStockHistory(memberId, type, renewMemberStockHistoryRequests);
     }
 
     private BigDecimal calculateCurrentWon(StockMarketType type, BigDecimal currentPrice, BigDecimal rate) {
