@@ -37,12 +37,12 @@ public class StockCalculatorImpl implements StockCalculator {
     public List<StockCalculateResponse> calculateCurrentMemberStocks(Long memberId, StockMarketType type, MemberStockCollection collection) {
         BigDecimal rate = exchangeRateApiCaller.fetchExchangeRate();
         if (type.isStockType()) {
-            return getStockCurrentInfo(memberId, type, collection, rate);
+            return getStockCurrentStatus(memberId, type, collection, rate);
         }
-        return getBitCoinCurrentInfo(memberId, type, collection, rate);
+        return getBitCoinCurrentStatus(memberId, type, collection, rate);
     }
 
-    private List<StockCalculateResponse> getStockCurrentInfo(Long memberId, StockMarketType type, MemberStockCollection collection, BigDecimal rate) {
+    private List<StockCalculateResponse> getStockCurrentStatus(Long memberId, StockMarketType type, MemberStockCollection collection, BigDecimal rate) {
         final Map<String, MemberStock> memberStockMap = collection.newMemberStockMap();
         List<StockPriceResponse> currentStockPrices = stockApiCaller.fetchCurrentStockPrice(collection.extractCodesWithDelimiter(DELIMITER));
 
@@ -57,7 +57,7 @@ public class StockCalculatorImpl implements StockCalculator {
         return stockHistoryService.renewMemberStockHistory(memberId, type, renewMemberStockHistoryRequests);
     }
 
-    private List<StockCalculateResponse> getBitCoinCurrentInfo(Long memberId, StockMarketType type, MemberStockCollection collection, BigDecimal rate) {
+    private List<StockCalculateResponse> getBitCoinCurrentStatus(Long memberId, StockMarketType type, MemberStockCollection collection, BigDecimal rate) {
         final Map<String, MemberStock> memberStockMap = collection.newMemberStockMap();
         List<UpBitPriceResponse> currentBitcoinPrices = upBitApiCaller.fetchCurrentBitcoinPrice(collection.extractCodesWithDelimiter(DELIMITER));
 

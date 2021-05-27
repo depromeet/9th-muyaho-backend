@@ -116,6 +116,27 @@ class StockHistoryTest extends MemberSetupTest {
         assertStockHistory(stockHistoryList.get(0), currentPriceInWon, currentPriceInDollar, profitOrLoseRate);
     }
 
+    @Test
+    void 해당하는_memberStock_id와_memberId를_가진_StockHistory를_모두_제거한다() {
+        // given
+        Stock stock = StockCreator.createActive("code", "name", StockMarketType.DOMESTIC_STOCK);
+        stockRepository.save(stock);
+        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(1000), new BigDecimal(10));
+        memberStockRepository.save(memberStock);
+
+        BigDecimal currentPriceInWon = new BigDecimal(1000);
+        BigDecimal currentPriceInDollar = new BigDecimal(1);
+        BigDecimal profitOrLoseRate = new BigDecimal(30);
+        stockHistoryRepository.save(StockHistoryCreator.create(memberStock, currentPriceInWon, currentPriceInDollar, profitOrLoseRate));
+
+        // when
+        stockHistoryService.deleteMemberStockHistory(memberStock.getId(), memberId);
+
+        // then
+        List<StockHistory> stockHistoryList = stockHistoryRepository.findAll();
+        assertThat(stockHistoryList).isEmpty();
+    }
+
     private void assertStockHistory(StockHistory stockHistory, BigDecimal currentPriceInWon, BigDecimal currentPriceInDollar, BigDecimal profitOrLoseRate) {
         assertThat(stockHistory.getCurrentPriceInWon()).isEqualByComparingTo(currentPriceInWon);
         assertThat(stockHistory.getCurrentPriceInDollar()).isEqualByComparingTo(currentPriceInDollar);

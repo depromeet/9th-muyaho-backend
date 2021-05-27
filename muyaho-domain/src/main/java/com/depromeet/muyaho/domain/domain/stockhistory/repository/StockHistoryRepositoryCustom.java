@@ -9,4 +9,6 @@ public interface StockHistoryRepositoryCustom {
 
     List<StockHistory> findAllByMemberIdAndType(Long memberId, StockMarketType type);
 
+    List<StockHistory> findAllByMemberStockIdAndMemberId(Long memberStockId, Long memberId);
+
 }

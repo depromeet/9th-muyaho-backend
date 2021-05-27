@@ -37,7 +37,7 @@ public class MemberStockRetrieveService {
         );
     }
 
-    public InvestStatusResponse getMemberPreviousInvestStatus(Long memberId) {
+    public InvestStatusResponse getLastMemberInvestStatusHistory(Long memberId) {
         return InvestStatusResponse.of(
             stockHistoryService.retrieveMemberStockHistory(StockMarketType.BITCOIN, memberId),
             stockHistoryService.retrieveMemberStockHistory(StockMarketType.DOMESTIC_STOCK, memberId),

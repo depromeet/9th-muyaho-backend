@@ -20,7 +20,8 @@ public class StockHistoryService {
 
     @Transactional(readOnly = true)
     public List<StockCalculateResponse> retrieveMemberStockHistory(StockMarketType type, Long memberId) {
-        return stockHistoryRepository.findAllByMemberIdAndType(memberId, type).stream()
+        List<StockHistory> stockHistories = stockHistoryRepository.findAllByMemberIdAndType(memberId, type);
+        return stockHistories.stream()
             .map(StockCalculateResponse::of)
             .collect(Collectors.toList());
     }
@@ -36,6 +37,11 @@ public class StockHistoryService {
         return stockHistoryRepository.saveAll(stockHistories).stream()
             .map(StockCalculateResponse::of)
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteMemberStockHistory(Long memberStockId, Long memberId) {
+        stockHistoryRepository.deleteAll(stockHistoryRepository.findAllByMemberStockIdAndMemberId(memberStockId, memberId));
     }
 
 }

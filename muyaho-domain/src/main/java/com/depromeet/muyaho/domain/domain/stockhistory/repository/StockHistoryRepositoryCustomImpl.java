@@ -25,4 +25,14 @@ public class StockHistoryRepositoryCustomImpl implements StockHistoryRepositoryC
             ).fetch();
     }
 
+    @Override
+    public List<StockHistory> findAllByMemberStockIdAndMemberId(Long memberStockId, Long memberId) {
+        return queryFactory.selectFrom(stockHistory)
+            .innerJoin(stockHistory.memberStock, memberStock).fetchJoin()
+            .where(
+                stockHistory.memberStock.id.eq(memberStockId),
+                stockHistory.memberStock.memberId.eq(memberId)
+            ).fetch();
+    }
+
 }
