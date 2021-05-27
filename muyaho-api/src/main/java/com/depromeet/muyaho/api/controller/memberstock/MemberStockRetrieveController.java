@@ -23,7 +23,7 @@ public class MemberStockRetrieveController {
 
     private final MemberStockRetrieveService memberStockRetrieveService;
 
-    @Operation(summary = "내가 보유한 주식들을 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Operation(summary = "내가 보유한 특정 종류의 주식들을 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
     @GetMapping("/api/v1/member/stock")
     public ApiResponse<List<StockCalculateResponse>> getStocksInfo(@RequestParam StockMarketType type, @MemberId Long memberId) {
@@ -35,6 +35,13 @@ public class MemberStockRetrieveController {
     @GetMapping("/api/v1/member/stock/status")
     public ApiResponse<InvestStatusResponse> getMemberInvestStatus(@MemberId Long memberId) {
         return ApiResponse.success(memberStockRetrieveService.getMemberInvestStatus(memberId));
+    }
+
+    @Operation(summary = "내가 보유한 주식 전체를 조회 API (캐싱된 정보)", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Auth
+    @GetMapping("/api/v1/member/stock/status/history")
+    public ApiResponse<InvestStatusResponse> getLastMemberInvestStatusHistory(@MemberId Long memberId) {
+        return ApiResponse.success(memberStockRetrieveService.getLastMemberInvestStatusHistory(memberId));
     }
 
 }

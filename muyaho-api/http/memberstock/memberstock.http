@@ -4,15 +4,19 @@ Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
 
 {
-    "stockId": 2590,
+    "stockId": 3310,
     "purchasePrice": 10000000,
     "quantity": 3,
-    "currencyType": "WON",
+    "currencyType": "DOLLAR",
     "purchaseTotalPrice": 1000
 }
 
 ### 내 주식 정보를 가져오는 API
-GET {{api}}/api/v1/stock/status
+GET {{api}}/api/v1/member/stock/status
+Authorization: Bearer {{AUTHORIZATION}}
+
+### 내가 마지막으로 주식 정보를 가져오는 API
+GET {{api}}/api/v1/member/stock/status/history
 Authorization: Bearer {{AUTHORIZATION}}
 
 
