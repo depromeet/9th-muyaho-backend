@@ -40,7 +40,7 @@ public class LocalTestController {
 
     @GetMapping("/renew/stock")
     public String renewDomesticStocks() {
-//        scheduler.renewDomesticStocksCode();
+        scheduler.renewDomesticStocksCode();
         scheduler.renewBitCoinStocksCode();
         scheduler.renewOverseasStocksCode();
         return "OK";
