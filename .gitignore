@@ -39,3 +39,5 @@ out/
 generated/
 
 application-rds.yml
+
+logs/

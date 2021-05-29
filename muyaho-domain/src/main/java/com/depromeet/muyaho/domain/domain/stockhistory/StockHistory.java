@@ -23,10 +23,13 @@ public class StockHistory extends BaseTimeEntity {
     @JoinColumn(name = "member_stock_id", nullable = false)
     private MemberStock memberStock;
 
+    @Column(nullable = false)
     private BigDecimal currentPriceInWon;
 
+    @Column(nullable = false)
     private BigDecimal currentPriceInDollar;
 
+    @Column(nullable = false)
     private BigDecimal profitOrLoseRate;
 
     @Builder
