@@ -14,6 +14,8 @@ spring:
       - oauth
   session:
     store-type: jdbc
+  codec:
+    log-request-details: true
 logging:
   file:
     path: logs/api/
