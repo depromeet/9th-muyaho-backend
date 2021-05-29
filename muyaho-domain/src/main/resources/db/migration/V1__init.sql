@@ -1,30 +1,29 @@
-CREATE TABLE `spring_session`
+CREATE TABLE IF NOT EXISTS SPRING_SESSION
 (
-    `session_id`            CHAR(36) NOT NULL,
-    `creation_time`         BIGINT   NOT NULL,
-    `last_access_time`      BIGINT   NOT NULL,
-    `max_inactive_interval` INT      NOT NULL,
-    `principal_name`        VARCHAR(100) DEFAULT NULL,
-    CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (`session_id`)
-) ENGINE = InnoDB;
+    SESSION_ID            CHAR(36) NOT NULL,
+    CREATION_TIME         BIGINT   NOT NULL,
+    LAST_ACCESS_TIME      BIGINT   NOT NULL,
+    MAX_INACTIVE_INTERVAL INT      NOT NULL,
+    PRINCIPAL_NAME        VARCHAR(100),
+    CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (SESSION_ID)
+);
 
-CREATE INDEX SPRING_SESSION_IX1 ON SPRING_SESSION (`last_access_time`);
-CREATE INDEX SPRING_SESSION_IX2 ON SPRING_SESSION (`principal_name`);
+CREATE INDEX IF NOT EXISTS SPRING_SESSION_IX1 ON SPRING_SESSION (LAST_ACCESS_TIME);
 
-
-CREATE TABLE `spring_session_attributes`
+CREATE TABLE IF NOT EXISTS SPRING_SESSION_ATTRIBUTES
 (
-    `session_id`      CHAR(36)     NOT NULL,
-    `attribute_name`  VARCHAR(200) NOT NULL,
-    `attribute_bytes` BLOB         NOT NULL,
-    CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (`session_id`, `attribute_name`),
-    CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (`session_id`) REFERENCES SPRING_SESSION (`session_id`) ON DELETE CASCADE
-) ENGINE = InnoDB;
+    SESSION_ID      CHAR(36)     NOT NULL,
+    ATTRIBUTE_NAME  VARCHAR(200) NOT NULL,
+    ATTRIBUTE_BYTES MEDIUMBLOB   NOT NULL,
+    CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (SESSION_ID, ATTRIBUTE_NAME),
+    CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_ID) REFERENCES SPRING_SESSION (SESSION_ID) ON DELETE CASCADE
+);
 
-CREATE INDEX SPRING_SESSION_ATTRIBUTES_IX1 ON SPRING_SESSION_ATTRIBUTES (`session_id`);
+CREATE INDEX IF NOT EXISTS SPRING_SESSION_ATTRIBUTES_IX1 ON SPRING_SESSION_ATTRIBUTES (SESSION_ID);
 
 
-CREATE TABLE `member`
+
+CREATE TABLE IF NOT EXISTS `member`
 (
     `id`                      BIGINT      NOT NULL AUTO_INCREMENT,
     `uid`                     VARCHAR(50) NOT NULL,
@@ -40,7 +39,7 @@ CREATE TABLE `member`
 ) ENGINE = InnoDB;
 
 
-CREATE TABLE `delete_member`
+CREATE TABLE IF NOT EXISTS `delete_member`
 (
     `id`                      BIGINT      NOT NULL AUTO_INCREMENT,
     `previous_id`             BIGINT      NOT NULL,
@@ -55,7 +54,7 @@ CREATE TABLE `delete_member`
 ) ENGINE = InnoDB;
 
 
-CREATE TABLE `stock`
+CREATE TABLE IF NOT EXISTS `stock`
 (
     `id`                      BIGINT       NOT NULL AUTO_INCREMENT,
     `type`                    VARCHAR(30)  NOT NULL,
@@ -69,7 +68,7 @@ CREATE TABLE `stock`
 ) ENGINE = InnoDB;
 
 
-CREATE TABLE `member_stock`
+CREATE TABLE IF NOT EXISTS `member_stock`
 (
     `id`                          BIGINT         NOT NULL AUTO_INCREMENT,
     `member_id`                   BIGINT         NOT NULL,
@@ -85,7 +84,7 @@ CREATE TABLE `member_stock`
 ) ENGINE = InnoDB;
 
 
-CREATE TABLE `deleted_member_stock`
+CREATE TABLE IF NOT EXISTS `deleted_member_stock`
 (
     `id`                          BIGINT         NOT NULL AUTO_INCREMENT,
     `backup_id`                   BIGINT         NOT NULL,
@@ -101,7 +100,7 @@ CREATE TABLE `deleted_member_stock`
 ) ENGINE = InnoDB;
 
 
-CREATE TABLE `stock_history`
+CREATE TABLE IF NOT EXISTS `stock_history`
 (
     `id`                      BIGINT         NOT NULL AUTO_INCREMENT,
     `member_stock_id`         BIGINT         NOT NULL,
