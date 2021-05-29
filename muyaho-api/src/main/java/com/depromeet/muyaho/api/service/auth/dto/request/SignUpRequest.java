@@ -3,7 +3,6 @@ package com.depromeet.muyaho.api.service.auth.dto.request;
 import com.depromeet.muyaho.domain.domain.member.MemberProvider;
 import com.depromeet.muyaho.api.service.member.dto.request.CreateMemberRequest;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 
@@ -15,7 +14,6 @@ public class SignUpRequest {
     @NotBlank
     private String token;
 
-    @Length(max = 5)
     @NotBlank
     private String name;
 
