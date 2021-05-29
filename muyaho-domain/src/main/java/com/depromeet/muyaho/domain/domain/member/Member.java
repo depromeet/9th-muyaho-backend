@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(
     uniqueConstraints = {
         @UniqueConstraint(name = "uni_member_1", columnNames = {"uid", "provider"}),
-        @UniqueConstraint(name = "uni_member_2", columnNames = "name")
+        @UniqueConstraint(name = "uni_member_2", columnNames = {"name"})
     }
 )
 public class Member extends BaseTimeEntity {
@@ -22,17 +22,18 @@ public class Member extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String uid;
 
     private Email email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(length = 2048)
     private String profileUrl;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
     private MemberProvider provider;
 

@@ -17,16 +17,18 @@ public class DeleteMember extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long previousId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String uid;
 
     private Email email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(length = 2048)
     private String profileUrl;
 
     @Column(nullable = false)

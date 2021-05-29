@@ -6,11 +6,14 @@ client.global.set("AUTHORIZATION", response.body["data"])
  %}
 
 
-### 내 정보를 가져오는 API
+
+### 내 회원 정보를 가져오는 API
 GET {{api}}/api/v1/member
 Authorization: Bearer {{AUTHORIZATION}}
 
-### 내 정보를 수정하는 API
+
+
+### 내 회원정보를 수정하는 API
 PUT {{api}}/api/v1/member
 Content-Type: application/json
 Authorization: Bearer {{AUTHORIZATION}}
@@ -20,9 +23,13 @@ Authorization: Bearer {{AUTHORIZATION}}
     "profileUrl": "https://avatars.githubusercontent.com/u/48153675?v=4"
 }
 
-### 닉네임 체크
+
+
+### 닉네임 중복 체크
 GET {{api}}/api/v1/check/name?name=테스트 계정
 
-### 회원탈퇴
+
+
+### 회원탈퇴를 요청하는 API (로컬 및 개발 서버만 가능)
 DELETE {{api}}/api/v1/member
 Authorization: Bearer {{AUTHORIZATION}}

@@ -14,22 +14,24 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(indexes = @Index(name = "idx_stock_1", columnList = "type,code"))
+@Table(indexes = @Index(name = "idx_stock_1", columnList = "type,code,name"))
 public class Stock extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
     private StockMarketType type;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String code;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 150)
     private String name;
 
+    @Column(nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
     private StockStatus status;
 

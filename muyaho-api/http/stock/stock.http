@@ -1,0 +1,12 @@
+### 등록된 비트코인 종목들을 검색한다.
+GET {{api}}/api/v1/stock/list?type=BITCOIN
+
+
+
+### 등록된 국내주식 종목들을 검색한다.
+GET {{api}}/api/v1/stock/list?type=DOMESTIC_STOCK
+
+
+
+### 등록된 해외주식 종목들을 검색한다.
+GET {{api}}/api/v1/stock/list?type=OVERSEAS_STOCK

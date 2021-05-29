@@ -6,9 +6,16 @@ dependencies {
 
     api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.3.8.RELEASE'
 
+    // h2
     implementation 'com.h2database:h2'
+
+    // mariadb
     runtimeOnly group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.2'
 
+    // flyway
+    implementation 'org.flywaydb:flyway-core'
+
+    // querydsl
     implementation "com.querydsl:querydsl-jpa"
     implementation "com.querydsl:querydsl-core"
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"

@@ -9,6 +9,8 @@ spring:
       hibernate.default_batch_fetch_size: 1000
       hibernate.query.in_clause_parameter_padding: true
       hibernate.connection.provider_disables_autocommit: true
+    hibernate:
+      ddl-auto: none
     open-in-view: false
   datasource:
     hikari:
@@ -22,9 +24,6 @@ spring:
       path: /h2-console
       settings:
         web-allow-others: true
-  jpa:
-    hibernate:
-      ddl-auto: create
   datasource:
     hikari:
       driver-class-name: org.h2.Driver
@@ -32,7 +31,11 @@ spring:
       username: sa
       password:
     data: classpath:schema/session.sql
-
+  jpa:
+    hibernate:
+      ddl-auto: create
+  flyway:
+    enabled: false
 ---
 spring:
   profiles: local-will
@@ -44,11 +47,17 @@ spring:
       driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-
+      ddl-auto: none
 ---
 spring:
   profiles: dev
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
+---
+
+spring:
+  profiles: prod
+  jpa:
+    hibernate:
+      ddl-auto: none

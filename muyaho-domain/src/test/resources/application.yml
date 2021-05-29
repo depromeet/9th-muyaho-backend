@@ -7,3 +7,5 @@ spring:
       hibernate.use_sql_comments: true
       hibernate.format_sql: true
     open-in-view: false
+  flyway:
+    enabled: false

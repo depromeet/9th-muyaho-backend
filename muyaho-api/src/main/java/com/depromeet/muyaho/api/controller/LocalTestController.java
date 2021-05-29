@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
  * @Deprecated 연동되기 전까지 테스트용도의 API
  */
 @Deprecated
-@Profile({"local", "dev"})
+@Profile({"local", "local-will", "dev"})
 @RequiredArgsConstructor
 @RestController
 public class LocalTestController {

@@ -1,5 +1,5 @@
 spring:
-  profiles: dev, local
+  profiles: local, dev, local-will
 bitcoin:
   upbit:
     markets:
@@ -17,4 +17,4 @@ currency:
 
 ---
 spring:
-  profiles:
+  profiles: prod
