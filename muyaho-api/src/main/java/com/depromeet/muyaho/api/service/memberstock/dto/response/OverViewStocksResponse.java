@@ -2,10 +2,12 @@ package com.depromeet.muyaho.api.service.memberstock.dto.response;
 
 import com.depromeet.muyaho.api.service.stockcalculator.dto.response.StockCalculateResponse;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 @Getter
 public class OverViewStocksResponse {
 

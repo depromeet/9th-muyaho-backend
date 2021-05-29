@@ -4,15 +4,13 @@ import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.stock.Stock;
 import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 import static com.depromeet.muyaho.common.utils.BigDecimalUtils.roundFloor;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberStockInfoResponse {

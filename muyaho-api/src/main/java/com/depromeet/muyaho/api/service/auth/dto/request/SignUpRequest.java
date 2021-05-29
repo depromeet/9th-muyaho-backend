@@ -2,13 +2,12 @@ package com.depromeet.muyaho.api.service.auth.dto.request;
 
 import com.depromeet.muyaho.domain.domain.member.MemberProvider;
 import com.depromeet.muyaho.api.service.member.dto.request.CreateMemberRequest;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignUpRequest {
@@ -16,6 +15,7 @@ public class SignUpRequest {
     @NotBlank
     private String token;
 
+    @Max(5)
     @NotBlank
     private String name;
 

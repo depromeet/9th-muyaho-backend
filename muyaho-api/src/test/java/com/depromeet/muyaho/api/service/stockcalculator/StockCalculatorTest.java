@@ -63,7 +63,6 @@ class StockCalculatorTest extends MemberSetupTest {
     private static final BigDecimal stockCurrentPrice = new BigDecimal(3000);
     private static final BigDecimal currencyChangeRate = new BigDecimal(1000);
 
-
     @BeforeEach
     void setUpStock() {
         stockCalculator = new StockCalculatorImpl(new StubUpBitApiCaller(), new StubStockApiCaller(), new StubExchangeAPiCaller(), stockHistoryService);
