@@ -2,8 +2,8 @@ package com.depromeet.muyaho.api.controller.stock;
 
 import com.depromeet.muyaho.api.controller.MockApiCaller;
 import com.depromeet.muyaho.api.controller.ApiResponse;
-import com.depromeet.muyaho.api.service.stock.dto.request.RetrieveStocksRequest;
-import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
+import com.depromeet.muyaho.domain.service.stock.dto.request.RetrieveStocksRequest;
+import com.depromeet.muyaho.domain.service.stock.dto.response.StockInfoResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.test.web.servlet.MockMvc;

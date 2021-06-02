@@ -2,11 +2,11 @@ package com.depromeet.muyaho.api.controller.memberstock;
 
 import com.depromeet.muyaho.api.controller.ApiResponse;
 import com.depromeet.muyaho.api.controller.ControllerTest;
-import com.depromeet.muyaho.api.service.memberstock.dto.request.AddMemberStockRequest;
-import com.depromeet.muyaho.api.service.memberstock.dto.request.DeleteMemberStockRequest;
-import com.depromeet.muyaho.api.service.memberstock.dto.request.UpdateMemberStockRequest;
-import com.depromeet.muyaho.api.service.memberstock.dto.response.MemberStockInfoResponse;
-import com.depromeet.muyaho.api.service.stock.dto.response.StockInfoResponse;
+import com.depromeet.muyaho.domain.service.memberstock.dto.request.AddMemberStockRequest;
+import com.depromeet.muyaho.domain.service.memberstock.dto.request.DeleteMemberStockRequest;
+import com.depromeet.muyaho.domain.service.memberstock.dto.request.UpdateMemberStockRequest;
+import com.depromeet.muyaho.domain.service.memberstock.dto.response.MemberStockInfoResponse;
+import com.depromeet.muyaho.domain.service.stock.dto.response.StockInfoResponse;
 import com.depromeet.muyaho.common.exception.ErrorCode;
 import com.depromeet.muyaho.domain.domain.common.CurrencyType;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;

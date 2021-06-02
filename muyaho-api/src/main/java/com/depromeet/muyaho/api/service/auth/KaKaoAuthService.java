@@ -6,8 +6,8 @@ import com.depromeet.muyaho.domain.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.domain.member.MemberRepository;
 import com.depromeet.muyaho.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.muyaho.api.service.auth.dto.request.SignUpRequest;
-import com.depromeet.muyaho.external.client.auth.kakao.KaKaoApiCaller;
-import com.depromeet.muyaho.external.client.auth.kakao.dto.response.KaKaoProfileResponse;
+import com.depromeet.muyaho.domain.external.auth.kakao.KaKaoApiCaller;
+import com.depromeet.muyaho.domain.external.auth.kakao.dto.response.KaKaoProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
