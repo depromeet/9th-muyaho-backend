@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(
+    indexes = @Index(name = "idx_daily_stock_amount_1", columnList = "memberId,localDateTime")
+)
 public class DailyStockAmount extends BaseTimeEntity {
 
     @Id
@@ -22,6 +25,7 @@ public class DailyStockAmount extends BaseTimeEntity {
     @Column(nullable = false)
     private Long memberId;
 
+    @Column(nullable = false)
     private LocalDateTime localDateTime;
 
     private BigDecimal finalAsset;
