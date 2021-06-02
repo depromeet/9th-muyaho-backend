@@ -1,10 +1,12 @@
 package com.depromeet.muyaho.domain.service.memberstock.dto.response;
 
+import com.depromeet.muyaho.domain.domain.dailystockamount.DailyStockAmount;
 import com.depromeet.muyaho.domain.service.stockcalculator.dto.response.StockCalculateResponse;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -15,8 +17,7 @@ import static com.depromeet.muyaho.common.utils.BigDecimalUtils.roundFloor;
 @Getter
 public class InvestStatusResponse {
 
-    // TODO 오늘의 수익금
-    private final String todayProfitOrLose = "-1";
+    private final String todayProfitOrLose;
 
     private final String finalAsset;
     private final String seedAmount;
@@ -24,17 +25,25 @@ public class InvestStatusResponse {
 
     private final OverViewStocksResponse overview;
 
-    private InvestStatusResponse(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> foreignStocks) {
+    private InvestStatusResponse(DailyStockAmount dailyStockAmount, List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> foreignStocks) {
         this.overview = OverViewStocksResponse.of(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);
         final BigDecimal seedAmount = calculateSeedAmount(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);
         final BigDecimal finalAsset = calculateFinalAsset(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);
         this.finalAsset = roundFloor(finalAsset);
         this.seedAmount = roundFloor(seedAmount);
         this.finalProfitOrLoseRate = roundFloor(calculateDifferencePercent(finalAsset, seedAmount));
+        this.todayProfitOrLose = roundFloor(calculateTodayProfitOrLose(finalAsset, dailyStockAmount));
     }
 
-    public static InvestStatusResponse of(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {
-        return new InvestStatusResponse(bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
+    private BigDecimal calculateTodayProfitOrLose(BigDecimal finalAsset, DailyStockAmount dailyStockAmount) {
+        if (dailyStockAmount == null) {
+            return finalAsset;
+        }
+        return finalAsset.subtract(dailyStockAmount.getFinalAsset());
+    }
+
+    public static InvestStatusResponse of(DailyStockAmount dailyStockAmount, List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {
+        return new InvestStatusResponse(dailyStockAmount, bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
     }
 
     private BigDecimal calculateSeedAmount(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {
@@ -62,6 +71,16 @@ public class InvestStatusResponse {
     private BigDecimal sum(Stream<BigDecimal> bigDecimalStream) {
         return bigDecimalStream
             .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public DailyStockAmount toDailyStockAmount(Long memberId, LocalDateTime localDateTime) {
+        return DailyStockAmount.builder()
+            .memberId(memberId)
+            .localDateTime(localDateTime)
+            .finalAsset(new BigDecimal(finalAsset))
+            .seedAmount(new BigDecimal(seedAmount))
+            .finalProfitOrLoseRate(new BigDecimal(finalProfitOrLoseRate))
+            .build();
     }
 
 }

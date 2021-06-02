@@ -45,11 +45,6 @@ spring:
       username: root
       password: '0212'
       driver-class-name: org.mariadb.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-  flyway:
-    enabled: false
 ---
 spring:
   profiles: dev
