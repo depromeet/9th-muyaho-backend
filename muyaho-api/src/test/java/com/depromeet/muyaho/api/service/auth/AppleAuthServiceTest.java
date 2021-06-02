@@ -9,8 +9,8 @@ import com.depromeet.muyaho.domain.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.domain.member.MemberRepository;
 import com.depromeet.muyaho.common.exception.NotFoundException;
 import com.depromeet.muyaho.api.service.member.MemberServiceTestUtils;
-import com.depromeet.muyaho.external.client.auth.apple.AppleTokenDecoder;
-import com.depromeet.muyaho.external.client.auth.apple.dto.response.IdTokenPayload;
+import com.depromeet.muyaho.domain.external.auth.apple.AppleTokenDecoder;
+import com.depromeet.muyaho.domain.external.auth.apple.dto.response.IdTokenPayload;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-public class AppleAuthServiceTest {
+class AppleAuthServiceTest {
 
     private static final String uid = "uid";
     private static final String email = "muyaho@gmail.com";

@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.api.controller.stockhistory;
 
-import com.depromeet.muyaho.api.event.memberstock.MemberStockDeletedEvent;
-import com.depromeet.muyaho.api.service.stockhistory.StockHistoryService;
+import com.depromeet.muyaho.domain.event.memberstock.MemberStockDeletedEvent;
+import com.depromeet.muyaho.domain.service.stockhistory.StockHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

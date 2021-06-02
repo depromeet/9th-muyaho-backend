@@ -6,4 +6,5 @@
 - Domain-Service
 
 ## 하위 모듈
+- muyaho-external
 - muyaho-common
