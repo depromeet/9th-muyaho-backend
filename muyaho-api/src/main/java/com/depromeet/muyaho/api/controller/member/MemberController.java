@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,8 +42,7 @@ public class MemberController {
         return ApiResponse.success(memberService.updateMemberInfo(request, memberId));
     }
 
-    @Profile({"local", "dev"})
-    @Operation(summary = "회원탈퇴 API (개발용)", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Operation(summary = "회원탈퇴 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
     @DeleteMapping("/api/v1/member")
     public ApiResponse<String> deleteMemberInfo(@MemberId Long memberId) {

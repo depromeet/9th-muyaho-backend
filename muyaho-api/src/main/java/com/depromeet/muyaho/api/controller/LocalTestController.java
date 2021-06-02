@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 
 /**
- * @Deprecated 연동되기 전까지 테스트용도의 API
+ * 테스트용 API (로컬 및 개발 서버)
  */
-@Deprecated
 @Profile({"local", "local-will", "dev"})
 @RequiredArgsConstructor
 @RestController

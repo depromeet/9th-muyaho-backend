@@ -10,7 +10,7 @@ public class MainController {
 
     @Operation(summary = "Health Check")
     @BenchMark
-    @GetMapping("/ping")
+    @GetMapping({"/", "/ping"})
     public ApiResponse<String> ping() {
         return ApiResponse.success("pong");
     }

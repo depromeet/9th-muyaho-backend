@@ -32,7 +32,7 @@
 - 모든 주식/코인의 총 보유량을 원화로 조회
 - 모든 주식/코인의 총 시드값을 원화로 조회 (해외 주식의 경우, 시드 값을 원화로 별도로 보관 - 환율의 변동으로 인한)
 
-### 어제 대비 오늘의 수익금 계산 - TODO
+### 어제 대비 오늘의 수익금 계산
 - 어제 대비 오늘의 수익금 및 수익률 계산
 
 
@@ -64,7 +64,7 @@ docker-compose up --build
 
 ### Infra (Development Server)
 - AWS ECS Fargate
-- AWS RDS (MariaDB 10.4)
+- AWS RDS (MariaDB 10.4), flyway
 - Application Load Balancer
 
 ### CI/CD
