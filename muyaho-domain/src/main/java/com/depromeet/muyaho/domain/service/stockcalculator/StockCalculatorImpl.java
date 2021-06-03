@@ -31,6 +31,7 @@ public class StockCalculatorImpl implements StockCalculator {
     private final UpBitApiCaller upBitApiCaller;
     private final StockApiCaller stockApiCaller;
     private final ExchangeRateApiCaller exchangeRateApiCaller;
+
     private final StockHistoryService stockHistoryService;
 
     @Override

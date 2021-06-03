@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.domain.service.memberstock;
 
+import com.depromeet.muyaho.domain.domain.dailystockamount.DailyStockAmount;
 import com.depromeet.muyaho.domain.domain.dailystockamount.DailyStockAmountRepository;
 import com.depromeet.muyaho.domain.service.memberstock.dto.response.InvestStatusResponse;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStockCollection;
@@ -10,7 +11,9 @@ import com.depromeet.muyaho.domain.service.stockcalculator.dto.response.StockCal
 import com.depromeet.muyaho.domain.service.stockhistory.StockHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,9 +21,10 @@ import java.util.List;
 @Service
 public class MemberStockRetrieveService {
 
-    private final MemberStockRepository memberStockRepository;
     private final StockCalculator stockCalculator;
     private final StockHistoryService stockHistoryService;
+
+    private final MemberStockRepository memberStockRepository;
     private final DailyStockAmountRepository dailyStockAmountRepository;
 
     public List<StockCalculateResponse> getMemberCurrentStocks(StockMarketType type, Long memberId) {
@@ -40,6 +44,7 @@ public class MemberStockRetrieveService {
         );
     }
 
+    @Transactional(readOnly = true)
     public InvestStatusResponse getLastMemberInvestStatusHistory(Long memberId) {
         return InvestStatusResponse.of(
             dailyStockAmountRepository.findLastDailyStockAmount(memberId),
@@ -47,6 +52,10 @@ public class MemberStockRetrieveService {
             stockHistoryService.retrieveMemberStockHistory(StockMarketType.DOMESTIC_STOCK, memberId),
             stockHistoryService.retrieveMemberStockHistory(StockMarketType.OVERSEAS_STOCK, memberId)
         );
+    }
+
+    public DailyStockAmount getMemberDailyStockAmount(Long memberId, LocalDateTime dateTime) {
+        return getMemberInvestStatus(memberId).toDailyStockAmount(memberId, dateTime);
     }
 
 }

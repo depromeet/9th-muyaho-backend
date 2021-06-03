@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberStockService {
 
     private final ApplicationEventPublisher eventPublisher;
+
     private final MemberStockRepository memberStockRepository;
     private final StockRepository stockRepository;
     private final DeletedMemberSockRepository deletedMemberSockRepository;

@@ -35,15 +35,15 @@ public class InvestStatusResponse {
         this.todayProfitOrLose = roundFloor(calculateTodayProfitOrLose(finalAsset, dailyStockAmount));
     }
 
+    public static InvestStatusResponse of(DailyStockAmount dailyStockAmount, List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {
+        return new InvestStatusResponse(dailyStockAmount, bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
+    }
+
     private BigDecimal calculateTodayProfitOrLose(BigDecimal finalAsset, DailyStockAmount dailyStockAmount) {
         if (dailyStockAmount == null) {
             return finalAsset;
         }
         return finalAsset.subtract(dailyStockAmount.getFinalAsset());
-    }
-
-    public static InvestStatusResponse of(DailyStockAmount dailyStockAmount, List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {
-        return new InvestStatusResponse(dailyStockAmount, bitCoinCurrentInfo, domesticCurrentInfo, overSeasCurrentInfo);
     }
 
     private BigDecimal calculateSeedAmount(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> overSeasCurrentInfo) {

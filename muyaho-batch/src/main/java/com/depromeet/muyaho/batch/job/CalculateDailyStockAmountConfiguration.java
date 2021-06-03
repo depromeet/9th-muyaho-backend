@@ -25,6 +25,7 @@ public class CalculateDailyStockAmountConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+
     private final MemberStockRetrieveService memberStockRetrieveService;
     private final MemberRepository memberRepository;
     private final DailyStockAmountRepository dailyStockAmountRepository;
@@ -50,8 +51,7 @@ public class CalculateDailyStockAmountConfiguration {
     private List<DailyStockAmount> getAllMemberDailyStockAmount(List<Member> members) {
         final LocalDateTime now = LocalDateTime.now();
         return members.stream()
-            .map(Member::getId)
-            .map(memberId -> memberStockRetrieveService.getMemberInvestStatus(memberId).toDailyStockAmount(memberId, now))
+            .map(member -> memberStockRetrieveService.getMemberDailyStockAmount(member.getId(), now))
             .collect(Collectors.toList());
     }
 
