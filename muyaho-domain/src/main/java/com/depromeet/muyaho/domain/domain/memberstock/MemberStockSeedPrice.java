@@ -31,7 +31,7 @@ public class MemberStockSeedPrice {
 
     private void validateAvailablePrice(BigDecimal totalPurchasePrice) {
         if (totalPurchasePrice != null && totalPurchasePrice.compareTo(BigDecimal.ZERO) < 0) {
-            throw new ValidationException(String.format("Money(%s) 은 0보다 커야합니다", totalPurchasePrice));
+            throw new ValidationException(String.format("Money(%s) 은 0보다 커야합니다", totalPurchasePrice), ErrorCode.VALIDATION_INVALID_MONEY_EXCEPTION);
         }
     }
 

@@ -39,18 +39,20 @@ public class CalculateDailyStockAmountConfiguration {
 
     @Bean
     public Step calculateDailyStockAmountStep() {
-        LocalDateTime localDateTime = LocalDateTime.now();
         return stepBuilderFactory.get("calculateDailyStockAmountStep")
             .tasklet((contribution, chunkContext) -> {
-                List<Member> members = memberRepository.findAll();
-                List<DailyStockAmount> dailyStockAmounts = members.stream()
-                    .map(Member::getId)
-                    .map(memberId -> memberStockRetrieveService.getMemberInvestStatus(memberId).toDailyStockAmount(memberId, localDateTime))
-                    .collect(Collectors.toList());
-                dailyStockAmountRepository.saveAll(dailyStockAmounts);
+                dailyStockAmountRepository.saveAll(getAllMemberDailyStockAmount(memberRepository.findAll()));
                 return RepeatStatus.FINISHED;
             })
             .build();
+    }
+
+    private List<DailyStockAmount> getAllMemberDailyStockAmount(List<Member> members) {
+        final LocalDateTime now = LocalDateTime.now();
+        return members.stream()
+            .map(Member::getId)
+            .map(memberId -> memberStockRetrieveService.getMemberInvestStatus(memberId).toDailyStockAmount(memberId, now))
+            .collect(Collectors.toList());
     }
 
 }

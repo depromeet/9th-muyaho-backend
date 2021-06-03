@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class MemberStockMockApiCaller extends MockApiCaller {
+class MemberStockMockApiCaller extends MockApiCaller {
 
     public MemberStockMockApiCaller(MockMvc mockMvc, ObjectMapper objectMapper) {
         super(mockMvc, objectMapper);
