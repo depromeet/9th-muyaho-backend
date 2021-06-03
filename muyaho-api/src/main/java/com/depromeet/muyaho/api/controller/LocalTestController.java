@@ -2,10 +2,10 @@ package com.depromeet.muyaho.api.controller;
 
 import com.depromeet.muyaho.api.config.session.MemberSession;
 import com.depromeet.muyaho.api.config.session.SessionConstants;
+import com.depromeet.muyaho.api.service.stock.RenewStockService;
 import com.depromeet.muyaho.domain.domain.member.Member;
 import com.depromeet.muyaho.domain.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.domain.member.MemberRepository;
-import com.depromeet.muyaho.api.schedule.StockScheduler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ public class LocalTestController {
 
     private final MemberRepository memberRepository;
     private final HttpSession httpSession;
-    private final StockScheduler scheduler;
+    private final RenewStockService renewStockService;
 
     @GetMapping("/test-session")
     public ApiResponse<String> testSession() {
@@ -39,9 +39,9 @@ public class LocalTestController {
 
     @GetMapping("/renew/stock")
     public String renewDomesticStocks() {
-        scheduler.renewDomesticStocksCode();
-        scheduler.renewBitCoinStocksCode();
-        scheduler.renewOverseasStocksCode();
+        renewStockService.renewDomesticStocksCode();
+        renewStockService.renewBitCoinStocksCode();
+        renewStockService.renewOverseasStocksCode();
         return "OK";
     }
 
