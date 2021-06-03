@@ -1,6 +1,6 @@
 package com.depromeet.muyaho.api.controller;
 
-import com.depromeet.muyaho.api.controller.member.MemberMockApiCaller;
+import com.depromeet.muyaho.api.controller.member.api.MemberMockApiCaller;
 import com.depromeet.muyaho.domain.domain.member.Member;
 import com.depromeet.muyaho.domain.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.domain.member.MemberRepository;

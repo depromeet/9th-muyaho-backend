@@ -2,6 +2,7 @@ package com.depromeet.muyaho.api.controller.memberstock;
 
 import com.depromeet.muyaho.api.controller.ApiResponse;
 import com.depromeet.muyaho.api.controller.ControllerTest;
+import com.depromeet.muyaho.api.controller.memberstock.api.MemberStockMockApiCaller;
 import com.depromeet.muyaho.domain.service.memberstock.dto.request.AddMemberStockRequest;
 import com.depromeet.muyaho.domain.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.domain.service.memberstock.dto.request.UpdateMemberStockRequest;

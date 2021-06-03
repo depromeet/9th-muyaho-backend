@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.api.controller.stock;
+package com.depromeet.muyaho.api.controller.stock.api;
 
 import com.depromeet.muyaho.api.controller.MockApiCaller;
 import com.depromeet.muyaho.api.controller.ApiResponse;
@@ -15,7 +15,7 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class StockMockApiCaller extends MockApiCaller {
+public class StockMockApiCaller extends MockApiCaller {
 
     public StockMockApiCaller(MockMvc mockMvc, ObjectMapper objectMapper) {
         super(mockMvc, objectMapper);
