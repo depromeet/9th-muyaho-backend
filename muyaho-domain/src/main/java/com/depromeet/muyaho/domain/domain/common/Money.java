@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.domain.domain.common;
 
+import com.depromeet.muyaho.common.exception.ErrorCode;
 import com.depromeet.muyaho.common.exception.ValidationException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -33,7 +34,7 @@ public class Money {
 
     private void validateValidMoney(BigDecimal money) {
         if (money.compareTo(BigDecimal.ZERO) < 0) {
-            throw new ValidationException(String.format("Money(%s) 은 0보다 커야합니다", money));
+            throw new ValidationException(String.format("Money(%s) 은 0보다 커야합니다", money), ErrorCode.VALIDATION_INVALID_MONEY_EXCEPTION);
         }
     }
 

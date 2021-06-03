@@ -1,10 +1,11 @@
 package com.depromeet.muyaho.common.exception;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ErrorCode {
 
     // Common
@@ -17,13 +18,14 @@ public enum ErrorCode {
     BAD_GATEWAY_EXCEPTION("C007", "외부 연동 중 에러가 발생하였습니다"),
     FORBIDDEN_EXCEPTION("C008", "허용하지 않는 접근입니다."),
 
-    VALIDATION_NOT_SUPPORTED_PROVIDER_EXCEPTION("V001", "아직 지원하고 있지 않은 소셜 타입입니다"),
+    // Validation Exception
     VALIDATION_INVALID_TOKEN_EXCEPTION("V002", "잘못된 토큰입니다"),
     VALIDATION_INVALID_EMAIL_EXCEPTION("V003", "이메일 포맷에 어긋납니다"),
-    VALIDATION_INVALID_MONEY_EXCEPTION("V004", "잘못된 돈을 입력하셨습니다"),
-    VALIDATION_INVALID_QUANTITY_EXCEPTION("V005", "잘못된 보유 수량입니다"),
+    VALIDATION_INVALID_MONEY_EXCEPTION("V004", "잘못된 금액을 입력하였습니다"),
+    VALIDATION_INVALID_QUANTITY_EXCEPTION("V005", "잘못된 보유 수량을 입력하였습니다"),
     VALIDATION_ESSENTIAL_TOTAL_PURCHASE_PRICE_EXCEPTION("V006", "해당하는 주식은 매입금을 필수로 입력해야합니다"),
 
+    // Forbidden Exception
     FORBIDDEN_STOCK_CURRENCY_EXCEPTION("F001", "해당하는 주식이 허용하지 않는 화폐 통화입니다");
 
     private final String code;

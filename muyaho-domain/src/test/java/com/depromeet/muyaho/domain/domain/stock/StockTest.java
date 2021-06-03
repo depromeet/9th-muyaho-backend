@@ -23,9 +23,7 @@ class StockTest {
         Stock stock = StockCreator.createActive("code", "국내 주식", StockMarketType.DOMESTIC_STOCK);
 
         // when & then
-        assertThatThrownBy(() -> {
-            stock.validateAllowCurrency(CurrencyType.DOLLAR);
-        }).isInstanceOf(ForbiddenException.class);
+        assertThatThrownBy(() -> stock.validateAllowCurrency(CurrencyType.DOLLAR)).isInstanceOf(ForbiddenException.class);
     }
 
 }

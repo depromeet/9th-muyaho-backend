@@ -104,6 +104,9 @@ public class ControllerAdvice {
         return ApiResponse.error(getValueOrDefault(exception.getErrorCode(), ErrorCode.CONFLICT_EXCEPTION));
     }
 
+    /**
+     * 외부 API 연동 중 에러가 발생할 경우 발생하는 Exception
+     */
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
     @ExceptionHandler(BadGatewayException.class)
     protected ApiResponse<Object> handleBadGatewayException(final BadGatewayException exception) {
@@ -111,9 +114,12 @@ public class ControllerAdvice {
         return ApiResponse.error(ErrorCode.BAD_GATEWAY_EXCEPTION);
     }
 
+    /**
+     * 서버 내부에서 발생하는 Exception
+     */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(IllegalArgumentException.class)
-    protected ApiResponse<Object> handleIllegalArgumentException(final Exception exception) {
+    @ExceptionHandler(Exception.class)
+    protected ApiResponse<Object> handleException(final Exception exception) {
         log.error(exception.getMessage(), exception);
         return ApiResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
     }

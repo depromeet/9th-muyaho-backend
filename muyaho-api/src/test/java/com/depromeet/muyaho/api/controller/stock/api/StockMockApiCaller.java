@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.api.controller.stock;
+package com.depromeet.muyaho.api.controller.stock.api;
 
 import com.depromeet.muyaho.api.controller.MockApiCaller;
 import com.depromeet.muyaho.api.controller.ApiResponse;

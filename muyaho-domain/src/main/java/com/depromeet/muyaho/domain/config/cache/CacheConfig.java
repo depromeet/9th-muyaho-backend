@@ -21,10 +21,10 @@ public class CacheConfig {
 
     @Bean
     public EhCacheManagerFactoryBean ehCacheCacheManager() {
-        EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
-        cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
-        cmfb.setShared(true);
-        return cmfb;
+        EhCacheManagerFactoryBean ehCacheManageFactory = new EhCacheManagerFactoryBean();
+        ehCacheManageFactory.setConfigLocation(new ClassPathResource("ehcache.xml"));
+        ehCacheManageFactory.setShared(true);
+        return ehCacheManageFactory;
     }
 
 }
