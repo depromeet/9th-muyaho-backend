@@ -23,10 +23,10 @@ public class InvestStatusResponse {
     private final String seedAmount;
     private final String finalProfitOrLoseRate;
 
-    private final OverViewStocksResponse overview;
+    private final OverviewStocksResponse overview;
 
     private InvestStatusResponse(DailyStockAmount dailyStockAmount, List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> foreignStocks) {
-        this.overview = OverViewStocksResponse.of(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);
+        this.overview = OverviewStocksResponse.of(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);
         final BigDecimal seedAmount = calculateSeedAmount(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);
         final BigDecimal finalAsset = calculateFinalAsset(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);
         this.finalAsset = roundFloor(finalAsset);

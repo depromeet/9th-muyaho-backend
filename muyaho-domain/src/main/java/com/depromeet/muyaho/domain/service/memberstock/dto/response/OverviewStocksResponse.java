@@ -9,20 +9,20 @@ import java.util.List;
 
 @ToString
 @Getter
-public class OverViewStocksResponse {
+public class OverviewStocksResponse {
 
     private final List<StockCalculateResponse> bitCoins = new ArrayList<>();
     private final List<StockCalculateResponse> domesticStocks = new ArrayList<>();
     private final List<StockCalculateResponse> foreignStocks = new ArrayList<>();
 
-    private OverViewStocksResponse(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> foreignStocks) {
+    private OverviewStocksResponse(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> foreignStocks) {
         this.bitCoins.addAll(bitCoinCurrentInfo);
         this.domesticStocks.addAll(domesticCurrentInfo);
         this.foreignStocks.addAll(foreignStocks);
     }
 
-    public static OverViewStocksResponse of(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> foreignStocks) {
-        return new OverViewStocksResponse(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);
+    public static OverviewStocksResponse of(List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> foreignStocks) {
+        return new OverviewStocksResponse(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);
     }
 
 }
