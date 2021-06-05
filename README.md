@@ -59,11 +59,17 @@ docker-compose up --build
 - Gradle 6.8
 - Junit 5
 
-### Infra (Production Server)
+
+### Server Architecture 
+
+<img src="/_images/muyaho-server.png" width="100%" height="100%" title="무야호 서버 구성도" alt="무야호 서버 구성도"></img>
+
+
+### Production Server
 - TODO
 
-### Infra (Development Server)
-- AWS ECS Fargate
+### Development Server
+- AWS ECS Fargate Service + ECS Fargate CronJob
 - AWS RDS (MariaDB 10.4), flyway
 - Application Load Balancer
 
