@@ -62,7 +62,7 @@ docker-compose up --build
 
 ### Server Architecture 
 
-<img src="/_images/muyaho-server.png" width="100%" height="100%" title="무야호 서버 구성도" alt="무야호 서버 구성도"></img>
+<img src="/_images/muyaho-server.png" title="무야호 서버 구성도" alt="무야호 서버 구성도"></img>
 
 ### Infra
 - AWS ECS Fargate Service
