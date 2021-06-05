@@ -64,14 +64,11 @@ docker-compose up --build
 
 <img src="/_images/muyaho-server.png" width="100%" height="100%" title="무야호 서버 구성도" alt="무야호 서버 구성도"></img>
 
-
-### Production Server
-- TODO
-
-### Development Server
-- AWS ECS Fargate Service + ECS Fargate CronJob
+### Infra
+- AWS ECS Fargate Service
 - AWS RDS (MariaDB 10.4), flyway
 - Application Load Balancer
+- AWS CloudWatch Events Trigger
 
 ### CI/CD
 - GitHub Action CI/CD
