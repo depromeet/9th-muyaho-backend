@@ -48,6 +48,7 @@ public class StockCalculatorImpl implements StockCalculator {
         List<StockPriceResponse> currentStockPrices = stockApiCaller.fetchCurrentStockPrice(collection.extractCodesWithDelimiter(DELIMITER));
 
         List<RenewMemberStockHistoryRequest> renewMemberStockHistoryRequests = currentStockPrices.stream()
+            .filter(currentPrice -> currentPrice.getPrice().compareTo(BigDecimal.ZERO) >= 0) // 실시간으로 불러올 수 없을 경우 -1를 반환하기 때문에 필터링.
             .map(currentPrice -> RenewMemberStockHistoryRequest.of(
                 memberStockMap.get(currentPrice.getCode()),
                 calculateCurrentWon(type, currentPrice.getPrice(), rate),
