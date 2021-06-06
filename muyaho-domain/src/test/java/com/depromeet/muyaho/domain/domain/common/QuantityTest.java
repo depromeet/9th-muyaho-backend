@@ -23,9 +23,21 @@ class QuantityTest {
     }
 
     @Test
-    void 보유수량이_0일경우_에러가_발생한다() {
+    void 보유수량이_0일경우_통과한다() {
         // given
         BigDecimal count = new BigDecimal(0);
+
+        // when
+        Quantity quantity = Quantity.of(count);
+
+        // then
+        assertThat(quantity.getQuantity()).isEqualByComparingTo(count);
+    }
+
+    @Test
+    void 보유수량이_0이하일경우_VALIDATION_EXCEPTION이_발생한다() {
+        // given
+        BigDecimal count = new BigDecimal("-0.01");
 
         // when & then
         assertThatThrownBy(() -> Quantity.of(count)).isInstanceOf(ValidationException.class);
