@@ -2,7 +2,9 @@ package com.depromeet.muyaho.domain.service.memberstock.dto.response;
 
 import com.depromeet.muyaho.domain.domain.dailystockamount.DailyStockAmount;
 import com.depromeet.muyaho.domain.service.stockcalculator.dto.response.StockCalculateResponse;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.math.BigDecimal;
@@ -15,15 +17,16 @@ import static com.depromeet.muyaho.common.utils.BigDecimalUtils.roundFloor;
 
 @ToString
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class InvestStatusResponse {
 
-    private final String todayProfitOrLose;
+    private String todayProfitOrLose;
 
-    private final String finalAsset;
-    private final String seedAmount;
-    private final String finalProfitOrLoseRate;
+    private String finalAsset;
+    private String seedAmount;
+    private String finalProfitOrLoseRate;
 
-    private final OverviewStocksResponse overview;
+    private OverviewStocksResponse overview;
 
     private InvestStatusResponse(DailyStockAmount dailyStockAmount, List<StockCalculateResponse> bitCoinCurrentInfo, List<StockCalculateResponse> domesticCurrentInfo, List<StockCalculateResponse> foreignStocks) {
         this.overview = OverviewStocksResponse.of(bitCoinCurrentInfo, domesticCurrentInfo, foreignStocks);

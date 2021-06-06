@@ -3,9 +3,12 @@ package com.depromeet.muyaho.api.controller.memberstock;
 import com.depromeet.muyaho.api.controller.ApiResponse;
 import com.depromeet.muyaho.api.controller.ControllerTest;
 import com.depromeet.muyaho.api.controller.memberstock.api.MemberStockMockApiCaller;
+import com.depromeet.muyaho.domain.domain.stockhistory.StockHistoryCreator;
+import com.depromeet.muyaho.domain.domain.stockhistory.StockHistoryRepository;
 import com.depromeet.muyaho.domain.service.memberstock.dto.request.AddMemberStockRequest;
 import com.depromeet.muyaho.domain.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.domain.service.memberstock.dto.request.UpdateMemberStockRequest;
+import com.depromeet.muyaho.domain.service.memberstock.dto.response.InvestStatusResponse;
 import com.depromeet.muyaho.domain.service.memberstock.dto.response.MemberStockInfoResponse;
 import com.depromeet.muyaho.domain.service.stock.dto.response.StockInfoResponse;
 import com.depromeet.muyaho.common.exception.ErrorCode;
@@ -37,6 +40,9 @@ class MemberStockControllerTest extends ControllerTest {
     @Autowired
     private MemberStockRepository memberStockRepository;
 
+    @Autowired
+    private StockHistoryRepository stockHistoryRepository;
+
     @BeforeEach
     void setUp() throws Exception {
         super.setup();
@@ -46,6 +52,7 @@ class MemberStockControllerTest extends ControllerTest {
     @AfterEach
     void cleanUp() {
         super.cleanup();
+        stockHistoryRepository.deleteAll();
         memberStockRepository.deleteAllInBatch();
         stockRepository.deleteAllInBatch();
     }
@@ -161,6 +168,32 @@ class MemberStockControllerTest extends ControllerTest {
         // then
         assertThat(response.getCode()).isEqualTo(ErrorCode.NOT_FOUND_EXCEPTION.getCode());
         assertThat(response.getMessage()).isEqualTo(ErrorCode.NOT_FOUND_EXCEPTION.getMessage());
+    }
+
+    @DisplayName("GET /api/v1/member/stock/status/history 200 OK")
+    @Test
+    void 내가_마지막으로_조회한_주식_전체를_조회한다() throws Exception {
+        // given
+        BigDecimal purchasePrice = new BigDecimal(2000);
+        BigDecimal quantity = new BigDecimal(10);
+        BigDecimal currentPriceInWon = new BigDecimal(1000);
+        BigDecimal currentPriceInDollar = new BigDecimal(1);
+        BigDecimal profitOrLoseRate = new BigDecimal(10);
+
+        Stock stock = StockCreator.createActiveDomestic("국내주식", "국내주식 종목명");
+        stockRepository.save(stock);
+
+        MemberStock memberStock = MemberStockCreator.createWon(testMember.getId(), stock, purchasePrice, quantity);
+        memberStockRepository.save(memberStock);
+
+        stockHistoryRepository.save(StockHistoryCreator.create(memberStock, currentPriceInWon, currentPriceInDollar, profitOrLoseRate));
+
+        // when
+        ApiResponse<InvestStatusResponse> response = memberStockMockApiCaller.getLastMemberInvestStatusHistory(token, 200);
+
+        // then
+        assertThat(response.getData().getFinalAsset()).isEqualTo(currentPriceInWon.multiply(quantity).toString());
+        assertThat(response.getData().getSeedAmount()).isEqualTo(purchasePrice.multiply(quantity).toString());
     }
 
     private void assertMemberInfoResponse(MemberStockInfoResponse response, CurrencyType currencyType, BigDecimal purchasePrice,

@@ -5,6 +5,7 @@ import com.depromeet.muyaho.api.controller.ApiResponse;
 import com.depromeet.muyaho.domain.service.memberstock.dto.request.AddMemberStockRequest;
 import com.depromeet.muyaho.domain.service.memberstock.dto.request.DeleteMemberStockRequest;
 import com.depromeet.muyaho.domain.service.memberstock.dto.request.UpdateMemberStockRequest;
+import com.depromeet.muyaho.domain.service.memberstock.dto.response.InvestStatusResponse;
 import com.depromeet.muyaho.domain.service.memberstock.dto.response.MemberStockInfoResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,6 +61,20 @@ public class MemberStockMockApiCaller extends MockApiCaller {
         MockHttpServletRequestBuilder builder = delete("/api/v1/member/stock")
             .header(HttpHeaders.AUTHORIZATION, "Bearer ".concat(token))
             .param("memberStockId", String.valueOf(request.getMemberStockId()));
+
+        return objectMapper.readValue(
+            mockMvc.perform(builder)
+                .andExpect(status().is(expectedStatus))
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+            }
+        );
+    }
+
+    public ApiResponse<InvestStatusResponse> getLastMemberInvestStatusHistory(String token, int expectedStatus) throws Exception {
+        MockHttpServletRequestBuilder builder = get("/api/v1/member/stock/status/history")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer ".concat(token));
 
         return objectMapper.readValue(
             mockMvc.perform(builder)

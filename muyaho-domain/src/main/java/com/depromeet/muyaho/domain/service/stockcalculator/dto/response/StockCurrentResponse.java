@@ -1,16 +1,19 @@
 package com.depromeet.muyaho.domain.service.stockcalculator.dto.response;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.math.BigDecimal;
 
 @ToString
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StockCurrentResponse {
 
-    private final StockCurrentPriceResponse won;
-    private final StockCurrentPriceResponse dollar;
+    private StockCurrentPriceResponse won;
+    private StockCurrentPriceResponse dollar;
 
     private StockCurrentResponse(StockCurrentPriceResponse won, StockCurrentPriceResponse dollar) {
         this.won = won;

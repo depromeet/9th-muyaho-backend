@@ -114,8 +114,8 @@ class StockCalculatorTest extends MemberSetupTest {
         BigDecimal purchasePrice = new BigDecimal(1000);
         BigDecimal quantity = new BigDecimal(10);
 
-        Stock bitCoin = stockRepository.save(StockCreator.createActive(code, name, type));
-        MemberStock memberStock = memberStockRepository.save((MemberStockCreator.create(memberId, bitCoin, purchasePrice, quantity, currencyType)));
+        Stock stock = stockRepository.save(StockCreator.createActive(code, name, type));
+        MemberStock memberStock = memberStockRepository.save((MemberStockCreator.create(memberId, stock, purchasePrice, quantity, currencyType)));
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
@@ -123,7 +123,7 @@ class StockCalculatorTest extends MemberSetupTest {
 
         // then
         assertThat(responses).hasSize(1);
-        assertStockInfoResponse(responses.get(0).getStock(), bitCoin.getId(), bitCoin.getCode(), bitCoin.getName(), bitCoin.getType());
+        assertStockInfoResponse(responses.get(0).getStock(), stock.getId(), stock.getCode(), stock.getName(), stock.getType());
     }
 
     @MethodSource("각_종류별_주식")
@@ -133,8 +133,8 @@ class StockCalculatorTest extends MemberSetupTest {
         BigDecimal purchasePrice = new BigDecimal(1000);
         BigDecimal quantity = new BigDecimal(10);
 
-        Stock bitCoin = stockRepository.save(StockCreator.createActive(code, name, type));
-        MemberStock memberStock = memberStockRepository.save((MemberStockCreator.create(memberId, bitCoin, purchasePrice, quantity, currencyType)));
+        Stock stock = stockRepository.save(StockCreator.createActive(code, name, type));
+        MemberStock memberStock = memberStockRepository.save((MemberStockCreator.create(memberId, stock, purchasePrice, quantity, currencyType)));
         MemberStockCollection collection = MemberStockCollection.of(Collections.singletonList(memberStock));
 
         // when
@@ -143,7 +143,7 @@ class StockCalculatorTest extends MemberSetupTest {
         // then
         assertThat(responses).hasSize(1);
         assertStockCalculateResponse(responses.get(0), memberStock.getId(), quantity, currencyType);
-        assertStockPurchaseResponse(responses.get(0).getPurchase(), purchasePrice, purchasePrice.multiply(quantity));
+        assertStockPurchaseResponse(responses.get(0).getPurchase(), purchasePrice, purchasePrice.multiply(quantity), memberStock.getPurchaseTotalPriceInWon());
     }
 
     private static Stream<Arguments> 각_종류별_주식() {
@@ -288,9 +288,10 @@ class StockCalculatorTest extends MemberSetupTest {
         assertThat(response.getCurrencyType()).isEqualTo(type);
     }
 
-    private void assertStockPurchaseResponse(StockPurchaseResponse response, BigDecimal purchasePrice, BigDecimal amountPrice) {
+    private void assertStockPurchaseResponse(StockPurchaseResponse response, BigDecimal purchasePrice, BigDecimal amountPrice, BigDecimal amountInWon) {
         assertThat(response.getUnitPrice()).isEqualTo(purchasePrice.toString());
         assertThat(response.getAmount()).isEqualTo(amountPrice.toString());
+        assertThat(response.getAmountInWon()).isEqualTo(amountInWon == null ? null : amountInWon.toString());
     }
 
 }

@@ -12,17 +12,18 @@ import static com.depromeet.muyaho.common.utils.BigDecimalUtils.*;
 
 @ToString
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StockCalculateResponse {
 
-    private final Long memberStockId;
-    private final StockInfoResponse stock;
+    private Long memberStockId;
+    private StockInfoResponse stock;
 
-    private final StockPurchaseResponse purchase;
-    private final StockCurrentResponse current;
+    private StockPurchaseResponse purchase;
+    private StockCurrentResponse current;
 
-    private final String quantity;
-    private final CurrencyType currencyType;
-    private final String profitOrLoseRate;
+    private String quantity;
+    private CurrencyType currencyType;
+    private String profitOrLoseRate;
 
     @Builder
     public StockCalculateResponse(Long memberStockId, StockInfoResponse stock, StockPurchaseResponse purchase,

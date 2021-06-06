@@ -32,7 +32,7 @@ public class StockRenewServiceTest {
     }
 
     @Test
-    void 종목_갱신시_허용된_통화만_등록된다() {
+    void 종목_갱신시_해당_통화에서_허용된_코드만_등록된다() {
         // given
         String allowedCode = "KRW-ABC";
         String disAllowedCode = "ABC";
@@ -50,7 +50,7 @@ public class StockRenewServiceTest {
     }
 
     @Test
-    void 따로_제한이_없는경우_모두_등록된다() {
+    void 따로_코드의_제한이_없는_주식의_경우_모두_등록된다() {
         // given
         String allowedCode1 = "Code1";
         String allowedCode2 = "StockCode1";
@@ -113,7 +113,7 @@ public class StockRenewServiceTest {
     }
 
     @Test
-    void 주식종목을_갱신요청할때_기존에_있었는데_나오는경우_활성화로_유지된다() {
+    void 주식종목을_갱신요청할때_기존에_있었는데_다시_나오는경우_활성화로_유지된다() {
         // given
         String code = "KRW-code";
         String name = "새로운 비트코인";
