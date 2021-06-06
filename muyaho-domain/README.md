@@ -4,7 +4,7 @@
 - Domain
 - Repository
 - Domain-Service
+- External (차후 별도 모듈로 분리)
 
 ## 하위 모듈
-- muyaho-external
 - muyaho-common
