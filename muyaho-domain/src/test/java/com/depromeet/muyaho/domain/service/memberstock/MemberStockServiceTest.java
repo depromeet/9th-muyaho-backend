@@ -40,9 +40,14 @@ class MemberStockServiceTest extends MemberSetupTest {
 
     private Stock stock;
 
+    private static final BigDecimal purchasePrice = new BigDecimal(10000);
+    private static final BigDecimal quantity = new BigDecimal(5);
+    private MemberStock memberStock;
+
     @BeforeEach
     void setUpStock() {
         stock = stockRepository.save(StockCreator.createActive("code", "비트코인", StockMarketType.BITCOIN));
+        memberStock = MemberStockCreator.create(memberId, stock, purchasePrice, quantity);
     }
 
     @AfterEach
@@ -56,9 +61,6 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 멤버가_새롭게_보유한_주식을_등록한다() {
         // given
-        BigDecimal purchasePrice = new BigDecimal(10000);
-        BigDecimal quantity = new BigDecimal(5);
-
         AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), purchasePrice, quantity, CurrencyType.WON, null);
 
         // when
@@ -75,7 +77,7 @@ class MemberStockServiceTest extends MemberSetupTest {
         // given
         Long notExistStockId = 999L;
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(notExistStockId, new BigDecimal(1000), new BigDecimal(10), CurrencyType.WON, null);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(notExistStockId, purchasePrice, quantity, CurrencyType.WON, null);
 
         // when & then
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
@@ -84,9 +86,9 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 이미_소유한_주식으로_등록한_주식을_다시_등록하려하면_409_에러가_발생한다() {
         // given
-        memberStockRepository.save(MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10)));
+        memberStockRepository.save(memberStock);
 
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), new BigDecimal(1000), new BigDecimal(1), CurrencyType.WON, null);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(stock.getId(), purchasePrice, quantity, CurrencyType.WON, null);
 
         // when & then
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(ConflictException.class);
@@ -96,7 +98,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     void 비활성화된_주식을_등록하려는_경우_404_에러가_발생한다() {
         // given
         Stock disActiveStock = stockRepository.save(StockCreator.createDisable("Disable", "비활성화", StockMarketType.BITCOIN));
-        AddMemberStockRequest request = AddMemberStockRequest.testInstance(disActiveStock.getId(), new BigDecimal(1000), new BigDecimal(10), CurrencyType.WON, null);
+        AddMemberStockRequest request = AddMemberStockRequest.testInstance(disActiveStock.getId(), purchasePrice, quantity, CurrencyType.WON, null);
 
         // when
         assertThatThrownBy(() -> memberStockService.addMemberStock(request, memberId)).isInstanceOf(NotFoundException.class);
@@ -107,9 +109,6 @@ class MemberStockServiceTest extends MemberSetupTest {
         // given
         MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
         memberStockRepository.save(memberStock);
-
-        BigDecimal purchasePrice = new BigDecimal(30000);
-        BigDecimal quantity = new BigDecimal(999999);
 
         UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, null);
 
@@ -125,11 +124,7 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 다른_사람이_소유한_주식에_대해서_수정할_수_없다() {
         // given
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
         memberStockRepository.save(memberStock);
-
-        BigDecimal purchasePrice = new BigDecimal(300000);
-        BigDecimal quantity = new BigDecimal(10);
 
         UpdateMemberStockRequest request = UpdateMemberStockRequest.testInstance(memberStock.getId(), purchasePrice, quantity, null);
 
@@ -149,7 +144,6 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 내가_등록한_보유_주식을_등록_해제하면_기존의_DB_테이블에서_삭제된다() {
         // given
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
         memberStockRepository.save(memberStock);
 
         DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(memberStock.getId());
@@ -165,9 +159,6 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 내가_등록한_보유_주식을_삭제하면_기존의_id와_해당_정보들이_백업_테이블로_자동으로_백업된다() {
         // given
-        BigDecimal purchasePrice = new BigDecimal(33333);
-        BigDecimal quantity = new BigDecimal(55);
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, purchasePrice, quantity);
         memberStockRepository.save(memberStock);
 
         DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(memberStock.getId());
@@ -184,7 +175,6 @@ class MemberStockServiceTest extends MemberSetupTest {
     @Test
     void 다른사람이_소유한_보유_주식을_삭제할수없다() {
         // given
-        MemberStock memberStock = MemberStockCreator.create(memberId, stock, new BigDecimal(10000), new BigDecimal(10));
         memberStockRepository.save(memberStock);
 
         DeleteMemberStockRequest request = DeleteMemberStockRequest.testInstance(memberStock.getId());

@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class StockRenewServiceTest {
+class StockRenewServiceTest {
 
     @Autowired
     private StockRenewService stockService;

@@ -8,6 +8,7 @@ import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.domain.stock.StockRepository;
 import com.depromeet.muyaho.domain.service.MemberSetupTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +30,14 @@ class MemberStockRetrieveServiceTest extends MemberSetupTest {
     @Autowired
     private StockRepository stockRepository;
 
+    private Stock stock;
+
+    @BeforeEach
+    void setUp() {
+        stock = StockCreator.createActive("code", "name", StockMarketType.DOMESTIC_STOCK);
+        stockRepository.save(stock);
+    }
+
     @AfterEach
     void cleanUp() {
         super.cleanup();
@@ -39,8 +48,6 @@ class MemberStockRetrieveServiceTest extends MemberSetupTest {
     @Test
     void 다른_사람이_소유한_주식에_접근할_수없다() {
         // given
-        Stock stock = StockCreator.createActive("code", "name", StockMarketType.DOMESTIC_STOCK);
-        stockRepository.save(stock);
         memberStockRepository.save(MemberStockCreator.create(999L, stock, new BigDecimal(1000), new BigDecimal(10)));
 
         // when
