@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginRequest {
 
-    @NotBlank
+    @NotBlank(message = "{auth.token.notBlank}")
     private String token;
 
     public static LoginRequest testInstance(String token) {

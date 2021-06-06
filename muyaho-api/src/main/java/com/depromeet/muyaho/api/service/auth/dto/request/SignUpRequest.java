@@ -11,10 +11,10 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignUpRequest {
 
-    @NotBlank
+    @NotBlank(message = "{auth.token.notBlank}")
     private String token;
 
-    @NotBlank
+    @NotBlank(message = "{member.name.notBlank}")
     private String name;
 
     private String profileUrl;

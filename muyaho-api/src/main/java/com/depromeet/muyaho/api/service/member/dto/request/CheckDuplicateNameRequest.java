@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CheckDuplicateNameRequest {
 
-    @NotBlank
+    @NotBlank(message = "{member.name.notBlank}")
     private String name;
 
     public static CheckDuplicateNameRequest testInstance(String name) {

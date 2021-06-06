@@ -30,6 +30,6 @@ GET {{api}}/api/v1/check/name?name=테스트 계정
 
 
 
-### 회원탈퇴를 요청하는 API (로컬 및 개발 서버만 가능)
+### 회원탈퇴를 요청하는 API
 DELETE {{api}}/api/v1/member
 Authorization: Bearer {{AUTHORIZATION}}

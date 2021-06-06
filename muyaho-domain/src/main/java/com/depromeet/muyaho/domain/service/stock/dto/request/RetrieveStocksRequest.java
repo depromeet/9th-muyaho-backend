@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RetrieveStocksRequest {
 
-    @NotNull
+    @NotNull(message = "{stock.marketType.notnull}")
     private StockMarketType type;
 
     public static RetrieveStocksRequest testInstance(StockMarketType type) {

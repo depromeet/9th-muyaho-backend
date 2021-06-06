@@ -11,13 +11,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateMemberStockRequest {
 
-    @NotNull
+    @NotNull(message = "{memberStock.id.notnull}")
     private Long memberStockId;
 
-    @NotNull
+    @NotNull(message = "{stock.purchasePrice.notnull}")
     private BigDecimal purchasePrice;
 
-    @NotNull
+    @NotNull(message = "{stock.quantity.notnull}")
     private BigDecimal quantity;
 
     private BigDecimal purchaseTotalPrice;

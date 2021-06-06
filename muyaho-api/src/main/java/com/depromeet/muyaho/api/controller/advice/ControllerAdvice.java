@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Objects;
+
 @Slf4j
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -24,14 +26,15 @@ public class ControllerAdvice {
     protected ApiResponse<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
         String field = e.getBindingResult().getFieldError() == null ? "" : e.getBindingResult().getFieldError().getField();
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, String.format("%s - %s", field, e.getBindingResult().getFieldError().getDefaultMessage()));
+        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, String.format("%s (%s)", e.getBindingResult().getFieldError().getDefaultMessage(), field));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     protected ApiResponse<Object> handleBadRequest(BindException e) {
         log.error(e.getMessage(), e);
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION);
+        String field = e.getBindingResult().getFieldError() == null ? "" : e.getBindingResult().getFieldError().getField();
+        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, String.format("%s (%s)", Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage(), field));
     }
 
     /**

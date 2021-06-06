@@ -14,16 +14,16 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AddMemberStockRequest {
 
-    @NotNull
+    @NotNull(message = "{stock.id.notnull}")
     private Long stockId;
 
-    @NotNull
+    @NotNull(message = "{stock.purchasePrice.notnull}")
     private BigDecimal purchasePrice;
 
-    @NotNull
+    @NotNull(message = "{stock.quantity.notnull}")
     private BigDecimal quantity;
 
-    @NotNull
+    @NotNull(message = "{stock.currencyType.notnull}")
     private CurrencyType currencyType;
 
     private BigDecimal purchaseTotalPrice;

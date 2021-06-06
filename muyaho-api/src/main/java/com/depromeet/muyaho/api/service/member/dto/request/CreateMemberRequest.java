@@ -12,12 +12,12 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateMemberRequest {
 
-    @NotBlank
+    @NotBlank(message = "{member.uid.notBlank}")
     private String uid;
 
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "{member.name.notBlank}")
     private String name;
 
     private String profileUrl;

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeleteMemberStockRequest {
 
-    @NotNull
+    @NotNull(message = "{memberStock.id.notnull}")
     private Long memberStockId;
 
     public static DeleteMemberStockRequest testInstance(Long memberStockId) {

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateMemberRequest {
 
-    @NotBlank
+    @NotBlank(message = "{member.name.notBlank}")
     private String name;
 
     private String profileUrl;
