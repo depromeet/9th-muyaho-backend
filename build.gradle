@@ -19,7 +19,6 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'jacoco'
 
     sourceCompatibility = '11'
 
@@ -47,24 +46,37 @@ subprojects {
         implementation group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.3'
     }
 
+    test {
+        useJUnitPlatform()
+    }
+}
+
+
+def testProjects = [
+    project(':muyaho-api'),
+    project(':muyaho-domain'),
+    project(':muyaho-common')
+]
+
+configure(testProjects) {
+    apply plugin: 'jacoco'
+
     jacoco {
         toolVersion = '0.8.5'
-        reportsDir = file("$buildDir/jacoco-report")
     }
 
     jacocoTestReport {
+        executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+
         reports {
             html.enabled true
             xml.enabled true
             csv.enabled false
         }
+
+        for (testProject in testProjects) {
+            sourceSets(testProject.sourceSets["main"] as SourceSet)
+        }
     }
 
-    test {
-        jacoco {
-            destinationFile = file("$buildDir/jacoco/jacoco.exec")
-        }
-        useJUnitPlatform()
-        finalizedBy 'jacocoTestReport'
-    }
 }
