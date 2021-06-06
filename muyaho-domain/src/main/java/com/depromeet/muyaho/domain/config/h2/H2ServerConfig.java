@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.domain.config;
+package com.depromeet.muyaho.domain.config.h2;
 
 import org.h2.tools.Server;
 import org.springframework.context.annotation.Bean;

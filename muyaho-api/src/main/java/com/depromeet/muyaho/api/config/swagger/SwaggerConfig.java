@@ -19,7 +19,6 @@ public class SwaggerConfig {
             .in(SecurityScheme.In.HEADER).name("Authorization")))
             .info(new Info()
                 .title("Muyaho API Server")
-                .version("v0.0.1")
                 .description("Muyaho API Docs"));
     }
 

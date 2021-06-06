@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.domain.config;
+package com.depromeet.muyaho.domain.config.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;

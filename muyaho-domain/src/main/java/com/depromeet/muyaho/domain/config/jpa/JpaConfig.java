@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.domain.config;
+package com.depromeet.muyaho.domain.config.jpa;
 
 import com.depromeet.muyaho.domain.MuyahoDomainRoot;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
