@@ -26,8 +26,8 @@ public class Quantity {
     }
 
     private void validateValidQuantity(BigDecimal quantity) {
-        if (quantity.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ValidationException(String.format("주식을 0개 이하 (%s) 로 가질 수 없습니다", quantity), ErrorCode.VALIDATION_INVALID_QUANTITY_EXCEPTION);
+        if (quantity.compareTo(BigDecimal.ZERO) < 0) {
+            throw new ValidationException(String.format("주식을 0개 미만 (%s) 로 가질 수 없습니다", quantity), ErrorCode.VALIDATION_INVALID_QUANTITY_EXCEPTION);
         }
     }
 
