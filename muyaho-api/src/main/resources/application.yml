@@ -14,7 +14,7 @@ spring:
       - oauth
   session:
     store-type: jdbc
-  codec:
+  mvc:
     log-request-details: true
 logging:
   file:
