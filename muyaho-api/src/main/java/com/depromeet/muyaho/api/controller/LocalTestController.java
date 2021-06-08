@@ -41,7 +41,8 @@ public class LocalTestController {
     public String renewDomesticStocks() {
         renewStockService.renewDomesticStocksCode();
         renewStockService.renewBitCoinStocksCode();
-        renewStockService.renewOverseasStocksCode();
+        renewStockService.renewNasdaqStocksCode();
+        renewStockService.renewNyseStocksCode();
         return "OK";
     }
 

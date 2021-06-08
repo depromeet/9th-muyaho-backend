@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum StockType {
 
     DOMESTIC_STOCK("KRX"),
-    OVERSEAS_STOCK("NASDAQ");
+    NASDAQ("NASDAQ"),
+    NYSE("NYSE");
 
     private final String type;
 

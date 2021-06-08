@@ -38,7 +38,8 @@ public class StockRenewJobConfiguration {
             .incrementer(new UniqueRunIdIncrementer())
             .start(renewBitCoinStep())
             .next(renewDomesticStockStep())
-            .next(renewOverSeaStockStep())
+            .next(renewNasdaqStockStep())
+            .next(renewNyseStockStep())
             .build();
     }
 
@@ -73,12 +74,27 @@ public class StockRenewJobConfiguration {
     }
 
     @Bean
-    public Step renewOverSeaStockStep() {
+    public Step renewNasdaqStockStep() {
         return stepBuilderFactory.get("renewOverSeaStockStep")
             .tasklet((contribution, chunkContext) -> {
                 log.info("상장된 해외주식 종목 현황을 갱신합니다");
 
-                List<StockInfoRequest> overSeasStocks = stockApiCaller.fetchListedStocksCodes(StockType.OVERSEAS_STOCK).stream()
+                List<StockInfoRequest> overSeasStocks = stockApiCaller.fetchListedStocksCodes(StockType.NASDAQ).stream()
+                    .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
+                    .collect(Collectors.toList());
+                stockRenewService.renewStock(StockMarketType.OVERSEAS_STOCK, overSeasStocks);
+                return RepeatStatus.FINISHED;
+            })
+            .build();
+    }
+
+    @Bean
+    public Step renewNyseStockStep() {
+        return stepBuilderFactory.get("renewOverSeaStockStep")
+            .tasklet((contribution, chunkContext) -> {
+                log.info("상장된 해외주식 종목 현황을 갱신합니다");
+
+                List<StockInfoRequest> overSeasStocks = stockApiCaller.fetchListedStocksCodes(StockType.NYSE).stream()
                     .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
                     .collect(Collectors.toList());
                 stockRenewService.renewStock(StockMarketType.OVERSEAS_STOCK, overSeasStocks);
