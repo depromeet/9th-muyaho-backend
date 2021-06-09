@@ -4,12 +4,25 @@ on:
   push:
     branches:
       - main
+      - feature/48
 jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout@v2
         uses: actions/checkout@v2
+
+      - name: Create rds secret properties
+        env:
+          PROFILES: prod
+          DB_URI: ${{secrets.JDBC_URI_PROD}}
+          DB_USERNAME: ${{secrets.DB_USERNAME}}
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          DB_DRIVER: ${{secrets.DB_DRIVER}}
+
+          RESOURCE_PWD: muyaho-domain/src/main/resources
+        run: |
+          echo -e "spring.profiles=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
 
       - name: Get Semantic Versioning
         id: docker-image-version
@@ -42,6 +55,22 @@ jobs:
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
           echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
+
+      - name: Render Amazon ECS task definition
+        id: render-web-container
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: muyaho-api
+          image: ${{ steps.build.outputs.image }}
+
+      - name: Deploy to Amazon ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render-web-container.outputs.task-definition }}
+          cluster: muyaho-api
+          service: muyaho-api-prod
+          wait-for-service-stability: true
 
       - name: Create Release
         id: create-release
