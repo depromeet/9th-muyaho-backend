@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.common.utils;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -40,30 +41,32 @@ public class BigDecimalUtilsTest {
         assertThat(result).isEqualTo("10");
     }
 
+    @DisplayName("시드가 100원인데, 110원이 되면, 수익률이 +10%가 되어야한다.")
     @Test
-    void 두_값을_비교해서_차이률을_계산한다_타겟보다_더_직아진경우_음수로_계산된다() {
+    void 수익률_계산로직_테스트() {
         // given
-        BigDecimal one = new BigDecimal(100);
-        BigDecimal target = new BigDecimal(110);
+        BigDecimal finalAsset = new BigDecimal(110);
+        BigDecimal seed = new BigDecimal(100);
 
         // when
-        BigDecimal result = BigDecimalUtils.calculateDifferencePercent(one, target);
-
-        // then
-        assertThat(result).isEqualByComparingTo(new BigDecimal(-10));
-    }
-
-    @Test
-    void 두_값을_비교해서_차이률을_계산한다_타겟보다_더_큰경우_양수로_계산된다() {
-        // given
-        BigDecimal one = new BigDecimal(110);
-        BigDecimal target = new BigDecimal(100);
-
-        // when
-        BigDecimal result = BigDecimalUtils.calculateDifferencePercent(one, target);
+        BigDecimal result = BigDecimalUtils.calculateDifferencePercent(finalAsset, seed);
 
         // then
         assertThat(result).isEqualByComparingTo(new BigDecimal(10));
+    }
+
+    @DisplayName("시드가 100원인데, 90원이 되면, 수익률이 -10%가 되어야한다 ")
+    @Test
+    void 손실률_계산로직_테스트() {
+        // given
+        BigDecimal finalAsset = new BigDecimal(90);
+        BigDecimal seed = new BigDecimal(100);
+
+        // when
+        BigDecimal result = BigDecimalUtils.calculateDifferencePercent(finalAsset, seed);
+
+        // then
+        assertThat(result).isEqualByComparingTo(new BigDecimal(-10));
     }
 
 }
