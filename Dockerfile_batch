@@ -2,7 +2,7 @@ FROM adoptopenjdk/openjdk11:alpine-slim AS BUILD
 ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
 COPY . $APP_HOME
-RUN ./gradlew clean bootJar
+RUN ./gradlew clean :muyaho-batch:bootJar
 
 FROM adoptopenjdk/openjdk11:alpine-jre
 ENV APP_HOME=/usr/app
