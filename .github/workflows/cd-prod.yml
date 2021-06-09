@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/48
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -51,9 +50,8 @@ jobs:
           IMAGE_TAG: ${{ steps.docker-image-version.outputs.version }}
         run: |
           docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG .
-          docker tag $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
+          docker tag $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
-          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
           echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
 
       - name: Render Amazon ECS task definition
