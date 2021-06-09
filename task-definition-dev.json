@@ -14,7 +14,10 @@
                     "awslogs-stream-prefix": "ecs"
                 }
             },
-            "entryPoint": ["/bin/sh", "-c"],
+            "entryPoint": [
+                "/bin/sh",
+                "-c"
+            ],
             "portMappings": [
                 {
                     "hostPort": 9090,
