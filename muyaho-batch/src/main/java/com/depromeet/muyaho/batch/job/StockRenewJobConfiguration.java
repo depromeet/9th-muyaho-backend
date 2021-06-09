@@ -38,8 +38,7 @@ public class StockRenewJobConfiguration {
             .incrementer(new UniqueRunIdIncrementer())
             .start(renewBitCoinStep())
             .next(renewDomesticStockStep())
-            .next(renewNasdaqStockStep())
-            .next(renewNyseStockStep())
+            .next(renewOverseasStockStep())
             .build();
     }
 
@@ -74,33 +73,27 @@ public class StockRenewJobConfiguration {
     }
 
     @Bean
-    public Step renewNasdaqStockStep() {
+    public Step renewOverseasStockStep() {
         return stepBuilderFactory.get("renewOverSeaStockStep")
             .tasklet((contribution, chunkContext) -> {
                 log.info("상장된 해외주식 종목 현황을 갱신합니다");
-
-                List<StockInfoRequest> overSeasStocks = stockApiCaller.fetchListedStocksCodes(StockType.NASDAQ).stream()
-                    .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
-                    .collect(Collectors.toList());
-                stockRenewService.renewStock(StockMarketType.OVERSEAS_STOCK, overSeasStocks);
+                stockRenewService.renewStock(StockMarketType.OVERSEAS_STOCK, fetchListedOverseasStock());
                 return RepeatStatus.FINISHED;
             })
             .build();
     }
 
-    @Bean
-    public Step renewNyseStockStep() {
-        return stepBuilderFactory.get("renewOverSeaStockStep")
-            .tasklet((contribution, chunkContext) -> {
-                log.info("상장된 해외주식 종목 현황을 갱신합니다");
+    private List<StockInfoRequest> fetchListedOverseasStock() {
+        // NASDAQ 증시
+        List<StockInfoRequest> overSeasStocks = stockApiCaller.fetchListedStocksCodes(StockType.NASDAQ).stream()
+            .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
+            .collect(Collectors.toList());
 
-                List<StockInfoRequest> overSeasStocks = stockApiCaller.fetchListedStocksCodes(StockType.NYSE).stream()
-                    .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
-                    .collect(Collectors.toList());
-                stockRenewService.renewStock(StockMarketType.OVERSEAS_STOCK, overSeasStocks);
-                return RepeatStatus.FINISHED;
-            })
-            .build();
+        // NYSE 증시
+        overSeasStocks.addAll(stockApiCaller.fetchListedStocksCodes(StockType.NYSE).stream()
+            .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
+            .collect(Collectors.toList()));
+        return overSeasStocks;
     }
 
 }

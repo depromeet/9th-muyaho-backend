@@ -39,20 +39,15 @@ public class RenewStockService {
         log.info("{}개의 국내 주식 실시간 종목 코드 및 종목명을 갱신하였습니다.", domesticStocks.size());
     }
 
-    public void renewNasdaqStocksCode() {
+    public void renewOverseasStock() {
         List<StockInfoRequest> overSeasStocks = stockApiCaller.fetchListedStocksCodes(StockType.NASDAQ).stream()
             .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
             .collect(Collectors.toList());
-        eventPublisher.publishEvent(RequestedRenewEvent.of(StockMarketType.OVERSEAS_STOCK, overSeasStocks));
-        log.info("{}개의 NASDAQ 실시간 종목 코드 및 종목명을 갱신하였습니다.", overSeasStocks.size());
-    }
-
-    public void renewNyseStocksCode() {
-        List<StockInfoRequest> overSeasStocks = stockApiCaller.fetchListedStocksCodes(StockType.NYSE).stream()
+        overSeasStocks.addAll(stockApiCaller.fetchListedStocksCodes(StockType.NYSE).stream()
             .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
         eventPublisher.publishEvent(RequestedRenewEvent.of(StockMarketType.OVERSEAS_STOCK, overSeasStocks));
-        log.info("{}개의 NYSE 실시간 종목 코드 및 종목명을 갱신하였습니다.", overSeasStocks.size());
+        log.info("{}개의 해외주식 실시간 종목 코드 및 종목명을 갱신하였습니다.", overSeasStocks.size());
     }
 
 }
