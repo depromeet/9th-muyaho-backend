@@ -60,7 +60,7 @@ jobs:
         id: render-web-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition.json
+          task-definition: task-definition-prod.json
           container-name: muyaho-api
           image: ${{ steps.build.outputs.image }}
 
