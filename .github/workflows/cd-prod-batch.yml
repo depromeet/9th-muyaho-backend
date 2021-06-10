@@ -1,4 +1,4 @@
-name: [ PROD ] 배치 Task 구성
+name: 운영환경 배치 Task 구성
 
 on:
   push:
