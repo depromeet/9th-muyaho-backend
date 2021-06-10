@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - feature/55
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -41,7 +42,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build and push muyaho-api
-        id: build
+        id: build-api
         env:
           DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           DOCKER_REPOSITORY: muyaho-api
@@ -53,13 +54,42 @@ jobs:
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
           echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
 
-      - name: Render Amazon ECS task definition
+      - name: Build and push muyaho-batch
+        id: build-batch
+        env:
+          DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          DOCKER_REPOSITORY: muyaho-batch
+          IMAGE_TAG: ${{ steps.docker-image-version.outputs.version }}
+        run: |
+          docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG -f Dockerfile_batch .
+          docker tag $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
+          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
+          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
+          echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
+
+      - name: Render Amazon ECS task definition (API)
         id: render-web-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition-dev.json
+          task-definition: ecs-tasks/task-definition-dev.json
           container-name: muyaho-api
-          image: ${{ steps.build.outputs.image }}
+          image: ${{ steps.build-api.outputs.image }}
+
+      - name: Render Amazon ECS task definition (Calculate daily member amount batch job)
+        id: render-calc-job-container
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ecs-tasks/task-definition-dev-daily-calculate-job.json
+          container-name: muyaho-dev-calculate-daily-member-stock-amount-job
+          image: ${{ steps.build-batch.outputs.image }}
+
+      - name: Render Amazon ECS task definition (Renew stock batch job)
+        id: render-renew-stock-job-container
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ecs-tasks/task-definition-dev-renew-stock.json
+          container-name: muyaho-dev-renew-stock-job
+          image: ${{ steps.build-batch.outputs.image }}
 
       - name: Deploy to Amazon ECS service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
