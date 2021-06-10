@@ -1,9 +1,9 @@
-name: 개발환경 배치 이미지 푸쉬
+name: 운영환경 배치 이미지 푸쉬
 
 on:
   push:
     branches:
-      - develop
+      - main
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -13,8 +13,8 @@ jobs:
 
       - name: Setup Secret Properties
         env:
-          PROFILES: dev
-          DB_URI: ${{secrets.JDBC_URI}}
+          PROFILES: prod
+          DB_URI: ${{secrets.JDBC_URI_PROD}}
           DB_USERNAME: ${{secrets.DB_USERNAME}}
           DB_PASSWORD: ${{secrets.DB_PASSWORD}}
           DB_DRIVER: ${{secrets.DB_DRIVER}}
@@ -24,10 +24,12 @@ jobs:
           echo -e "spring.profiles=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
 
       - name: Get dev version
-        id: dev-version
+        id: prod-version
         run: |
-          VERSION=`cat ./version.txt`-${{ github.run_id }}
+          VERSION=`cat ./version.txt`
+          GIT_COMMIT_MSG=`git show -s`
           echo "::set-output name=version::$VERSION"
+          echo "::set-output name=git-commit-msg::$GIT_COMMIT_MSG"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
