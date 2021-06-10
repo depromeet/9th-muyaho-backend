@@ -1,4 +1,4 @@
-name: CD Development Server
+name: [ DEV ] 배치 Task 구성
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout@v2
         uses: actions/checkout@v2
 
-      - name: Create rds secret properties
+      - name: Setup Secret Properties
         env:
           PROFILES: dev
           DB_URI: ${{secrets.JDBC_URI}}
@@ -24,8 +24,8 @@ jobs:
         run: |
           echo -e "spring.profiles=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
 
-      - name: Versioning
-        id: docker-image-version
+      - name: Get dev version
+        id: dev-version
         run: |
           VERSION=`cat ./version.txt`-${{ github.run_id }}
           echo "::set-output name=version::$VERSION"
@@ -41,19 +41,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build and push muyaho-api
-        id: build-api
-        env:
-          DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          DOCKER_REPOSITORY: muyaho-api
-          IMAGE_TAG: ${{ steps.docker-image-version.outputs.version }}
-        run: |
-          docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG .
-          docker tag $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
-          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
-          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
-          echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
-
       - name: Build and push muyaho-batch
         id: build-batch
         env:
@@ -66,14 +53,6 @@ jobs:
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
           echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
-
-      - name: Render Amazon ECS task definition (API)
-        id: render-web-container
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ecs-tasks/dev/task-definition-dev.json
-          container-name: muyaho-api
-          image: ${{ steps.build-api.outputs.image }}
 
       - name: Render Amazon ECS task definition (Calculate daily member amount batch job)
         id: render-calc-job-container
@@ -90,11 +69,3 @@ jobs:
           task-definition: ecs-tasks/dev/task-definition-dev-renewstock-job.json
           container-name: muyaho-dev-renew-stock-job
           image: ${{ steps.build-batch.outputs.image }}
-
-      - name: Deploy to Amazon ECS service
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.render-web-container.outputs.task-definition }}
-          cluster: muyaho-api
-          service: muyaho-api-dev
-          wait-for-service-stability: true

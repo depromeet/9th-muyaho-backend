@@ -1,4 +1,4 @@
-name: [ PROD ] API 서버 배포
+name: [ PROD ] 배치 Task 구성
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
           echo -e "spring.profiles=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
 
       - name: Get dev version
-        id: prod-version
+        id: docker-image-version
         run: |
           VERSION=`cat ./version.txt`
           GIT_COMMIT_MSG=`git show -s`
@@ -42,43 +42,31 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build and push muyaho-api
-        id: build
+      - name: Build and push muyaho-batch
+        id: build-batch
         env:
           DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          DOCKER_REPOSITORY: muyaho-api
-          IMAGE_TAG: ${{ steps.prod-version.outputs.version }}
+          DOCKER_REPOSITORY: muyaho-batch
+          IMAGE_TAG: ${{ steps.docker-image-version.outputs.version }}
         run: |
-          docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG .
+          docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG -f Dockerfile_batch .
           docker tag $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
           echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
 
-      - name: Render Amazon ECS task definition (API)
-        id: render-web-container
+      - name: Render Amazon ECS task definition (Calculate daily member amount batch job)
+        id: render-calc-job-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ecs-tasks/prod/task-definition-prod.json
-          container-name: muyaho-api
-          image: ${{ steps.build.outputs.image }}
+          task-definition: ecs-tasks/prod/task-definition-prod-dailycalculateamount-job.json
+          container-name: muyaho-prod-calculate-daily-member-stock-amount-job
+          image: ${{ steps.build-batch.outputs.image }}
 
-      - name: Deploy to Amazon ECS service
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      - name: Render Amazon ECS task definition (Renew stock batch job)
+        id: render-renew-stock-job-container
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ steps.render-web-container.outputs.task-definition }}
-          cluster: muyaho-api
-          service: muyaho-api-prod
-          wait-for-service-stability: true
-
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-        with:
-          tag_name: ${{ steps.docker-image-version.outputs.version }}
-          release_name: Release ${{ steps.docker-image-version.outputs.version }}
-          body: ${{ steps.docker-image-version.outputs.git-commit-msg }}
-          draft: false
-          prerelease: false
+          task-definition: ecs-tasks/prod/task-definition-prod-renewstock-job.json
+          container-name: muyaho-prod-renew-stock-job
+          image: ${{ steps.build-batch.outputs.image }}
