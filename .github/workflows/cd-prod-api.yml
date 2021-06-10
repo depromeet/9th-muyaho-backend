@@ -58,14 +58,14 @@ jobs:
       - name: Download muyaho-api task definition
         id: download-task-definition
         run: |
-          aws ecs describe-task-definition --task-definition muyaho-api-prod-task --query taskDefinition > task-definition.json
-          echo "::set-output name=task-definition::$GITHUB_WORKSPACE/task-definition-dev.json"
+          aws ecs describe-task-definition --task-definition muyaho-api-prod-task --query taskDefinition > task-definition-prod.json
+          echo "::set-output name=task-definition::$GITHUB_WORKSPACE/task-definition-prod.json"
 
       - name: Render Amazon ECS task definition (API)
         id: render-web-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ecs-tasks/prod/task-definition-prod.json
+          task-definition: ${{ steps.download-task-definition.outputs.task-definition }}
           container-name: muyaho-api
           image: ${{ steps.build.outputs.image }}
 
@@ -84,7 +84,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
         with:
           tag_name: ${{ steps.docker-image-version.outputs.version }}
-          release_name: Release ${{ steps.docker-image-version.outputs.version }}
+          release_name: ${{ steps.docker-image-version.outputs.version }}
           body: ${{ steps.docker-image-version.outputs.git-commit-msg }}
           draft: false
           prerelease: false
