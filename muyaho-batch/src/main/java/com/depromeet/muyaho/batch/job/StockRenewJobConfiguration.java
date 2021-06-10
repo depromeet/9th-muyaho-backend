@@ -93,7 +93,10 @@ public class StockRenewJobConfiguration {
         overSeasStocks.addAll(stockApiCaller.fetchListedStocksCodes(StockType.NYSE).stream()
             .map(market -> StockInfoRequest.of(market.getCode(), market.getName()))
             .collect(Collectors.toList()));
-        return overSeasStocks;
+
+        return overSeasStocks.stream()
+            .distinct()
+            .collect(Collectors.toList());
     }
 
 }
