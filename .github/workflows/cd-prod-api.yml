@@ -61,7 +61,7 @@ jobs:
           aws ecs describe-task-definition --task-definition muyaho-api-prod-task --query taskDefinition > task-definition-prod.json
           echo "::set-output name=task-definition::$GITHUB_WORKSPACE/task-definition-prod.json"
 
-      - name: Render Amazon ECS task definition (API)
+      - name: Update Amazon ECS task definition (API)
         id: render-web-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
