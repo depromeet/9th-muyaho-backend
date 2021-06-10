@@ -71,8 +71,8 @@ jobs:
       - name: Download muyaho-batch task definition (daily renew stock job)
         id: download-renew-task-definition
         run: |
-          aws ecs describe-task-definition --task-definition muyaho-dev-calculate-daily-member-stock-amount-job --query taskDefinition > task-definition-calculate-amount.json
-          echo "::set-output name=task-definition::$GITHUB_WORKSPACE/task-definition-calculate-amount.json"
+          aws ecs describe-task-definition --task-definition muyaho-dev-calculate-daily-member-stock-amount-job --query taskDefinition > task-definition-renew-stock.json
+          echo "::set-output name=task-definition::$GITHUB_WORKSPACE/task-definition-renew-stock.json"
 
       - name: Update Amazon ECS muyaho-batch task definition (daily renew stock job)
         id: render-batch-renew-container
