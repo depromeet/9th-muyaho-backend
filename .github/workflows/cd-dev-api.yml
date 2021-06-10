@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - feature/55
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -53,15 +54,21 @@ jobs:
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
           echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
 
-      - name: Render Amazon ECS task definition
+      - name: Download muyaho-api task definition
+        id: download-task-definition
+        run: |
+          aws ecs describe-task-definition --task-definition muyaho-api --query taskDefinition > task-definition.json
+          echo "::set-output name=task-definition::$GITHUB_WORKSPACE/task-definition-dev.json"
+
+      - name: Render Amazon ECS muyaho-api task definition
         id: render-api-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ecs-tasks/dev/task-definition-dev.json
+          task-definition: ${{ steps.download-task-definition.outputs.task-definition }}
           container-name: muyaho-api
           image: ${{ steps.build-api.outputs.image }}
 
-      - name: Deploy to Amazon ECS service
+      - name: Deploy muyaho-api to Amazon ECS service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.render-api-container.outputs.task-definition }}
