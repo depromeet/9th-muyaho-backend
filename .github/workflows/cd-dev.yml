@@ -71,7 +71,7 @@ jobs:
         id: render-web-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ecs-tasks/task-definition-dev.json
+          task-definition: ecs-tasks/dev/task-definition-dev.json
           container-name: muyaho-api
           image: ${{ steps.build-api.outputs.image }}
 
@@ -79,7 +79,7 @@ jobs:
         id: render-calc-job-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ecs-tasks/task-definition-dev-daily-calculate-job.json
+          task-definition: ecs-tasks/dev/task-definition-dev-dailycalculateamount-job.json
           container-name: muyaho-dev-calculate-daily-member-stock-amount-job
           image: ${{ steps.build-batch.outputs.image }}
 
@@ -87,7 +87,7 @@ jobs:
         id: render-renew-stock-job-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ecs-tasks/task-definition-dev-renew-stock.json
+          task-definition: ecs-tasks/dev/task-definition-dev-renewstock-job.json
           container-name: muyaho-dev-renew-stock-job
           image: ${{ steps.build-batch.outputs.image }}
 

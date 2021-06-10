@@ -36,7 +36,7 @@
             "memoryReservation": null,
             "volumesFrom": [],
             "stopTimeout": null,
-            "image": "815637561247.dkr.ecr.ap-northeast-2.amazonaws.com/muyaho-batch:v0.0.8",
+            "image": "",
             "startTimeout": null,
             "firelensConfiguration": null,
             "dependsOn": null,

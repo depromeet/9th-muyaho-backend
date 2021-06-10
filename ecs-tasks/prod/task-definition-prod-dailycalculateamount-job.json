@@ -9,7 +9,7 @@
                 "logDriver": "awslogs",
                 "secretOptions": null,
                 "options": {
-                    "awslogs-group": "/ecs/muyaho-dev-calculate-daily-member-stock-amount-job",
+                    "awslogs-group": "/ecs/muyaho-prod-calculate-daily-member-stock-amount-job",
                     "awslogs-region": "ap-northeast-2",
                     "awslogs-stream-prefix": "ecs"
                 }
@@ -20,7 +20,7 @@
             ],
             "portMappings": [],
             "command": [
-                "java -jar muyaho-batch.jar --job.name=calculateDailyStockAmountJob --spring.profiles.active=dev"
+                "java -jar muyaho-batch.jar --job.name=calculateDailyStockAmountJob --spring.profiles.active=prod"
             ],
             "linuxParameters": null,
             "cpu": 0,
@@ -29,14 +29,14 @@
             "ulimits": null,
             "dnsServers": null,
             "mountPoints": [],
-            "workingDirectory": null,
+            "workingDirectory": "/",
             "secrets": null,
             "dockerSecurityOptions": null,
             "memory": null,
             "memoryReservation": null,
             "volumesFrom": [],
             "stopTimeout": null,
-            "image": "815637561247.dkr.ecr.ap-northeast-2.amazonaws.com/muyaho-batch:v0.0.8",
+            "image": "",
             "startTimeout": null,
             "firelensConfiguration": null,
             "dependsOn": null,
@@ -53,7 +53,7 @@
             "dockerLabels": null,
             "systemControls": null,
             "privileged": null,
-            "name": "muyaho-dev-calculate-daily-member-stock-amount-job"
+            "name": "muyaho-prod-calculate-daily-member-stock-amount-job"
         }
     ],
     "placementConstraints": [],
@@ -63,8 +63,8 @@
         "EC2",
         "FARGATE"
     ],
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:815637561247:task-definition/muyaho-dev-calculate-daily-member-stock-amount-job:7",
-    "family": "muyaho-dev-calculate-daily-member-stock-amount-job",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:815637561247:task-definition/muyaho-prod-calculate-daily-member-stock-amount-job:5",
+    "family": "muyaho-prod-calculate-daily-member-stock-amount-job",
     "requiresAttributes": [
         {
             "targetId": null,
@@ -89,6 +89,12 @@
             "targetType": null,
             "value": null,
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "targetId": null,
+            "targetType": null,
+            "value": null,
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
         },
         {
             "targetId": null,
@@ -121,7 +127,7 @@
     ],
     "networkMode": "awsvpc",
     "cpu": "256",
-    "revision": 7,
+    "revision": 5,
     "status": "ACTIVE",
     "inferenceAccelerators": null,
     "proxyConfiguration": null,
