@@ -85,6 +85,6 @@ jobs:
         with:
           tag_name: ${{ steps.prod-version.outputs.version }}
           release_name: Release ${{ steps.docker-image-version.outputs.version }}
-          body: ${{ steps.docker-image-version.outputs.git-commit-msg }}
+          body: ${{ steps.prod-version.outputs.git-commit-msg }}
           draft: false
           prerelease: false
