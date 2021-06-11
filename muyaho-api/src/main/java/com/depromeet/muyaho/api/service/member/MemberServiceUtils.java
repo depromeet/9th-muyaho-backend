@@ -31,14 +31,14 @@ public class MemberServiceUtils {
     public static void validateNotExistName(MemberRepository memberRepository, String name) {
         Member findMember = memberRepository.findMemberByName(name);
         if (findMember != null) {
-            throw new ConflictException(String.format("이미 존재하는 닉네임 (%s) 입니다", name), ErrorCode.CONFLICT_NICKNAME_EXCEPTION);
+            throw new ConflictException(String.format("중복되는 닉네임 (%s) 입니다", name), ErrorCode.CONFLICT_NICKNAME_EXCEPTION);
         }
     }
 
     public static void validateNotExistMember(MemberRepository memberRepository, String uid, MemberProvider provider) {
         Member member = memberRepository.findMemberByUidAndProvider(uid, provider);
         if (member != null) {
-            throw new ConflictException(String.format("이미 존재하는 멤버 (%s - %s) 입니다", uid, provider), ErrorCode.CONFLICT_MEMBER_EXCEPTION);
+            throw new ConflictException(String.format("중복되는 멤버 (%s - %s) 입니다", uid, provider), ErrorCode.CONFLICT_MEMBER_EXCEPTION);
         }
     }
 

@@ -23,7 +23,7 @@ public class ExchangeRateResponse {
 
     public BigDecimal getUSDToKRWExchangeRate() {
         if (usdKrwRate.size() <= 0) {
-            throw new BadGatewayException("환율을 불러오는 도중 에러가 발생하였습니다.");
+            throw new BadGatewayException("외부로부터 환율을 불러오는 도중 에러가 발생하였습니다.");
         }
         return usdKrwRate.get(0);
     }
