@@ -25,16 +25,14 @@ public class ControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ApiResponse<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
-        String field = e.getBindingResult().getFieldError() == null ? "" : e.getBindingResult().getFieldError().getField();
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, String.format("%s (%s)", e.getBindingResult().getFieldError().getDefaultMessage(), field));
+        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     protected ApiResponse<Object> handleBadRequest(BindException e) {
         log.error(e.getMessage(), e);
-        String field = e.getBindingResult().getFieldError() == null ? "" : e.getBindingResult().getFieldError().getField();
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, String.format("%s (%s)", Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage(), field));
+        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
     }
 
     /**
