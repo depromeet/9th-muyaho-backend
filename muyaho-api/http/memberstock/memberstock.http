@@ -1,0 +1,63 @@
+# 보유 주식을 등록하는 API
+POST {{api}}/api/v1/member/stock
+Content-Type: application/json
+Authorization: Bearer {{AUTHORIZATION}}
+
+{
+    "stockId": 1,
+    "purchasePrice": 10000000,
+    "quantity": 3,
+    "currencyType": "WON",
+    "purchaseTotalPrice": 1000
+}
+
+
+
+### 내가 보유한 주식 정보를 실시간으로 가져오는 API
+GET {{api}}/api/v1/member/stock/status
+Authorization: Bearer {{AUTHORIZATION}}
+
+
+
+### 내가 보유한 주식 정보를 마지막 기록을 통해 가져오는 API
+GET {{api}}/api/v1/member/stock/status/history
+Authorization: Bearer {{AUTHORIZATION}}
+
+
+
+### 내가 보유한 특정 종류의 주식 정보를 실시간으로 가져오는 API (비트코인)
+GET {{api}}/api/v1/member/stock?type=BITCOIN
+Authorization: Bearer {{AUTHORIZATION}}
+
+
+
+### 내가 보유한 특정 종류의 주식 정보를 실시간으로 가져오는 API (국내주식)
+GET {{api}}/api/v1/member/stock?type=DOMESTIC_STOCK
+Authorization: Bearer {{AUTHORIZATION}}
+
+
+
+### 내가 보유한 특정 종류의 주식 정보를 실시간으로 가져오는 API (해외주식)
+GET {{api}}/api/v1/member/stock?type=OVERSEAS_STOCK
+Authorization: Bearer {{AUTHORIZATION}}
+
+
+
+### 내가 보유한 기존의 주식 정보를 수정한다
+PUT {{api}}/api/v1/member/stock
+Content-Type: application/json
+Authorization: Bearer {{AUTHORIZATION}}
+
+{
+    "memberStockId": 1,
+    "purchasePrice": 2000,
+    "quantity": 500,
+    "currencyType": "DOLLAR",
+    "purchaseTotalPrice": 130000
+}
+
+
+
+### 내가 보유한 주식을 삭제한다
+DELETE {{api}}/api/v1/member/stock?memberStockId=1
+Authorization: Bearer {{AUTHORIZATION}}

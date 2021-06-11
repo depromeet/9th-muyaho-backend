@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+    <!--
+        maxEntriesLocalHeap: 힙 메모리 최대량
+        maxEntriesLocalDisk: 로컬 디스크에 유지 될 최대 객체 수.
+        diskSpoolBufferSizeMB: 디스크 캐시에 쓰기 모드로 들어갈 때, 사용될 비동기 모드의 스풀 버퍼 크기.
+        timeToIdleSeconds: 다음 시간 동안 유휴상태 후 갱신할 지 설정.
+        timeToLiveSeconds: 다음 갱신하기 까지 캐쉬가 유지되는 시간.
+        memoryStoreEvictPolicy: 객체의 갯수가 최대 갯수에 도달했을 경우 메모리에서 객체들을 어떤것을 제거할지 결정
+        - FIFO (First In First Out)
+        - LFU (Least Frequently Used): 가장 빈도수를 적게 사용한 것.
+        - LRU (Least Recently Used): 가장 오랫동안 사용이 되지 않은 것
+    -->
+    <cache name="findAllActiveStockByType"
+           maxEntriesLocalHeap="10000"
+           eternal="false"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="300" timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="none"/>
+    </cache>
+</ehcache>

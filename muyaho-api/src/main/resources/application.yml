@@ -1,0 +1,21 @@
+server:
+  port: 9090
+  servlet:
+    encoding:
+      charset: UTF-8
+spring:
+  profiles:
+    active: local
+    include:
+      - domain
+      - swagger
+      - stock
+      - rds
+      - oauth
+  session:
+    store-type: jdbc
+  mvc:
+    log-request-details: true
+logging:
+  file:
+    path: logs/api/

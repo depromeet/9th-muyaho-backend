@@ -1,0 +1,24 @@
+spring:
+  profiles: local, dev
+springdoc:
+  swagger-ui:
+    enabled: true
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  paths-to-match:
+    - /api/**
+    - /ping
+    - /test-session
+---
+spring:
+  profiles: prod
+springdoc:
+  swagger-ui:
+    enabled: false

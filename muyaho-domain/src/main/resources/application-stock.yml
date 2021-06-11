@@ -1,0 +1,34 @@
+spring:
+  profiles: local, dev, local-will
+bitcoin:
+  upbit:
+    markets:
+      url: https://api.upbit.com/v1/market/all
+    trade:
+      url: https://api.upbit.com/v1/ticker
+stock:
+  markets:
+    url: https://test.muyaho.xyz:5000/api/v1/stock/code
+  trade:
+    url: https://test.muyaho.xyz:5000/api/v1/stock/price
+currency:
+  exchange:
+    url: https://earthquake.kr:23490/query/USDKRW
+
+---
+spring:
+  profiles: prod
+bitcoin:
+  upbit:
+    markets:
+      url: https://api.upbit.com/v1/market/all
+    trade:
+      url: https://api.upbit.com/v1/ticker
+stock:
+  markets:
+    url: https://muyaho.xyz:5000/api/v1/stock/code
+  trade:
+    url: https://muyaho.xyz:5000/api/v1/stock/price
+currency:
+  exchange:
+    url: https://earthquake.kr:23490/query/USDKRW

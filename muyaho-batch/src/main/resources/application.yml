@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: local
+    include:
+      - domain
+      - stock
+      - rds
+  batch:
+    job:
+      names: ${job.name:NONE}
+  main:
+    web-application-type: none
+logging:
+  level:
+    org.springframework.batch: DEBUG

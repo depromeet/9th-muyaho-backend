@@ -1,4 +1,6 @@
 rootProject.name = 'muyaho'
 include 'muyaho-domain'
 include 'muyaho-api'
+include 'muyaho-common'
+include 'muyaho-batch'
 
