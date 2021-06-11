@@ -64,7 +64,7 @@ public class Stock extends BaseTimeEntity {
 
     public void validateAllowCurrency(CurrencyType currencyType) {
         if (!type.isAllowCurrencyType(currencyType)) {
-            throw new ForbiddenException(String.format("주식 (%s)은 통화 (%s)를 허용하지 않습니다", type, currencyType), ErrorCode.FORBIDDEN_STOCK_CURRENCY_EXCEPTION);
+            throw new ForbiddenException(String.format("해당하는 주식 (%s)은 통화 (%s)를 허용하지 않습니다", type, currencyType), ErrorCode.FORBIDDEN_STOCK_CURRENCY_EXCEPTION);
         }
     }
 

@@ -73,7 +73,7 @@ class MemberControllerTest extends ControllerTest {
         ApiResponse<String> response = memberMockApiCaller.checkDuplicateNam(request, 409);
 
         // then
-        assertThat(response.getCode()).isEqualTo(ErrorCode.CONFLICT_EXCEPTION.getCode());
+        assertThat(response.getCode()).isEqualTo(ErrorCode.CONFLICT_NICKNAME_EXCEPTION.getCode());
     }
 
     @DisplayName("PUT /api/v1/member 회원 정보 수정 200 OK")

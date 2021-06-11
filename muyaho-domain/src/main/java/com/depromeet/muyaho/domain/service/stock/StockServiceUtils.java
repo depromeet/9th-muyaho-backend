@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.domain.service.stock;
 
+import com.depromeet.muyaho.common.exception.ErrorCode;
 import com.depromeet.muyaho.common.exception.NotFoundException;
 import com.depromeet.muyaho.domain.domain.stock.Stock;
 import com.depromeet.muyaho.domain.domain.stock.StockRepository;
@@ -12,7 +13,7 @@ public class StockServiceUtils {
     public static Stock findActiveStockById(StockRepository stockRepository, Long stockId) {
         Stock stock = stockRepository.findActiveStockById(stockId);
         if (stock == null) {
-            throw new NotFoundException(String.format("해당하는 주식 (%s)은 존재하지 않습니다", stockId));
+            throw new NotFoundException(String.format("해당하는 주식 (%s)은 존재하지 않습니다", stockId), ErrorCode.NOT_FOUND_STOCK_EXCEPTION);
         }
         return stock;
     }

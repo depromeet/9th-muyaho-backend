@@ -26,7 +26,16 @@ public enum ErrorCode {
     VALIDATION_ESSENTIAL_TOTAL_PURCHASE_PRICE_EXCEPTION("V006", "해당하는 주식은 매입금을 필수로 입력해야합니다"),
 
     // Forbidden Exception
-    FORBIDDEN_STOCK_CURRENCY_EXCEPTION("F001", "해당하는 주식이 허용하지 않는 화폐 통화입니다");
+    FORBIDDEN_STOCK_CURRENCY_EXCEPTION("F001", "해당하는 주식이 허용하지 않는 화폐 통화입니다"),
+
+    // NotFound Exception
+    NOT_FOUND_STOCK_EXCEPTION("N001", "해당하는 주식은 존재하지 않습니다"),
+    NOT_FOUND_MEMBER_EXCEPTION("N002", "존재하지 않는 회원입니다"),
+
+    // Conflict Exception
+    CONFLICT_MEMBER_STOCK_EXCEPTION("C001", "이미 소유하고 있는 주식입니다"),
+    CONFLICT_NICKNAME_EXCEPTION("C002", "이미 존재하는 닉네임입니다"),
+    CONFLICT_MEMBER_EXCEPTION("C003", "이미 존재하는 회원입니다");
 
     private final String code;
     private final String message;
