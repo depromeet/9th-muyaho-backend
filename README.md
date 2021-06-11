@@ -1,5 +1,5 @@
 # 9th_muyaho_backend (영차)
-![Generic badge](https://img.shields.io/badge/version-1.0.1-green.svg)
+![Generic badge](https://img.shields.io/badge/version-1.0.2-green.svg)
 [![codecov](https://codecov.io/gh/depromeet/9th_muyaho_backend/branch/develop/graph/badge.svg?token=2MPw967BnL)](https://codecov.io/gh/depromeet/9th_muyaho_backend)
 
 ## Introduction
