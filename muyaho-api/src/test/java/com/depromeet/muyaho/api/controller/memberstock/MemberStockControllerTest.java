@@ -133,8 +133,8 @@ class MemberStockControllerTest extends ControllerTest {
         ApiResponse<MemberStockInfoResponse> response = memberStockMockApiCaller.updateMemberStock(request, token, 404);
 
         // then
-        assertThat(response.getCode()).isEqualTo(ErrorCode.NOT_FOUND_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(ErrorCode.NOT_FOUND_EXCEPTION.getMessage());
+        assertThat(response.getCode()).isEqualTo(ErrorCode.NOT_FOUND_STOCK_EXCEPTION.getCode());
+        assertThat(response.getMessage()).isEqualTo(ErrorCode.NOT_FOUND_STOCK_EXCEPTION.getMessage());
     }
 
     @DisplayName("DELETE /api/v1/member/stock 200 OK")
@@ -166,8 +166,8 @@ class MemberStockControllerTest extends ControllerTest {
         ApiResponse<String> response = memberStockMockApiCaller.deleteMemberStock(request, token, 404);
 
         // then
-        assertThat(response.getCode()).isEqualTo(ErrorCode.NOT_FOUND_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(ErrorCode.NOT_FOUND_EXCEPTION.getMessage());
+        assertThat(response.getCode()).isEqualTo(ErrorCode.NOT_FOUND_STOCK_EXCEPTION.getCode());
+        assertThat(response.getMessage()).isEqualTo(ErrorCode.NOT_FOUND_STOCK_EXCEPTION.getMessage());
     }
 
     @DisplayName("GET /api/v1/member/stock/status/history 200 OK")
