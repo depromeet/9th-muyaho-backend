@@ -12,6 +12,7 @@ spring:
       - stock
       - rds
       - oauth
+      - slack
   session:
     store-type: jdbc
   mvc:

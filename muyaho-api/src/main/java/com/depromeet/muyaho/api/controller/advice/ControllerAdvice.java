@@ -2,7 +2,9 @@ package com.depromeet.muyaho.api.controller.advice;
 
 import com.depromeet.muyaho.api.controller.ApiResponse;
 import com.depromeet.muyaho.common.exception.*;
+import com.depromeet.muyaho.domain.external.slack.SlackApiCaller;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -14,9 +16,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Objects;
 
+@RequiredArgsConstructor
 @Slf4j
 @RestControllerAdvice
 public class ControllerAdvice {
+
+    private final SlackApiCaller slackApiCaller;
 
     /**
      * Spring Validation Exception
@@ -80,7 +85,7 @@ public class ControllerAdvice {
      */
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(ForbiddenException.class)
-    protected ApiResponse<Object> handleNotFoundException(final ForbiddenException exception) {
+    protected ApiResponse<Object> handleForbiddenException(final ForbiddenException exception) {
         log.error(exception.getMessage(), exception);
         return ApiResponse.error(getValueOrDefault(exception.getErrorCode(), ErrorCode.FORBIDDEN_EXCEPTION));
     }
@@ -102,6 +107,7 @@ public class ControllerAdvice {
     @ExceptionHandler(ConflictException.class)
     protected ApiResponse<Object> handleConflictException(final ConflictException exception) {
         log.error(exception.getMessage(), exception);
+        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", exception.getMessage(), exception));
         return ApiResponse.error(getValueOrDefault(exception.getErrorCode(), ErrorCode.CONFLICT_EXCEPTION));
     }
 
@@ -112,6 +118,7 @@ public class ControllerAdvice {
     @ExceptionHandler(BadGatewayException.class)
     protected ApiResponse<Object> handleBadGatewayException(final BadGatewayException exception) {
         log.error(exception.getMessage(), exception);
+        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", exception.getMessage(), exception));
         return ApiResponse.error(ErrorCode.BAD_GATEWAY_EXCEPTION);
     }
 
@@ -122,6 +129,7 @@ public class ControllerAdvice {
     @ExceptionHandler(Exception.class)
     protected ApiResponse<Object> handleException(final Exception exception) {
         log.error(exception.getMessage(), exception);
+        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", exception.getMessage(), exception));
         return ApiResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
     }
 
