@@ -11,7 +11,7 @@ jobs:
       - name: Checkout@v2
         uses: actions/checkout@v2
 
-      - name: Setup Secret Properties
+      - name: Setup RDS Secret properties
         env:
           PROFILES: prod
           DB_URI: ${{secrets.JDBC_URI_PROD}}
@@ -23,14 +23,14 @@ jobs:
         run: |
           echo -e "spring.profiles=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
 
-      - name: Setup Secret Properties
+      - name: Setup Slack Secret properties
         env:
           PROFILES: prod
           SLACK_URL: ${{secrets.SLACK_URL_PROD}}
 
           RESOURCE_PWD: muyaho-domain/src/main/resources
         run: |
-          echo -e "spring.profiles=$PROFILES\nslack.url=$SLACK_URL\n > $RESOURCE_PWD/application-slack.properties
+          echo -e "spring.profiles=$PROFILES\nslack.url=$SLACK_URL" > $RESOURCE_PWD/application-slack.properties
 
       - name: Get dev version
         id: prod-version
