@@ -39,5 +39,6 @@ out/
 generated/
 
 application-rds.yml
+application-slack.yml
 
 logs/

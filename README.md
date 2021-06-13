@@ -1,13 +1,19 @@
-# 9th_muyaho_backend (영차)
-![Generic badge](https://img.shields.io/badge/version-1.0.1-green.svg)
+# 영차
+
+![Generic badge](https://img.shields.io/badge/version-1.0.2-green.svg)
 [![codecov](https://codecov.io/gh/depromeet/9th_muyaho_backend/branch/develop/graph/badge.svg?token=2MPw967BnL)](https://codecov.io/gh/depromeet/9th_muyaho_backend)
 
+<img src="/_images/image.png" title="영차" alt="영차" width="22%"></img>
+
 ## Introduction
-### 주식 및 비트코인 투자 현황 통합 관리 앱 
+### 주식 및 비트코인 투자 현황 통합 관리 앱
 
 - 보유한 국내 주식, 해외 주식, 비트코인을 통합적으로 관리하고 실시간 현재가를 확인할 수 있어요!
 - 보유한 전체 주식과 비트코인에 대한 나의 최종 자산, 수익률 등 투자 현황을 확인할 수 있어요!
 - 어제 대비 오늘의 수익금을 확인할 수 있어요!
+
+## Download
+[AppStore(IOS)](https://apps.apple.com/kr/app/%EC%98%81%EC%B0%A8/id1571507288)
 
 ## Features
 ### 로그인
@@ -67,9 +73,9 @@ docker-compose up --build
 - GitHub Action CI/CD
 
 
-## Server Architecture 
+## Server Architecture
 
-<img src="/_images/muyaho-20210606-1.png" title="무야호 서버 구성도" alt="무야호 서버 구성도"></img>
+<img src="/_images/muyaho-20210606-1.png" title="영차 서버 구성도" alt="영차 서버 구성도"></img>
 
 ### Description
 
