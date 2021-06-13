@@ -2,6 +2,7 @@ package com.depromeet.muyaho.api.controller.advice;
 
 import com.depromeet.muyaho.api.controller.ApiResponse;
 import com.depromeet.muyaho.common.exception.*;
+import com.depromeet.muyaho.common.utils.LocalDateTimeUtils;
 import com.depromeet.muyaho.domain.external.slack.SlackApiCaller;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.RequiredArgsConstructor;
@@ -117,7 +118,7 @@ public class ControllerAdvice {
     @ExceptionHandler(BadGatewayException.class)
     protected ApiResponse<Object> handleBadGatewayException(final BadGatewayException exception) {
         log.error(exception.getMessage(), exception);
-        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", exception.getErrorCode().getMessage(), exception));
+        slackApiCaller.postMessage(String.format("message: (%s)\nerror: (%s)\ndatetime: (%s)", exception.getErrorCode().getMessage(), exception, LocalDateTimeUtils.now()));
         return ApiResponse.error(exception.getErrorCode());
     }
 
@@ -129,7 +130,7 @@ public class ControllerAdvice {
     protected ApiResponse<Object> handleException(final Exception exception) {
         log.error(exception.getMessage(), exception);
         final ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_EXCEPTION;
-        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", errorCode.getMessage(), exception));
+        slackApiCaller.postMessage(String.format("message: (%s)\nerror: (%s)\ndatetime: (%s)", errorCode.getMessage(), exception, LocalDateTimeUtils.now()));
         return ApiResponse.error(errorCode);
     }
 
