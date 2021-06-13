@@ -67,7 +67,6 @@ public class ControllerAdvice {
     @ExceptionHandler(UnAuthorizedException.class)
     protected ApiResponse<Object> handleUnAuthorizedException(final UnAuthorizedException exception) {
         log.error(exception.getMessage(), exception);
-        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", exception.getErrorCode().getMessage(), exception));
         return ApiResponse.error(exception.getErrorCode());
     }
 
@@ -78,7 +77,6 @@ public class ControllerAdvice {
     @ExceptionHandler(ValidationException.class)
     protected ApiResponse<Object> handleValidationException(final ValidationException exception) {
         log.error(exception.getMessage(), exception);
-        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", exception.getErrorCode().getMessage(), exception));
         return ApiResponse.error(exception.getErrorCode());
     }
 
@@ -89,7 +87,6 @@ public class ControllerAdvice {
     @ExceptionHandler(ForbiddenException.class)
     protected ApiResponse<Object> handleForbiddenException(final ForbiddenException exception) {
         log.error(exception.getMessage(), exception);
-        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", exception.getErrorCode().getMessage(), exception));
         return ApiResponse.error(exception.getErrorCode());
     }
 
@@ -100,7 +97,6 @@ public class ControllerAdvice {
     @ExceptionHandler(NotFoundException.class)
     protected ApiResponse<Object> handleNotFoundException(final NotFoundException exception) {
         log.error(exception.getMessage(), exception);
-        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", exception.getErrorCode().getMessage(), exception));
         return ApiResponse.error(exception.getErrorCode());
     }
 
@@ -111,7 +107,6 @@ public class ControllerAdvice {
     @ExceptionHandler(ConflictException.class)
     protected ApiResponse<Object> handleConflictException(final ConflictException exception) {
         log.error(exception.getMessage(), exception);
-        slackApiCaller.postMessage(String.format("message: (%s) error: (%s)", exception.getErrorCode().getMessage(), exception));
         return ApiResponse.error(exception.getErrorCode());
     }
 
