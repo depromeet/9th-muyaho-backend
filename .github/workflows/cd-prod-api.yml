@@ -28,7 +28,7 @@ jobs:
           PROFILES: prod
           SLACK_URL: ${{secrets.SLACK_URL_PROD}}
 
-          RESOURCE_PWD: muyaho-domain/src/main/resources
+          RESOURCE_PWD: muyaho-external/src/main/resources
         run: |
           echo -e "spring.profiles=$PROFILES\nslack.url=$SLACK_URL" > $RESOURCE_PWD/application-slack.properties
 
