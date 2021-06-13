@@ -3,4 +3,5 @@
 
 ## 하위 모듈
 - muyaho-domain
+- muyaho-external
 - muyaho-common
