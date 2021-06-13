@@ -2,13 +2,10 @@ bootJar { enabled = false }
 jar { enabled = true }
 
 dependencies {
-    api project(':muyaho-common')
+    api project(':muyaho-external')
 
     // spring data jpa
     api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.3.8.RELEASE'
-
-    // spring webflux
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // h2
     implementation 'com.h2database:h2'

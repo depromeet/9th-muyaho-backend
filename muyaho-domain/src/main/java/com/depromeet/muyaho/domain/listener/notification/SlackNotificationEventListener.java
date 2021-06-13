@@ -2,7 +2,7 @@ package com.depromeet.muyaho.domain.listener.notification;
 
 import com.depromeet.muyaho.domain.event.notification.ApplicationEventOccurredEvent;
 import com.depromeet.muyaho.domain.event.notification.ServerErrorOccurredEvent;
-import com.depromeet.muyaho.domain.external.slack.SlackApiCaller;
+import com.depromeet.muyaho.external.client.slack.SlackApiCaller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

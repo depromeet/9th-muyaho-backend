@@ -6,11 +6,11 @@ import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStockCollection;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.service.stockcalculator.dto.response.StockCalculateResponse;
-import com.depromeet.muyaho.domain.external.bitcoin.upbit.UpBitApiCaller;
-import com.depromeet.muyaho.domain.external.bitcoin.upbit.dto.response.UpBitPriceResponse;
-import com.depromeet.muyaho.domain.external.currency.ExchangeRateApiCaller;
-import com.depromeet.muyaho.domain.external.stock.StockApiCaller;
-import com.depromeet.muyaho.domain.external.stock.dto.response.StockPriceResponse;
+import com.depromeet.muyaho.external.client.bitcoin.upbit.UpBitApiCaller;
+import com.depromeet.muyaho.external.client.bitcoin.upbit.dto.response.UpBitPriceResponse;
+import com.depromeet.muyaho.external.client.currency.ExchangeRateApiCaller;
+import com.depromeet.muyaho.external.client.stock.StockApiCaller;
+import com.depromeet.muyaho.external.client.stock.dto.response.StockPriceResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
