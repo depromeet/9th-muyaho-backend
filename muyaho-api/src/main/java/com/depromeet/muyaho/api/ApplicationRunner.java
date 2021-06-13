@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.api;
 
 import com.depromeet.muyaho.common.utils.LocalDateTimeUtils;
-import com.depromeet.muyaho.domain.event.slack.ApplicationEventOccurredEvent;
+import com.depromeet.muyaho.domain.event.notification.ApplicationEventOccurredEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationEventPublisher;

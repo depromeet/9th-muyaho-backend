@@ -1,7 +1,7 @@
-package com.depromeet.muyaho.api.controller.slack;
+package com.depromeet.muyaho.domain.listener.notification;
 
-import com.depromeet.muyaho.domain.event.slack.ApplicationEventOccurredEvent;
-import com.depromeet.muyaho.domain.event.slack.ServerErrorOccurredEvent;
+import com.depromeet.muyaho.domain.event.notification.ApplicationEventOccurredEvent;
+import com.depromeet.muyaho.domain.event.notification.ServerErrorOccurredEvent;
 import com.depromeet.muyaho.domain.external.slack.SlackApiCaller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class SlackEventListener {
+public class SlackNotificationEventListener {
 
     private final SlackApiCaller slackApiCaller;
 

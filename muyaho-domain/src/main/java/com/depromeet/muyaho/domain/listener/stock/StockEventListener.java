@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.api.controller.stock;
+package com.depromeet.muyaho.domain.listener.stock;
 
 import com.depromeet.muyaho.domain.event.stock.RequestedRenewEvent;
 import com.depromeet.muyaho.domain.service.stock.StockRenewService;

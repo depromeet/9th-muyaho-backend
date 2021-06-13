@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.domain.event.slack;
+package com.depromeet.muyaho.domain.event.notification;
 
 import lombok.AccessLevel;
 import lombok.Getter;

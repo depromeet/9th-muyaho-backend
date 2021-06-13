@@ -1,4 +1,4 @@
-package com.depromeet.muyaho.api.controller.stockhistory;
+package com.depromeet.muyaho.domain.listener.stockhistory;
 
 import com.depromeet.muyaho.domain.event.memberstock.MemberStockDeletedEvent;
 import com.depromeet.muyaho.domain.service.stockhistory.StockHistoryService;

@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.api.controller.advice;
 
 import com.depromeet.muyaho.api.controller.ApiResponse;
-import com.depromeet.muyaho.domain.event.slack.ServerErrorOccurredEvent;
+import com.depromeet.muyaho.domain.event.notification.ServerErrorOccurredEvent;
 import com.depromeet.muyaho.common.exception.*;
 import com.depromeet.muyaho.common.utils.LocalDateTimeUtils;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
