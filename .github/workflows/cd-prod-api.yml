@@ -28,7 +28,7 @@ jobs:
           PROFILES: prod
           SLACK_URL: ${{secrets.SLACK_URL_PROD}}
 
-          RESOURCE_PWD: muyaho-domain/src/main/resources
+          RESOURCE_PWD: muyaho-external/src/main/resources
         run: |
           echo -e "spring.profiles=$PROFILES\nslack.url=$SLACK_URL" > $RESOURCE_PWD/application-slack.properties
 
@@ -93,7 +93,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
         with:
           tag_name: ${{ steps.prod-version.outputs.version }}
-          release_name: Release ${{ steps.docker-image-version.outputs.version }}
+          release_name: Release ${{ steps.prod-version.outputs.version }}
           body: ${{ steps.prod-version.outputs.git-commit-msg }}
           draft: false
           prerelease: false

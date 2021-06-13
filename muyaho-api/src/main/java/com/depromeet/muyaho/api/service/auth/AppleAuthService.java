@@ -6,8 +6,8 @@ import com.depromeet.muyaho.domain.domain.member.MemberProvider;
 import com.depromeet.muyaho.domain.domain.member.MemberRepository;
 import com.depromeet.muyaho.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.muyaho.api.service.auth.dto.request.SignUpRequest;
-import com.depromeet.muyaho.domain.external.auth.apple.AppleTokenDecoder;
-import com.depromeet.muyaho.domain.external.auth.apple.dto.response.IdTokenPayload;
+import com.depromeet.muyaho.external.client.auth.apple.AppleTokenDecoder;
+import com.depromeet.muyaho.external.client.auth.apple.dto.response.IdTokenPayload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

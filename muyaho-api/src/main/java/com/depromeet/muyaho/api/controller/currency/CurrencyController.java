@@ -1,7 +1,7 @@
 package com.depromeet.muyaho.api.controller.currency;
 
 import com.depromeet.muyaho.api.controller.ApiResponse;
-import com.depromeet.muyaho.domain.external.currency.ExchangeRateApiCaller;
+import com.depromeet.muyaho.external.client.currency.ExchangeRateApiCaller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

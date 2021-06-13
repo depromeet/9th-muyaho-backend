@@ -5,6 +5,7 @@ spring:
       - domain
       - stock
       - rds
+      - slack
   batch:
     job:
       names: ${job.name:NONE}
