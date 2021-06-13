@@ -1,0 +1,9 @@
+bootJar { enabled = false }
+jar { enabled = true }
+
+dependencies {
+    api project(':muyaho-common')
+
+    // spring webflux
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+}
