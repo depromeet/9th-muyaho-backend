@@ -13,6 +13,7 @@ spring:
       - rds
       - oauth
       - slack
+      - thirdparty
   session:
     store-type: jdbc
   mvc:

@@ -40,5 +40,6 @@ generated/
 
 application-rds.yml
 application-slack.yml
+application-thirdparty.yml
 
 logs/

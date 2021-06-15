@@ -1,3 +1,5 @@
 kakao:
   profile:
     url: https://kapi.kakao.com/v2/user/me
+  signout:
+    url: https://kapi.kakao.com/v1/user/unlink
