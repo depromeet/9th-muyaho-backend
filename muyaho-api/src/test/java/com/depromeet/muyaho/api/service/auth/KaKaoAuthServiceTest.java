@@ -11,6 +11,7 @@ import com.depromeet.muyaho.common.exception.NotFoundException;
 import com.depromeet.muyaho.api.service.member.MemberServiceTestUtils;
 import com.depromeet.muyaho.external.client.auth.kakao.KaKaoApiCaller;
 import com.depromeet.muyaho.external.client.auth.kakao.dto.response.KaKaoProfileResponse;
+import com.depromeet.muyaho.external.client.auth.kakao.dto.response.KaKaoSignOutResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,6 +96,11 @@ public class KaKaoAuthServiceTest {
         @Override
         public KaKaoProfileResponse getProfileInfo(String accessToken) {
             return KaKaoProfileResponse.testInstance(uid, email);
+        }
+
+        @Override
+        public KaKaoSignOutResponse signOut(String memberUid) {
+            return null;
         }
     }
 
