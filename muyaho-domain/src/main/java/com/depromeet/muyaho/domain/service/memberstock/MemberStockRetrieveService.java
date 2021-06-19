@@ -28,7 +28,7 @@ public class MemberStockRetrieveService {
     private final DailyStockAmountRepository dailyStockAmountRepository;
 
     public List<StockCalculateResponse> getMemberCurrentStocks(StockMarketType type, Long memberId) {
-        MemberStockCollection collection = MemberStockCollection.of(memberStockRepository.findAllStocksByMemberIdAndType(memberId, type));
+        MemberStockCollection collection = MemberStockCollection.of(memberStockRepository.findAllActiveStocksByMemberIdAndType(memberId, type));
         if (collection.isEmpty()) {
             return Collections.emptyList();
         }

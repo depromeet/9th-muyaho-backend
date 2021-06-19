@@ -1,6 +1,6 @@
 # 영차
 
-![Generic badge](https://img.shields.io/badge/version-1.0.3-green.svg)
+![Generic badge](https://img.shields.io/badge/version-1.0.4-green.svg)
 [![codecov](https://codecov.io/gh/depromeet/9th_muyaho_backend/branch/develop/graph/badge.svg?token=2MPw967BnL)](https://codecov.io/gh/depromeet/9th_muyaho_backend)
 
 <img src="/_images/image.png" title="영차" alt="영차" width="22%"></img>
@@ -82,21 +82,22 @@ docker-compose up --build
 ### 메인 서버 및 주식 실시간 조회 서버
 
 - AWS ECS Fargate Service
-- Public Subnet에 위치한 ALB를 통해서 서버로 트래픽 분배.
-- Public Subnet의 NAT를 통해서 카카오 로그인 등 외부 API 호출.
+- Public Subnet에 위치한 ALB를 통해서 분산 배치된 API 서버로 트래픽 분배.
+- Public Subnet의 NAT Gateway를 통해서 외부 API 호출.
 
 ### 매일 거래 중인 종목 정보 갱신 및 매일 사용자의 투자 현황 계산 (Batch)
 
-- AWS ECS Fargate Tasks + AWS CloudWatch Event
+- AWS ECS Fargate Tasks + AWS CloudWatch Events
 - AWS CloudWatch에서 이벤트 트리거를 통해서 ECS Fargate CronJob 테스크 실행.
 
 ### RDS
 
+- AWS RDS MariaDB
 - Private Subnet에 위치시켜서 외부로부터의 접근 제한하고, Bastion Server을 두어, 로컬에서 SSH 터널링을 통해서 관리 가능하도록 구성.
 
 ### CI/CD
 
-- Github에서 특정 이벤트 시 Github Actions workflows가 작동해서 도커 이미지를 빌드 후 AWS ECR에 푸시.
+- 특정 이벤트 시 Github Actions workflows가 작동해서 도커 이미지를 빌드 후 AWS ECR에 푸시.
 - 푸시된 이미지로 AWS ECS Task를 생성한 후, Service에서 새로운 Task를 배포하도록 구성.
 - 배포 전략은 롤링 업데이트.
 

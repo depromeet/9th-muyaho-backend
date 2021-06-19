@@ -2,6 +2,7 @@ package com.depromeet.muyaho.domain.domain.memberstock.repository;
 
 import com.depromeet.muyaho.domain.domain.memberstock.MemberStock;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
+import com.depromeet.muyaho.domain.domain.stock.StockStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -36,12 +37,13 @@ public class MemberStockRepositoryCustomImpl implements MemberStockRepositoryCus
     }
 
     @Override
-    public List<MemberStock> findAllStocksByMemberIdAndType(Long memberId, StockMarketType type) {
+    public List<MemberStock> findAllActiveStocksByMemberIdAndType(Long memberId, StockMarketType type) {
         return queryFactory.selectFrom(memberStock)
             .innerJoin(memberStock.stock, stock).fetchJoin()
             .where(
                 memberStock.memberId.eq(memberId),
-                stock.type.eq(type)
+                stock.type.eq(type),
+                stock.status.eq(StockStatus.ACTIVE)
             ).fetch();
     }
 
