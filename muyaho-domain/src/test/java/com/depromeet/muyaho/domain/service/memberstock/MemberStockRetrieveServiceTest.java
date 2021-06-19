@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,11 +32,13 @@ class MemberStockRetrieveServiceTest extends MemberSetupTest {
     private StockRepository stockRepository;
 
     private Stock stock;
+    private Stock disabledStock;
 
     @BeforeEach
     void setUp() {
         stock = StockCreator.createActive("code", "name", StockMarketType.DOMESTIC_STOCK);
-        stockRepository.save(stock);
+        disabledStock = StockCreator.createDisable("disable", "disable", StockMarketType.DOMESTIC_STOCK);
+        stockRepository.saveAll(Arrays.asList(stock, disabledStock));
     }
 
     @AfterEach
@@ -59,6 +62,18 @@ class MemberStockRetrieveServiceTest extends MemberSetupTest {
 
     @Test
     void 아무_주식도_소유하고_있지않을때_조회하면_빈_리스트가_반환된다() {
+        // when
+        List<StockCalculateResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(StockMarketType.BITCOIN, memberId);
+
+        // then
+        assertThat(responses).isEmpty();
+    }
+
+    @Test
+    void 비활성화된_주식에_대해서_조회하지_않는다() {
+        // given
+        memberStockRepository.save(MemberStockCreator.create(memberId, disabledStock, new BigDecimal(1000), new BigDecimal(10)));
+
         // when
         List<StockCalculateResponse> responses = memberStockRetrieveService.getMemberCurrentStocks(StockMarketType.BITCOIN, memberId);
 

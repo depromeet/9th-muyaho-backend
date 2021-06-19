@@ -11,6 +11,6 @@ public interface MemberStockRepositoryCustom {
 
     MemberStock findByIdAndMemberId(Long memberStockId, Long memberId);
 
-    List<MemberStock> findAllStocksByMemberIdAndType(Long memberId, StockMarketType type);
+    List<MemberStock> findAllActiveStocksByMemberIdAndType(Long memberId, StockMarketType type);
 
 }
