@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.batch.job;
 
+import com.depromeet.muyaho.batch.config.JobLoggerListener;
 import com.depromeet.muyaho.batch.config.UniqueRunIdIncrementer;
 import com.depromeet.muyaho.domain.domain.dailystockamount.DailyStockAmount;
 import com.depromeet.muyaho.domain.domain.dailystockamount.DailyStockAmountRepository;
@@ -11,6 +12,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.listener.JobListenerFactoryBean;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +29,8 @@ public class CalculateDailyStockAmountConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     private final MemberStockRetrieveService memberStockRetrieveService;
     private final MemberRepository memberRepository;
     private final DailyStockAmountRepository dailyStockAmountRepository;
@@ -35,6 +39,7 @@ public class CalculateDailyStockAmountConfiguration {
     public Job calculateDailyStockAmountJob() {
         return jobBuilderFactory.get("calculateDailyStockAmountJob")
             .incrementer(new UniqueRunIdIncrementer())
+            .listener(JobListenerFactoryBean.getListener(new JobLoggerListener(eventPublisher)))
             .start(calculateDailyStockAmountStep())
             .build();
     }

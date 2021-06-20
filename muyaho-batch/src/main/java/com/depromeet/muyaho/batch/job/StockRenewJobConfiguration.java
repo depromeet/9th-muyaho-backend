@@ -1,5 +1,6 @@
 package com.depromeet.muyaho.batch.job;
 
+import com.depromeet.muyaho.batch.config.JobLoggerListener;
 import com.depromeet.muyaho.batch.config.UniqueRunIdIncrementer;
 import com.depromeet.muyaho.domain.domain.stock.StockMarketType;
 import com.depromeet.muyaho.domain.service.stock.StockRenewService;
@@ -12,7 +13,9 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.listener.JobListenerFactoryBean;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,6 +29,8 @@ public class StockRenewJobConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     private final UpBitApiCaller upBitApiCaller;
     private final StockApiCaller stockApiCaller;
     private final StockRenewService stockRenewService;
@@ -34,6 +39,7 @@ public class StockRenewJobConfiguration {
     public Job stockRenewJob() {
         return jobBuilderFactory.get("stockRenewJob")
             .incrementer(new UniqueRunIdIncrementer())
+            .listener(JobListenerFactoryBean.getListener(new JobLoggerListener(eventPublisher)))
             .start(renewBitCoinStep())
             .next(renewDomesticStockStep())
             .next(renewOverseasStockStep())
