@@ -13,7 +13,7 @@ stock:
     url: https://test.muyaho.xyz:5000/api/v1/stock/price
 currency:
   exchange:
-    url: https://earthquake.kr:23490/query/USDKRW
+    url: https://exchange.jaeheon.kr:23490/query/USDKRW
 
 ---
 spring:
@@ -31,4 +31,4 @@ stock:
     url: https://muyaho.xyz:5000/api/v1/stock/price
 currency:
   exchange:
-    url: https://earthquake.kr:23490/query/USDKRW
+    url: https://exchange.jaeheon.kr:23490/query/USDKRW
