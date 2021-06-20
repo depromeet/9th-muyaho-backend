@@ -28,7 +28,7 @@ public class WebClientExchangeRateApiCaller implements ExchangeRateApiCaller {
         return webclient.get()
             .uri(exchangeRateComponent.getUrl())
             .retrieve()
-            .onStatus(HttpStatus::isError, errorResponse -> Mono.error(new BadGatewayException("업비트 외부 API 연동 중 에러가 발생하였습니다")))
+            .onStatus(HttpStatus::isError, errorResponse -> Mono.error(new BadGatewayException("환율 외부 API 연동 중 에러가 발생하였습니다")))
             .bodyToMono(new ParameterizedTypeReference<ExchangeRateResponse>() {
             })
             .block();
