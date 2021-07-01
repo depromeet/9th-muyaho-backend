@@ -62,24 +62,24 @@ jobs:
           docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
           echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
 
-      - name: Download muyaho-api task definition
-        id: download-task-definition
-        run: |
-          aws ecs describe-task-definition --task-definition muyaho-api-task --query taskDefinition > task-definition-dev.json
-          echo "::set-output name=task-definition::$GITHUB_WORKSPACE/task-definition-dev.json"
-
-      - name: Update Amazon ECS muyaho-api task definition
-        id: render-api-container
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ${{ steps.download-task-definition.outputs.task-definition }}
-          container-name: muyaho-api
-          image: ${{ steps.build-api.outputs.image }}
-
-      - name: Deploy muyaho-api to Amazon ECS service
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.render-api-container.outputs.task-definition }}
-          cluster: muyaho-api
-          service: muyaho-api-dev
-          wait-for-service-stability: true
+#      - name: Download muyaho-api task definition
+#        id: download-task-definition
+#        run: |
+#          aws ecs describe-task-definition --task-definition muyaho-api-task --query taskDefinition > task-definition-dev.json
+#          echo "::set-output name=task-definition::$GITHUB_WORKSPACE/task-definition-dev.json"
+#
+#      - name: Update Amazon ECS muyaho-api task definition
+#        id: render-api-container
+#        uses: aws-actions/amazon-ecs-render-task-definition@v1
+#        with:
+#          task-definition: ${{ steps.download-task-definition.outputs.task-definition }}
+#          container-name: muyaho-api
+#          image: ${{ steps.build-api.outputs.image }}
+#
+#      - name: Deploy muyaho-api to Amazon ECS service
+#        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#        with:
+#          task-definition: ${{ steps.render-api-container.outputs.task-definition }}
+#          cluster: muyaho-api
+#          service: muyaho-api-dev
+#          wait-for-service-stability: true
