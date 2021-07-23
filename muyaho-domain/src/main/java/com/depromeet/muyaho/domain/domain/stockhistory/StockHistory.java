@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,6 +39,22 @@ public class StockHistory extends BaseTimeEntity {
         this.currentPriceInWon = currentPriceInWon;
         this.currentPriceInDollar = currentPriceInDollar;
         this.profitOrLoseRate = profitOrLoseRate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StockHistory that = (StockHistory) o;
+        return Objects.equals(memberStock.getId(), that.memberStock.getId()) &&
+            Objects.equals(currentPriceInWon.stripTrailingZeros(), that.currentPriceInWon.stripTrailingZeros()) &&
+            Objects.equals(currentPriceInDollar.stripTrailingZeros(), that.currentPriceInDollar.stripTrailingZeros()) &&
+            Objects.equals(profitOrLoseRate.stripTrailingZeros(), that.profitOrLoseRate.stripTrailingZeros());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(memberStock, currentPriceInWon, currentPriceInDollar, profitOrLoseRate);
     }
 
 }

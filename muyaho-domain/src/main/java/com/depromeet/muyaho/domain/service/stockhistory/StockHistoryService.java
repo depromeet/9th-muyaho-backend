@@ -28,13 +28,25 @@ public class StockHistoryService {
 
     @Transactional
     public List<StockCalculateResponse> renewMemberStockHistory(Long memberId, StockMarketType type, List<RenewMemberStockHistoryRequest> requests) {
-        stockHistoryRepository.deleteAll(stockHistoryRepository.findAllByMemberIdAndType(memberId, type));
+        List<StockHistory> lastHistories = stockHistoryRepository.findAllByMemberIdAndType(memberId, type);
 
-        List<StockHistory> stockHistories = requests.stream()
+        List<StockHistory> currentStockHistories = requests.stream()
             .map(RenewMemberStockHistoryRequest::toEntity)
             .collect(Collectors.toList());
 
-        return stockHistoryRepository.saveAll(stockHistories).stream()
+        // 1. 기존의 히스토리에서 현재 남아 있지 않는 히스토리를 제거한다.
+        List<StockHistory> removedHistories = lastHistories.stream()
+            .filter(lastHistory -> !currentStockHistories.contains(lastHistory))
+            .collect(Collectors.toList());
+        stockHistoryRepository.deleteAll(removedHistories);
+
+        // 2. 새롭게 생성된 히스토리들을 추가한다.
+        List<StockHistory> newHistories = currentStockHistories.stream()
+            .filter(currentHistory -> !lastHistories.contains(currentHistory))
+            .collect(Collectors.toList());
+        stockHistoryRepository.saveAll(newHistories);
+
+        return currentStockHistories.stream()
             .map(StockCalculateResponse::of)
             .collect(Collectors.toList());
     }

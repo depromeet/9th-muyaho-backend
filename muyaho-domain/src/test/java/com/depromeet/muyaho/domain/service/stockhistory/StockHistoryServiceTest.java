@@ -25,7 +25,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class StockHistoryTest extends MemberSetupTest {
+class StockHistoryServiceTest extends MemberSetupTest {
 
     @Autowired
     private StockHistoryService stockHistoryService;
@@ -79,6 +79,22 @@ class StockHistoryTest extends MemberSetupTest {
     void 멤버가_조회한_주식결과를_갱신하면_같은_주식_타입의기존의_기록은_지워진다() {
         // given
         stockHistoryRepository.save(StockHistoryCreator.create(memberStock, new BigDecimal(2000), new BigDecimal(2), new BigDecimal(40)));
+
+        RenewMemberStockHistoryRequest request = RenewMemberStockHistoryRequest.testInstance(memberStock, currentPriceInWon, currentPriceInDollar, profitOrLoseRate);
+
+        // when
+        stockHistoryService.renewMemberStockHistory(memberId, StockMarketType.DOMESTIC_STOCK, Collections.singletonList(request));
+
+        // then
+        List<StockHistory> stockHistoryList = stockHistoryRepository.findAll();
+        assertThat(stockHistoryList).hasSize(1);
+        assertStockHistory(stockHistoryList.get(0), currentPriceInWon, currentPriceInDollar, profitOrLoseRate);
+    }
+
+    @Test
+    void 멤버가_조회한_주식결과를_갱신할때_같은_값이면_삭제되지_않는다() {
+        // given
+        stockHistoryRepository.save(StockHistoryCreator.create(memberStock, currentPriceInWon, currentPriceInDollar, profitOrLoseRate));
 
         RenewMemberStockHistoryRequest request = RenewMemberStockHistoryRequest.testInstance(memberStock, currentPriceInWon, currentPriceInDollar, profitOrLoseRate);
 
