@@ -58,4 +58,14 @@ class MoneyTest {
         assertThat(result).isFalse();
     }
 
+    @Test
+    void 동등성_테스트_소수점이_달라도_같다() {
+        // given
+        Money source = Money.of(new BigDecimal(1), CurrencyType.DOLLAR);
+        Money target = Money.of(new BigDecimal("1.0"), CurrencyType.DOLLAR);
+
+        // when & then
+        assertThat(target).isEqualTo(source);
+    }
+
 }

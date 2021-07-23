@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * 총 매입금 (원화): 환율의 변동사항을 고려해서 구입 당시의 원화 가격(시드)를 보유.
@@ -43,6 +44,19 @@ public class MemberStockSeedPrice {
 
     public static MemberStockSeedPrice of(Stock stock, BigDecimal totalPurchasePrice) {
         return new MemberStockSeedPrice(stock, totalPurchasePrice);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MemberStockSeedPrice that = (MemberStockSeedPrice) o;
+        return Objects.equals(totalPurchasePriceInWon.stripTrailingZeros(), that.totalPurchasePriceInWon.stripTrailingZeros());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(totalPurchasePriceInWon);
     }
 
 }
