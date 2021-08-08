@@ -1,5 +1,22 @@
 spring:
-  profiles: local, dev, local-will
+  profiles: local, local-will
+bitcoin:
+  upbit:
+    markets:
+      url: https://api.upbit.com/v1/market/all
+    trade:
+      url: https://api.upbit.com/v1/ticker
+stock:
+  markets:
+    url: http://localhost:5000/api/v1/stock/code
+  trade:
+    url: http://localhost:5000/api/v1/stock/price
+currency:
+  exchange:
+    url: https://exchange.jaeheon.kr:23490/query/USDKRW
+---
+spring:
+  profiles: dev
 bitcoin:
   upbit:
     markets:
@@ -14,7 +31,6 @@ stock:
 currency:
   exchange:
     url: https://exchange.jaeheon.kr:23490/query/USDKRW
-
 ---
 spring:
   profiles: prod
