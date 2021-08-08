@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
     <springProfile name="local,local-will">
+        <logger name="org.springframework.web" level="INFO"/>
         <logger name="com.depromeet.muyaho" level="DEBUG"/>
-        <logger name="org.springframework" level="INFO"/>
-        <logger name="org.springframework.web" level="TRACE"/>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
     </springProfile>
 
     <springProfile name="dev,prod">
+        <logger name="org.springframework.web" level="INFO"/>
         <logger name="com.depromeet.muyaho" level="DEBUG"/>
-        <logger name="org.springframework" level="INFO"/>
-        <logger name="org.springframework.web" level="TRACE"/>
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>

@@ -15,8 +15,3 @@ spring:
       - slack
   session:
     store-type: jdbc
-  mvc:
-    log-request-details: true
-logging:
-  file:
-    path: logs/api/
