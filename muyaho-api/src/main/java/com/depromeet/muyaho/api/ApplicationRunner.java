@@ -8,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Component;
 
+@Profile({"dev", "prod"})
 @RequiredArgsConstructor
 @Component
 public class ApplicationRunner implements CommandLineRunner, ApplicationListener<ContextClosedEvent> {
