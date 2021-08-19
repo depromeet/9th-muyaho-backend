@@ -1,5 +1,6 @@
 server:
   port: 9090
+  shutdown: graceful
   servlet:
     encoding:
       charset: UTF-8

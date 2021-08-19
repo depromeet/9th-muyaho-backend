@@ -1,6 +1,6 @@
 # 영차
 
-![Generic badge](https://img.shields.io/badge/version-1.0.9-green.svg)
+![Generic badge](https://img.shields.io/badge/version-1.0.10-green.svg)
 [![codecov](https://codecov.io/gh/depromeet/9th_muyaho_backend/branch/develop/graph/badge.svg?token=2MPw967BnL)](https://codecov.io/gh/depromeet/9th_muyaho_backend)
 
 <img src="/_images/image.png" title="영차" alt="영차" width="22%"></img>
