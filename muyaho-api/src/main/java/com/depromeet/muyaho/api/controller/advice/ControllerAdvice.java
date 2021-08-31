@@ -9,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,15 +28,8 @@ public class ControllerAdvice {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * Spring Validation Exception
+     * 400 BadRequest
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ApiResponse<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error(e.getMessage(), e);
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
-    }
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     protected ApiResponse<Object> handleBadRequest(BindException e) {
@@ -42,28 +37,26 @@ public class ControllerAdvice {
         return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
     }
 
-    /**
-     * enum 타입이 일치하지 않을 경우 발생하는 Exception
-     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(InvalidFormatException.class)
-    protected ApiResponse<Object> handleMethodArgumentTypeMismatchException(InvalidFormatException e) {
+    @ExceptionHandler({
+        HttpMessageNotReadableException.class,
+        InvalidFormatException.class,
+        ServletRequestBindingException.class
+    })
+    protected ApiResponse<Object> handleInvalidFormatException(final Exception e) {
         log.error(e.getMessage(), e);
         return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION);
     }
 
-    /**
-     * 지원하지 않은 HTTP method 호출 할 경우 발생하는 Exception
-     */
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected ApiResponse<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        log.error(e.getMessage(), e);
-        return ApiResponse.error(ErrorCode.METHOD_NOT_ALLOWED_EXCEPTION);
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ValidationException.class)
+    protected ApiResponse<Object> handleValidationException(final ValidationException exception) {
+        log.error(exception.getMessage(), exception);
+        return ApiResponse.error(exception.getErrorCode());
     }
 
     /**
-     * 세션에 문제가 있는 경우 발생하는 Exception
+     * 401 UnAuthorized
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnAuthorizedException.class)
@@ -73,17 +66,7 @@ public class ControllerAdvice {
     }
 
     /**
-     * 잘못된 입력이 들어왔을 경우 발생하는 Exception
-     */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ValidationException.class)
-    protected ApiResponse<Object> handleValidationException(final ValidationException exception) {
-        log.error(exception.getMessage(), exception);
-        return ApiResponse.error(exception.getErrorCode());
-    }
-
-    /**
-     * 허용하지 않는 경우 발생하는 Exception
+     * 403 Forbidden
      */
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(ForbiddenException.class)
@@ -93,7 +76,7 @@ public class ControllerAdvice {
     }
 
     /**
-     * 존재하지 않는 경우 발생하는 Exception
+     * 404 NotFound
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
@@ -103,7 +86,16 @@ public class ControllerAdvice {
     }
 
     /**
-     * 이미 존재하는 경우 발생하는 Exception
+     * 405 Method Not Supported
+     */
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    protected ApiResponse<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        return ApiResponse.error(ErrorCode.METHOD_NOT_ALLOWED_EXCEPTION);
+    }
+
+    /**
+     * 409 Conflict
      */
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ConflictException.class)
@@ -113,7 +105,16 @@ public class ControllerAdvice {
     }
 
     /**
-     * 외부 API 연동 중 에러가 발생할 경우 발생하는 Exception
+     * 415 UnSupported Media Type
+     */
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ExceptionHandler(HttpMediaTypeException.class)
+    protected ApiResponse<Object> handleHttpMediaTypeException(final HttpMediaTypeException e) {
+        return ApiResponse.error(ErrorCode.UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    /**
+     * 502 Bad Gateway
      */
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
     @ExceptionHandler(BadGatewayException.class)
@@ -124,7 +125,7 @@ public class ControllerAdvice {
     }
 
     /**
-     * 서버 내부에서 발생하는 Exception
+     * 500 Internal Server Error
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
