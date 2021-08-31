@@ -17,6 +17,7 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED_EXCEPTION("C006", "지원하지 않는 메소드 입니다"),
     BAD_GATEWAY_EXCEPTION("C007", "외부 연동 중 에러가 발생하였습니다"),
     FORBIDDEN_EXCEPTION("C008", "허용하지 않는 접근입니다."),
+    UNSUPPORTED_MEDIA_TYPE("C009", "허용하지 않는 미디어 타입입니다"),
 
     // Validation Exception
     VALIDATION_INVALID_TOKEN_EXCEPTION("V002", "잘못된 토큰입니다"),
