@@ -1,3 +1,8 @@
+ext {
+    springSessionVersion = "1.3.5.RELEASE"
+    springDocVersion = "1.5.4"
+}
+
 dependencies {
     implementation project(':muyaho-domain')
 
@@ -5,8 +10,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // spring session
-    implementation 'org.springframework.session:spring-session:1.3.5.RELEASE'
+    implementation "org.springframework.session:spring-session:${springSessionVersion}"
 
     // swagger
-    implementation 'org.springdoc:springdoc-openapi-ui:1.5.4'
+    implementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
 }

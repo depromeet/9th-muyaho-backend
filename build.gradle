@@ -1,6 +1,7 @@
 buildscript {
     ext {
-        springBootVersion = '2.3.8.RELEASE'
+        springBootVersion = "2.3.8.RELEASE"
+        ehcacheVersion = "2.10.3"
     }
 
     repositories {
@@ -43,7 +44,7 @@ subprojects {
 
         // ehcache
         implementation('org.springframework.boot:spring-boot-starter-cache')
-        implementation group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.3'
+        implementation group: 'net.sf.ehcache', name: 'ehcache', version: "${ehcacheVersion}"
     }
 
     test {
